@@ -1,0 +1,202 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String    @id @default(uuid())
+  email          String    @unique
+  passwordHash   String
+  name           String
+  role           String    // 'STUDENT', 'UMKM', 'ADMIN'
+  avatar         String?
+  bio            String?
+  isVerified     Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  studentProfile StudentProfile?
+  umkmProfile    UmkmProfile?
+
+  projectsOwned      Project[]            @relation("ProjectOwner")
+  applications       ProjectApplication[]
+  messagesSent       Message[]            @relation("MessageSender")
+  messagesReceived   Message[]            @relation("MessageReceiver")
+  notifications      Notification[]
+  
+  workspacesStudent  Workspace[]          @relation("WorkspaceStudent")
+  workspacesUmkm     Workspace[]          @relation("WorkspaceUmkm")
+  
+  reviewsGiven       Review[]             @relation("ReviewAuthor")
+  reviewsReceived    Review[]             @relation("ReviewTarget")
+  
+  auditLogs          AuditLog[]           @relation("AdminAction")
+}
+
+model StudentProfile {
+  id                     String   @id @default(uuid())
+  userId                 String   @unique
+  user                   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  institution            String?
+  portfolioScore         Int      @default(0)
+  completedProjectsCount Int      @default(0)
+  skills                 String   @db.Text // JSON string
+  
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
+
+model UmkmProfile {
+  id                     String   @id @default(uuid())
+  userId                 String   @unique
+  user                   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyName            String
+  companyLogo            String?
+  industry               String?
+  
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  description String?
+  projects    Project[]
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Project {
+  id             String        @id @default(uuid())
+  title          String
+  categoryId     String
+  category       Category      @relation(fields: [categoryId], references: [id])
+  level          String        @default("Beginner")
+  duration       String
+  stipend        String
+  description    String        @db.Text
+  overview       String?       @db.Text
+  objectives     String        @db.Text  // JSON string
+  deliverables   String        @db.Text  // JSON string
+  tags           String        @db.Text  // JSON string
+  status         String        @default("DRAFT") // DRAFT, PUBLISHED, ACTIVE, COMPLETED
+  deadline       DateTime?
+  teamSize       String?
+  matchScore     Int           @default(0)
+  
+  ownerId        String
+  owner          User          @relation("ProjectOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  
+  applications   ProjectApplication[]
+  workspaces     Workspace[]
+  reviews        Review[]
+  
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model ProjectApplication {
+  id             String             @id @default(uuid())
+  projectId      String
+  project        Project            @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  studentId      String
+  student        User               @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  status         String             @default("PENDING") // PENDING, ACCEPTED, REJECTED
+  appliedAt      DateTime           @default(now())
+  
+  @@unique([projectId, studentId])
+}
+
+model Workspace {
+  id             String          @id @default(uuid())
+  projectId      String
+  project        Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  studentId      String
+  student        User            @relation("WorkspaceStudent", fields: [studentId], references: [id], onDelete: Cascade)
+  umkmId         String
+  umkm           User            @relation("WorkspaceUmkm", fields: [umkmId], references: [id], onDelete: Cascade)
+  
+  status         String          @default("ACTIVE") // ACTIVE, ON_HOLD, COMPLETED, CANCELLED
+  progressPercent Int            @default(0)
+  
+  tasks          ProjectTask[]
+  messages       Message[]
+  
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  
+  @@unique([projectId, studentId])
+}
+
+model ProjectTask {
+  id             String     @id @default(uuid())
+  workspaceId    String
+  workspace      Workspace  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  title          String
+  completed      Boolean    @default(false)
+  dueDate        DateTime
+  assignedTo     String?
+  
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+}
+
+model Message {
+  id             String     @id @default(uuid())
+  text           String
+  senderId       String
+  sender         User       @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId     String
+  receiver       User       @relation("MessageReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+  workspaceId    String?
+  workspace      Workspace? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  
+  createdAt      DateTime   @default(now())
+}
+
+model Notification {
+  id                String           @id @default(uuid())
+  userId            String
+  user              User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type              String           // PROJECT, SYSTEM, MESSAGE
+  title             String
+  message           String
+  isRead            Boolean          @default(false)
+  actionRoute       String?
+  relatedEntityId   String?
+  relatedEntityType String?
+  
+  createdAt         DateTime         @default(now())
+}
+
+model Review {
+  id             String     @id @default(uuid())
+  projectId      String
+  project        Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  authorId       String
+  author         User       @relation("ReviewAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  targetId       String
+  target         User       @relation("ReviewTarget", fields: [targetId], references: [id], onDelete: Cascade)
+  rating         Int
+  comment        String
+  
+  createdAt      DateTime   @default(now())
+}
+
+model AuditLog {
+  id             String     @id @default(uuid())
+  adminId        String
+  admin          User       @relation("AdminAction", fields: [adminId], references: [id], onDelete: Cascade)
+  action         String
+  entityType     String
+  entityId       String
+  details        String?
+  
+  createdAt      DateTime   @default(now())
+}
