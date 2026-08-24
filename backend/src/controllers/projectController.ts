@@ -40,3 +40,46 @@ export const getMyRequestsUMKM = async (req: Request, res: Response, next: NextF
     next(error);
   }
 };
+
+export const createProject = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const userId = (req as any).user.id;
+    const result = await projectService.createProject(userId, req.body);
+    res.status(201).json(ApiResponse.success(result));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const acceptApplicant = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const umkmId = (req as any).user.id;
+    const { id: projectId, studentId } = req.params;
+    const result = await projectService.acceptApplication(umkmId, projectId as string, studentId as string);
+    res.json(ApiResponse.success(result));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const rejectApplicant = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const umkmId = (req as any).user.id;
+    const { id: projectId, studentId } = req.params;
+    const result = await projectService.rejectApplication(umkmId, projectId as string, studentId as string);
+    res.json(ApiResponse.success(result));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const applyProject = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const studentId = (req as any).user.id;
+    const { id: projectId } = req.params;
+    const result = await projectService.applyProject(projectId as string, studentId);
+    res.json(ApiResponse.success(result));
+  } catch (error) {
+    next(error);
+  }
+};

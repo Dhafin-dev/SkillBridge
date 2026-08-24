@@ -9,11 +9,10 @@ import { DashboardLayout } from '../shared/layouts/DashboardLayout';
 import { GuestRoute, ProtectedRoute, StudentRoute, UMKMRoute, AdminRoute } from './guards';
 
 // Public Module
-const LandingHero = React.lazy(() => import('../modules/public/LandingHero').then(m => ({ default: m.LandingHero })));
+const PublicHome = React.lazy(() => import('../modules/public/PublicHome').then(m => ({ default: m.PublicHome })));
 const ProjectMarket = React.lazy(() => import('../modules/public/ProjectMarket').then(m => ({ default: m.ProjectMarket })));
 const ProjectDetails = React.lazy(() => import('../modules/public/ProjectDetails').then(m => ({ default: m.ProjectDetails })));
 const GlobalSearch = React.lazy(() => import('../modules/public/GlobalSearch').then(m => ({ default: m.GlobalSearch })));
-const HelpCenter = React.lazy(() => import('../modules/public/HelpCenter').then(m => ({ default: m.HelpCenter })));
 const PublicStudentProfile = React.lazy(() => import('../modules/public/PublicStudentProfile').then(m => ({ default: m.PublicStudentProfile })));
 const PublicBusinessProfile = React.lazy(() => import('../modules/public/PublicBusinessProfile').then(m => ({ default: m.PublicBusinessProfile })));
 
@@ -54,11 +53,8 @@ export const router = createBrowserRouter([
     path: '/',
     element: <PublicLayout />,
     children: [
-      { path: '/', element: <LandingHero /> },
-      { path: 'market', element: <ProjectMarket /> },
-      { path: 'projects/:id', element: <ProjectDetails /> },
+      { path: '/', element: <PublicHome /> },
       { path: 'search', element: <GlobalSearch /> },
-      { path: 'help', element: <HelpCenter /> },
       { path: 'students/:id', element: <PublicStudentProfile /> },
       { path: 'umkm/:id', element: <PublicBusinessProfile /> },
 
@@ -83,6 +79,8 @@ export const router = createBrowserRouter([
       {
         element: <ProtectedRoute />,
         children: [
+          { path: 'market', element: <ProjectMarket /> },
+          { path: 'projects/:id', element: <ProjectDetails /> },
           { path: 'profile', element: <MyProfile /> },
           { path: 'settings', element: <Settings /> },
           { path: 'settings/edit-profile', element: <EditProfile /> },

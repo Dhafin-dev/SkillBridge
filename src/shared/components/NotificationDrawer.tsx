@@ -23,7 +23,7 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({ onClose 
   return (
     <div className="fixed inset-0 z-[70] bg-slate-900/40 backdrop-blur-xs flex justify-end">
       <div className="w-full max-w-sm bg-white h-full shadow-2xl p-5 space-y-5 flex flex-col animate-in slide-in-from-right duration-200">
-        
+
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <div className="flex items-center gap-2">
@@ -42,19 +42,24 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({ onClose 
           ) : notifications.length === 0 ? (
             <div className="text-center py-10 text-slate-500 font-semibold text-sm">No notifications</div>
           ) : notifications.map(n => (
-            <div 
-              key={n.id} 
-              onClick={() => {
+            <div
+              key={n.id}
+              onClick={async () => {
+                if (!n.isRead) {
+                  try {
+                    await notificationService.markAsRead(n.id);
+                  } catch (e) { }
+                }
                 if (n.actionRoute) {
-                  // The previous actionRoute was using ScreenView (e.g., 'project-details', 'messages'). 
-                  // In a real app we'd want actual route paths, but for now we map them or ignore.
-                  // For simplicity we will navigate to /messages for chat, and / for everything else unless mapped.
                   if (n.actionRoute === 'messages') navigate('/messages');
-                  else if (n.actionRoute === 'project-details') navigate('/market'); // example fallback
+                  else if (n.actionRoute === 'market') navigate('/market');
                 }
                 onClose();
               }}
-              className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 space-y-1 hover:bg-blue-50/50 transition-colors cursor-pointer"
+              className={`p-3.5 rounded-2xl border space-y-1 transition-colors cursor-pointer ${n.isRead
+                  ? 'bg-white border-slate-100 opacity-60'
+                  : 'bg-slate-50 border-blue-100 shadow-sm hover:bg-blue-50/50'
+                }`}
             >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-slate-900">{n.title}</span>
@@ -68,7 +73,13 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({ onClose 
         {/* Footer */}
         <div className="pt-2 border-t border-slate-100 text-center">
           <button
-            onClick={onClose}
+            onClick={async () => {
+              try {
+                await notificationService.markAllAsRead();
+                setNotifications(notifications.map(n => ({ ...n, isRead: true })));
+              } catch (e) { }
+              onClose();
+            }}
             className="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors"
           >
             Mark All as Read

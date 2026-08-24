@@ -28,7 +28,7 @@ export class AuthService {
       email,
       passwordHash,
       role: userRole,
-      avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random`,
+      avatar: '',
       studentProfile: userRole === 'STUDENT' ? {
         create: { skills: '[]' }
       } : undefined,

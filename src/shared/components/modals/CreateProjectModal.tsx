@@ -41,7 +41,7 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({ onClose,
   return (
     <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
       <div className="w-full max-w-lg bg-white rounded-3xl p-6 shadow-2xl border border-slate-100 space-y-4 animate-in fade-in zoom-in-95 duration-150 max-h-[90vh] overflow-y-auto">
-        
+
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <div>
             <span className="text-[10px] font-extrabold text-blue-600 uppercase tracking-wider block">UMKM Client Portal</span>

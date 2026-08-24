@@ -44,18 +44,16 @@ export const VerificationCenter: React.FC = () => {
         <div className="inline-flex bg-slate-100 p-1 rounded-2xl border border-slate-200/60 shadow-xs text-xs font-semibold">
           <button
             onClick={() => setActiveFilter('student')}
-            className={`px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
-              activeTab === 'student' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-200/60'
-            }`}
+            className={`px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 ${activeTab === 'student' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-200/60'
+              }`}
           >
             <School className="w-4 h-4" />
             <span>Student Verification</span>
           </button>
           <button
             onClick={() => setActiveFilter('umkm')}
-            className={`px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
-              activeTab === 'umkm' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-200/60'
-            }`}
+            className={`px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 ${activeTab === 'umkm' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-200/60'
+              }`}
           >
             <Store className="w-4 h-4" />
             <span>UMKM Verification</span>

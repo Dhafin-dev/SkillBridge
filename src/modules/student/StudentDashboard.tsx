@@ -10,7 +10,7 @@ import { StatCard } from '../../shared/components/ui/StatCard';
 export const StudentDashboard: React.FC = () => {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
-  
+
   const { data: projects = [], isLoading } = useQuery({
     queryKey: ['studentProjects'],
     queryFn: () => projectService.getMyProjectsStudent()
@@ -21,10 +21,18 @@ export const StudentDashboard: React.FC = () => {
 
   if (!currentUser) return null;
 
+  const getRank = (score: number) => {
+    if (score >= 90) return 'Top 5% Student';
+    if (score >= 80) return 'Top 15% Student';
+    if (score >= 60) return 'Top 30% Student';
+    if (score > 0) return 'Rising Talent';
+    return 'New Member';
+  };
+
   return (
     <div className="min-h-[calc(100vh-80px)] bg-[#f8f9ff] pb-24 pt-4 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto space-y-5">
-        
+
         {/* Header Greeting matching Screenshot 11 */}
         <div className="space-y-1">
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
@@ -59,11 +67,11 @@ export const StudentDashboard: React.FC = () => {
           <div className="space-y-1 z-10">
             <span className="text-xs font-semibold opacity-90 block">Portfolio Score</span>
             <div className="text-5xl font-black tracking-tight leading-none">
-              {currentUser.portfolioScore || 85}
+              {currentUser.portfolioScore ?? 0}
             </div>
           </div>
           <div className="px-3.5 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-xs font-bold text-white border border-white/30 z-10">
-            Top 5% Student
+            {getRank(currentUser.portfolioScore ?? 0)}
           </div>
         </div>
 
@@ -73,7 +81,7 @@ export const StudentDashboard: React.FC = () => {
             <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">
               Recent Projects
             </h2>
-            <button 
+            <button
               onClick={() => navigate('/student/my-projects')}
               className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-0.5"
             >
@@ -89,7 +97,7 @@ export const StudentDashboard: React.FC = () => {
               <div className="text-center py-6 text-slate-500 font-semibold text-sm">No recent projects found. Apply to a project in the market!</div>
             ) : (
               projects.slice(0, 3).map((project, idx) => (
-                <div 
+                <div
                   key={idx}
                   onClick={() => navigate('/student/my-projects')}
                   className="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 border border-slate-100 hover:bg-slate-100/70 transition-colors cursor-pointer"
@@ -104,9 +112,8 @@ export const StudentDashboard: React.FC = () => {
                     </div>
                   </div>
                   <div className="text-right">
-                    <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold block mb-1 ${
-                      project.status === 'Completed' ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800'
-                    }`}>
+                    <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold block mb-1 ${project.status === 'Completed' ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800'
+                      }`}>
                       {project.status}
                     </span>
                     <span className="text-[11px] font-semibold text-slate-500">

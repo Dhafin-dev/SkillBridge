@@ -63,7 +63,7 @@ export interface ActiveStudentProject {
 export interface ClientRequest {
   id: string;
   title: string;
-  status: 'Active' | 'Pending' | 'Matched' | 'Draft' | 'Completed';
+  status: 'PUBLISHED' | 'ACTIVE' | 'COMPLETED' | 'DRAFT' | 'REJECTED';
   assignedStudent?: string;
   assignedStudentAvatar?: string;
   progressPercent: number;

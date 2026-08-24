@@ -14,6 +14,26 @@ export const ProjectDetails: React.FC = () => {
   const [isSaved, setIsSaved] = useState(false);
   const [project, setProject] = useState<Project | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isApplying, setIsApplying] = useState(false);
+
+  const handleApply = async () => {
+    if (currentUserRole === 'guest') {
+      navigate('/login');
+      return;
+    }
+    if (!project) return;
+
+    setIsApplying(true);
+    try {
+      await projectService.applyToProject(project.id);
+      alert('Application submitted successfully!');
+      // Optionally re-fetch project or update state here
+    } catch (error: any) {
+      alert(error.response?.data?.message || 'Failed to submit application. You might have already applied.');
+    } finally {
+      setIsApplying(false);
+    }
+  };
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -55,7 +75,7 @@ export const ProjectDetails: React.FC = () => {
   return (
     <div className="min-h-[calc(100vh-80px)] bg-[#f8f9ff] pb-40 pt-3 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto space-y-4">
-        
+
         {/* Top Header Bar */}
         <div className="flex items-center justify-between py-2">
           <button
@@ -68,7 +88,7 @@ export const ProjectDetails: React.FC = () => {
           <h1 className="text-xl font-bold text-slate-900 tracking-tight">
             Project Details
           </h1>
-          <button 
+          <button
             className="p-2 rounded-full bg-white hover:bg-slate-100 text-slate-700 transition-colors border border-slate-200 shadow-xs"
             aria-label="Options"
           >
@@ -97,11 +117,6 @@ export const ProjectDetails: React.FC = () => {
             </div>
           </div>
 
-          {/* Skill Match Pill */}
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-blue-100 text-blue-800 text-xs font-bold border border-blue-200 shadow-xs">
-            <Zap className="w-4 h-4 text-blue-600 fill-current" />
-            <span>{project.matchScore}% Skill Match</span>
-          </div>
 
           {/* Quick Info Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-slate-100 text-xs font-medium text-slate-600">
@@ -147,7 +162,7 @@ export const ProjectDetails: React.FC = () => {
               ))}
             </ul>
           ) : (
-            <EmptyState 
+            <EmptyState
               icon={<Target className="w-6 h-6" />}
               title="No Objectives Defined"
               description="This project does not have specific objectives listed yet."
@@ -187,7 +202,7 @@ export const ProjectDetails: React.FC = () => {
               ))}
             </ul>
           ) : (
-            <EmptyState 
+            <EmptyState
               icon={<ClipboardList className="w-6 h-6" />}
               title="No Deliverables Defined"
               description="This project does not have specific deliverables listed yet."
@@ -214,34 +229,32 @@ export const ProjectDetails: React.FC = () => {
           </div>
         </div>
 
-      </div>
-
-      {/* Fixed Sticky Action Bar - positioned above the BottomNav */}
-      <div className="fixed bottom-[56px] left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-slate-200 p-4 shadow-xl">
-        <div className="max-w-3xl mx-auto flex items-center gap-3">
+        {/* Action Bar */}
+        <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm flex flex-col sm:flex-row items-center gap-4 mt-8">
           <button
             onClick={() => setIsSaved(!isSaved)}
-            className={`flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl border font-bold text-sm transition-all ${
-              isSaved 
+            className={`w-full sm:w-auto flex justify-center items-center gap-2 px-6 py-3.5 rounded-2xl border font-bold text-sm transition-all ${isSaved
                 ? 'bg-blue-50 border-blue-300 text-blue-700'
                 : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <Bookmark className={`w-4 h-4 ${isSaved ? 'fill-current' : ''}`} />
             <span>{isSaved ? 'Saved' : 'Save Project'}</span>
           </button>
 
           <button
-            onClick={() => {
-              if (currentUserRole === 'guest') navigate('/login');
-              else navigate(`/projects/${project.id}?apply=true`);
-            }}
-            className="flex-1 flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-extrabold text-sm shadow-lg shadow-blue-600/25 transition-all"
+            onClick={handleApply}
+            disabled={isApplying}
+            className={`w-full sm:flex-1 flex justify-center items-center gap-2 py-3.5 px-6 rounded-2xl text-white font-extrabold text-sm shadow-md transition-all ${isApplying
+                ? 'bg-blue-400 cursor-not-allowed shadow-none'
+                : 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 shadow-blue-600/25'
+              }`}
           >
-            <span>Apply Now</span>
-            <span className="text-base font-normal">▷</span>
+            <span>{isApplying ? 'Applying...' : 'Apply Now'}</span>
+            {!isApplying && <span className="text-base font-normal">▷</span>}
           </button>
         </div>
+
       </div>
     </div>
   );

@@ -38,7 +38,7 @@ export const WorkspaceModal: React.FC<WorkspaceModalProps> = ({ project, onClose
   return (
     <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
       <div className="w-full max-w-2xl max-h-[90vh] bg-white rounded-3xl p-6 shadow-2xl border border-slate-100 flex flex-col space-y-5 animate-in fade-in zoom-in-95 duration-150 overflow-y-auto">
-        
+
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-100 pb-4">
           <div>
@@ -83,9 +83,8 @@ export const WorkspaceModal: React.FC<WorkspaceModalProps> = ({ project, onClose
               <div
                 key={t.id}
                 onClick={() => toggleTask(t.id)}
-                className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
-                  t.completed ? 'bg-emerald-50/60 border-emerald-200/80 text-slate-600' : 'bg-white border-slate-200 hover:border-slate-300 text-slate-900'
-                }`}
+                className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${t.completed ? 'bg-emerald-50/60 border-emerald-200/80 text-slate-600' : 'bg-white border-slate-200 hover:border-slate-300 text-slate-900'
+                  }`}
               >
                 <div className="flex items-center gap-3">
                   {t.completed ? (

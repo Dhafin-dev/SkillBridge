@@ -13,18 +13,6 @@ export const ChatList: React.FC = () => {
       {/* Top Header */}
       <div className="px-4 py-4 flex items-center justify-between">
         <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Messages</h1>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => navigate('/profile')}
-            className="w-8 h-8 rounded-full overflow-hidden border border-slate-200"
-          >
-            <img
-              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
-              alt="Avatar"
-              className="w-full h-full object-cover"
-            />
-          </button>
-        </div>
       </div>
 
       <main className="px-4 py-4 space-y-5">
@@ -46,11 +34,10 @@ export const ChatList: React.FC = () => {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-4 py-1.5 rounded-full whitespace-nowrap transition-colors ${
-                  activeTab === tab
+                className={`px-4 py-1.5 rounded-full whitespace-nowrap transition-colors ${activeTab === tab
                     ? 'bg-blue-600 text-white shadow-xs'
                     : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-                }`}
+                  }`}
               >
                 {tab}
               </button>
@@ -60,7 +47,7 @@ export const ChatList: React.FC = () => {
 
         {/* All Conversations */}
         <div className="space-y-2 mt-4 bg-white rounded-3xl border border-slate-200/80 p-8 shadow-xs">
-          <EmptyState 
+          <EmptyState
             icon={<MessageSquare className="w-6 h-6" />}
             title="No Messages"
             description="You don't have any active conversations yet. Reach out to someone to start chatting!"

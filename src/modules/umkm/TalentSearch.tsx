@@ -34,7 +34,7 @@ export const TalentSearch: React.FC = () => {
   return (
     <div className="min-h-[calc(100vh-80px)] bg-[#f8f9ff] pb-24 pt-3 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto space-y-5">
-        
+
         {/* Header Bar matching Screenshot 3 */}
         <div className="flex items-center gap-3 py-2">
           <button
@@ -53,23 +53,16 @@ export const TalentSearch: React.FC = () => {
           </div>
         </div>
 
-        {/* Search & Filter Controls matching Screenshot 3 */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-          <div className="sm:col-span-2 relative">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input
-              type="text"
-              placeholder="Search skills or name..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-xs"
-            />
-          </div>
-
-          <button className="flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs font-bold text-slate-700 shadow-xs hover:bg-slate-50">
-            <SlidersHorizontal className="w-4 h-4 text-slate-500" />
-            <span>Highest Match</span>
-          </button>
+        {/* Search Controls */}
+        <div className="relative">
+          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Search skills or name..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-xs"
+          />
         </div>
 
         {/* Student Cards List */}
@@ -104,18 +97,9 @@ export const TalentSearch: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Match Score Badge */}
-                  <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold shadow-xs ${
-                    student.matchScore >= 95
-                      ? 'bg-emerald-300/90 text-emerald-950 border border-emerald-400/30'
-                      : 'bg-blue-100 text-blue-800 border border-blue-200'
-                  }`}>
-                    <CheckCircle2 className="w-3.5 h-3.5 fill-current" />
-                    <span>MATCH: {student.matchScore}%</span>
-                  </div>
                 </div>
 
-                {/* Score Stats Row matching Screenshot 3 */}
+                {/* Score Stats Row */}
                 <div className="grid grid-cols-2 gap-4 py-3 border-y border-slate-100">
                   <div>
                     <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
@@ -165,11 +149,10 @@ export const TalentSearch: React.FC = () => {
                   <button
                     onClick={() => handleInvite(student)}
                     disabled={isInvited}
-                    className={`flex items-center justify-center gap-1.5 py-3 rounded-2xl font-bold text-xs transition-all shadow-md ${
-                      isInvited
-                        ? 'bg-emerald-600 text-white cursor-default'
-                        : 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white shadow-blue-600/20'
-                    }`}
+                    className={`flex items-center justify-center gap-1.5 py-3 rounded-2xl font-bold text-xs transition-all shadow-md ${isInvited
+                      ? 'bg-emerald-600 text-white cursor-default'
+                      : 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white shadow-blue-600/20'
+                      }`}
                   >
                     {isInvited ? (
                       <>

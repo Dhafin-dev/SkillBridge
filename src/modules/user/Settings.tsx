@@ -66,9 +66,9 @@ export const Settings: React.FC = () => {
               <h2 className="text-base font-semibold text-slate-900">Account</h2>
             </div>
             <div className="divide-y divide-slate-100">
-              {/* Edit Profile */}
+              {/* Profile */}
               <button
-                onClick={() => navigate('/settings/edit-profile')}
+                onClick={() => navigate('/profile')}
                 className="w-full flex items-center justify-between px-6 py-4 hover:bg-slate-50/80 transition-colors text-left group"
               >
                 <div className="flex items-center gap-4">
@@ -76,29 +76,13 @@ export const Settings: React.FC = () => {
                     <User className="w-5 h-5" />
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-slate-900">Edit Profile</div>
-                    <div className="text-xs text-slate-500">Update personal details, headline, and bio</div>
+                    <div className="text-sm font-semibold text-slate-900">Profile</div>
+                    <div className="text-xs text-slate-500">View and manage your public profile</div>
                   </div>
                 </div>
                 <ChevronRight className="w-5 h-5 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
               </button>
 
-              {/* Security */}
-              <button
-                onClick={() => navigate('/settings/change-password')}
-                className="w-full flex items-center justify-between px-6 py-4 hover:bg-slate-50/80 transition-colors text-left group"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                    <Shield className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-semibold text-slate-900">Security & 2FA</div>
-                    <div className="text-xs text-slate-500">Password policies and active session tokens</div>
-                  </div>
-                </div>
-                <ChevronRight className="w-5 h-5 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
-              </button>
 
               {/* Password */}
               <button
@@ -234,11 +218,17 @@ export const Settings: React.FC = () => {
         <div className="md:col-span-4 space-y-6">
           {/* User Brief Card */}
           <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs flex items-center gap-3">
-            <img
-              src={currentUser.avatar}
-              alt={currentUser.name}
-              className="w-12 h-12 rounded-full object-cover border border-slate-200"
-            />
+            {currentUser.avatar ? (
+              <img
+                src={currentUser.avatar}
+                alt={currentUser.name}
+                className="w-12 h-12 rounded-full object-cover border border-slate-200"
+              />
+            ) : (
+              <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 border border-slate-200">
+                <User className="w-6 h-6" />
+              </div>
+            )}
             <div className="overflow-hidden">
               <h3 className="text-sm font-bold text-slate-900 truncate">{currentUser.name}</h3>
               <p className="text-xs text-slate-500 truncate">{currentUser.email}</p>

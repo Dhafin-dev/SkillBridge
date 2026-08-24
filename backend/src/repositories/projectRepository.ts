@@ -69,6 +69,61 @@ export class ProjectRepository {
       orderBy: { createdAt: 'desc' }
     });
   }
+  async create(data: any) {
+    const { categoryName, ...rest } = data;
+    return prisma.project.create({ 
+      data: {
+        ...rest,
+        category: {
+          connectOrCreate: {
+            where: { name: categoryName || 'Other' },
+            create: { name: categoryName || 'Other' }
+          }
+        }
+      } 
+    });
+  }
+
+  async acceptApplication(projectId: string, studentId: string, umkmId: string) {
+    return prisma.$transaction(async (tx) => {
+      await tx.projectApplication.update({
+        where: { projectId_studentId: { projectId, studentId } },
+        data: { status: 'ACCEPTED' }
+      });
+      
+      await tx.project.update({
+        where: { id: projectId },
+        data: { status: 'ACTIVE' }
+      });
+      
+      return tx.workspace.create({
+        data: {
+          projectId,
+          studentId,
+          umkmId,
+          status: 'ACTIVE',
+          progressPercent: 0
+        }
+      });
+    });
+  }
+
+  async rejectApplication(projectId: string, studentId: string) {
+    return prisma.projectApplication.update({
+      where: { projectId_studentId: { projectId, studentId } },
+      data: { status: 'REJECTED' }
+    });
+  }
+
+  async createApplication(projectId: string, studentId: string) {
+    return prisma.projectApplication.create({
+      data: {
+        projectId,
+        studentId,
+        status: 'PENDING'
+      }
+    });
+  }
 }
 
 export const projectRepository = new ProjectRepository();

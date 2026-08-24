@@ -77,7 +77,7 @@ export const ChatDetail: React.FC = () => {
 
         {messages.length === 0 ? (
           <div className="h-full flex items-center justify-center">
-            <EmptyState 
+            <EmptyState
               icon={<MessageSquare className="w-6 h-6" />}
               title="No messages yet"
               description="Send a message to start the conversation."
@@ -91,11 +91,10 @@ export const ChatDetail: React.FC = () => {
             >
               {msg.type === 'text' && (
                 <div
-                  className={`max-w-[80%] p-3.5 rounded-2xl text-xs leading-relaxed shadow-xs ${
-                    msg.sender === 'me'
+                  className={`max-w-[80%] p-3.5 rounded-2xl text-xs leading-relaxed shadow-xs ${msg.sender === 'me'
                       ? 'bg-blue-600 text-white rounded-tr-xs'
                       : 'bg-white text-slate-900 border border-slate-200/80 rounded-tl-xs'
-                  }`}
+                    }`}
                 >
                   {msg.text}
                 </div>

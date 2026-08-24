@@ -20,7 +20,7 @@ export const MyProjectsWorkspace: React.FC = () => {
   return (
     <div className="min-h-[calc(100vh-80px)] bg-[#f8f9ff] pb-24 pt-4 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto space-y-5">
-        
+
         {/* Title */}
         <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
           My Projects
@@ -30,45 +30,36 @@ export const MyProjectsWorkspace: React.FC = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setActiveTab('Pending')}
-            className={`px-4 py-2 rounded-2xl text-xs sm:text-sm font-semibold transition-all ${
-              activeTab === 'Pending'
+            className={`px-4 py-2 rounded-2xl text-xs sm:text-sm font-semibold transition-all ${activeTab === 'Pending'
                 ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
                 : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
-            }`}
+              }`}
           >
             Pending <span className="ml-1 px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[10px]">{projects.filter(p => p.status === 'Pending').length}</span>
           </button>
 
           <button
             onClick={() => setActiveTab('Active')}
-            className={`px-4 py-2 rounded-2xl text-xs sm:text-sm font-semibold transition-all ${
-              activeTab === 'Active'
+            className={`px-4 py-2 rounded-2xl text-xs sm:text-sm font-semibold transition-all ${activeTab === 'Active'
                 ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
                 : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
-            }`}
+              }`}
           >
             Active <span className="ml-1 px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-800 text-[10px]">{projects.filter(p => p.status === 'Active' || p.status === 'Urgent').length}</span>
           </button>
 
           <button
             onClick={() => setActiveTab('Completed')}
-            className={`px-4 py-2 rounded-2xl text-xs sm:text-sm font-semibold transition-all ${
-              activeTab === 'Completed'
+            className={`px-4 py-2 rounded-2xl text-xs sm:text-sm font-semibold transition-all ${activeTab === 'Completed'
                 ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
                 : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
-            }`}
+              }`}
           >
             Completed <span className="ml-1 px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[10px]">{projects.filter(p => p.status === 'Completed').length}</span>
           </button>
         </div>
 
-        {/* Filter / Sort Button */}
-        <div className="flex items-center justify-start">
-          <button className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-2xl text-xs font-bold text-slate-700 shadow-xs hover:bg-slate-50">
-            <SlidersHorizontal className="w-3.5 h-3.5 text-slate-500" />
-            <span>Filter / Sort</span>
-          </button>
-        </div>
+
 
         {/* Active Projects Cards List */}
         <div className="space-y-4">
@@ -83,11 +74,10 @@ export const MyProjectsWorkspace: React.FC = () => {
             >
               {/* Header Badge & Menu Row */}
               <div className="flex items-center justify-between">
-                <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                  proj.status === 'Urgent'
+                <span className={`px-3 py-1 rounded-full text-xs font-bold ${proj.status === 'Urgent'
                     ? 'bg-amber-100 text-amber-900 border border-amber-200'
                     : 'bg-blue-100 text-blue-800 border border-blue-200'
-                }`}>
+                  }`}>
                   {proj.status}
                 </span>
                 <button className="text-slate-400 hover:text-slate-600 p-1">
@@ -118,9 +108,8 @@ export const MyProjectsWorkspace: React.FC = () => {
                 {/* Progress Bar Track */}
                 <div className="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
                   <div
-                    className={`h-full rounded-full transition-all duration-500 ${
-                      proj.status === 'Urgent' ? 'bg-amber-600' : 'bg-blue-600'
-                    }`}
+                    className={`h-full rounded-full transition-all duration-500 ${proj.status === 'Urgent' ? 'bg-amber-600' : 'bg-blue-600'
+                      }`}
                     style={{ width: `${proj.progressPercent}%` }}
                   ></div>
                 </div>

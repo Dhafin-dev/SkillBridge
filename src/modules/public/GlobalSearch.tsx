@@ -47,31 +47,28 @@ export const GlobalSearch: React.FC = () => {
         <div className="flex flex-wrap gap-2 mt-4 justify-center">
           <button
             onClick={() => setActiveFilter('all')}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-colors border ${
-              activeFilter === 'all'
+            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-colors border ${activeFilter === 'all'
                 ? 'bg-blue-600 text-white border-blue-600'
                 : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <Filter className="w-3.5 h-3.5" /> All Categories
           </button>
           <button
             onClick={() => setActiveFilter('students')}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors border ${
-              activeFilter === 'students'
+            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors border ${activeFilter === 'students'
                 ? 'bg-blue-600 text-white border-blue-600'
                 : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
-            }`}
+              }`}
           >
             Students
           </button>
           <button
             onClick={() => setActiveFilter('projects')}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors border ${
-              activeFilter === 'projects'
+            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors border ${activeFilter === 'projects'
                 ? 'bg-blue-600 text-white border-blue-600'
                 : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
-            }`}
+              }`}
           >
             UMKM Projects
           </button>
@@ -141,7 +138,7 @@ export const GlobalSearch: React.FC = () => {
           <h2 className="text-base font-bold text-slate-900 mb-2">Suggested for you</h2>
 
           <div className="bg-white rounded-2xl border border-slate-200/80 p-6">
-            <EmptyState 
+            <EmptyState
               icon={<Sparkles className="w-6 h-6" />}
               title="No Suggestions Yet"
               description="Start searching to see personalized project and student recommendations."

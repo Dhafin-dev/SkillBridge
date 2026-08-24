@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, Clock, Users, BarChart, CheckCircle2, ChevronDown, Zap } from 'lucide-react';
+import { Sparkles, Clock, Users, BarChart, CheckCircle2, ChevronDown, Zap, Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Project } from '../../shared/types/types';
 import { useAuth } from '../../shared/context/AuthContext';
@@ -12,10 +12,10 @@ export const ProjectMarket: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [featuredProject, setFeaturedProject] = useState<Project | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('All Projects');
-  const [sortBy, setSortBy] = useState<'Newest' | 'Match' | 'Stipend'>('Newest');
+  const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
-  const categories = ['All Projects', 'Web Development', 'UI/UX Design', 'Marketing', 'Data Science', 'Mobile App'];
+  const categories = ['All Projects', 'Branding & Design', 'Website/App Development', 'Marketing & Data Analysis'];
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -35,32 +35,43 @@ export const ProjectMarket: React.FC = () => {
   }, []);
 
   const filteredProjects = projects.filter(p => {
-    if (selectedCategory === 'All Projects') return true;
-    return p.category === selectedCategory || p.tags.includes(selectedCategory);
-  }).sort((a, b) => {
-    if (sortBy === 'Match') return b.matchScore - a.matchScore;
-    return 0;
+    const matchCat = selectedCategory === 'All Projects' || p.category === selectedCategory || p.tags.includes(selectedCategory);
+    const matchSearch = !searchQuery || p.title.toLowerCase().includes(searchQuery.toLowerCase()) || p.companyName.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchCat && matchSearch;
   });
 
   return (
     <div className="min-h-[calc(100vh-80px)] bg-[#f8f9ff] pb-24 pt-4 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto space-y-6">
 
-        {/* Category Filter Horizontal Scroll Pills */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none no-scrollbar">
-          {categories.map(cat => (
-            <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={`px-4 py-2 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap transition-all ${
-                selectedCategory === cat
-                  ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20 scale-105'
-                  : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
-              }`}
+        {/* Search & Filter Bar */}
+        <div className="bg-white p-2 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col sm:flex-row gap-2">
+          <div className="relative flex-1">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <Search className="h-5 w-5 text-slate-400" />
+            </div>
+            <input
+              type="text"
+              placeholder="Search projects or companies..."
+              className="block w-full pl-11 pr-3 py-3.5 border-transparent rounded-xl focus:ring-2 focus:ring-blue-100 bg-slate-50 text-slate-900 placeholder-slate-400 font-medium sm:text-sm transition-colors hover:bg-slate-100 outline-none"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <div className="relative w-full sm:w-72">
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="block w-full py-3.5 pl-4 pr-10 border-transparent rounded-xl focus:ring-2 focus:ring-blue-100 bg-slate-50 text-slate-700 font-bold sm:text-sm appearance-none cursor-pointer transition-colors hover:bg-slate-100 outline-none"
             >
-              {cat}
-            </button>
-          ))}
+              {categories.map(cat => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+            <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none">
+              <ChevronDown className="w-4 h-4 text-slate-500" />
+            </div>
+          </div>
         </div>
 
         {/* Recommended For You Section - Featured Banner matching Screenshot 1 */}
@@ -70,7 +81,7 @@ export const ProjectMarket: React.FC = () => {
               Recommended For You
             </h2>
 
-            <div 
+            <div
               onClick={() => navigate(`/projects/${featuredProject.id}`)}
               className="relative bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-700 rounded-3xl p-6 text-white shadow-xl shadow-blue-600/20 overflow-hidden cursor-pointer group transition-all hover:scale-[1.01]"
             >
@@ -88,7 +99,7 @@ export const ProjectMarket: React.FC = () => {
                 </h3>
 
                 <div className="pt-2">
-                  <button 
+                  <button
                     onClick={(e) => {
                       e.stopPropagation();
                       navigate(`/projects/${featuredProject.id}`);
@@ -103,23 +114,11 @@ export const ProjectMarket: React.FC = () => {
           </div>
         )}
 
-        {/* Latest Opportunities Header */}
-        <div className="flex items-center justify-between pt-4">
+        {/* Make your Portofolio Now Header */}
+        <div className="flex items-center justify-between pt-4 pb-1">
           <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-            Latest Opportunities
+            Make your Portofolio Now!
           </h2>
-          <div className="flex items-center gap-1 text-xs font-medium text-slate-500 bg-white border border-slate-200 px-3 py-1.5 rounded-xl shadow-xs">
-            <span>Sort by:</span>
-            <select 
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
-              className="bg-transparent font-semibold text-slate-800 focus:outline-none cursor-pointer"
-            >
-              <option value="Newest">Newest</option>
-              <option value="Match">Highest Match</option>
-            </select>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
-          </div>
         </div>
 
         {/* Opportunities Card List */}
@@ -149,16 +148,6 @@ export const ProjectMarket: React.FC = () => {
                       {project.stipend === '$0' ? 'Volunteer / Certificate' : project.stipend}
                     </p>
                   </div>
-                </div>
-
-                {/* Match Rating Pill */}
-                <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap shadow-xs ${
-                  project.matchScore >= 90
-                    ? 'bg-emerald-300/80 text-emerald-950 border border-emerald-400/40'
-                    : 'bg-blue-100 text-blue-800 border border-blue-200'
-                }`}>
-                  <Zap className="w-3.5 h-3.5 fill-current" />
-                  <span>{project.matchScore}% Match</span>
                 </div>
               </div>
 

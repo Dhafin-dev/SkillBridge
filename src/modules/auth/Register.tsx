@@ -27,7 +27,7 @@ export const Register: React.FC = () => {
     setError(null);
     
     try {
-      const response = await authService.register({ fullName, email, password, role: selectedRole });
+      const response = await authService.register({ name: fullName, email, password, role: selectedRole });
       login(response.token, response.user);
       
       if (response.user.role === 'umkm') navigate('/umkm/dashboard');

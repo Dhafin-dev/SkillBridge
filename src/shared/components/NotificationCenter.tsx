@@ -54,11 +54,10 @@ export const NotificationCenter: React.FC = () => {
             <button
               key={tab}
               onClick={() => setFilter(tab)}
-              className={`px-4 py-1.5 rounded-full whitespace-nowrap transition-colors ${
-                filter === tab
+              className={`px-4 py-1.5 rounded-full whitespace-nowrap transition-colors ${filter === tab
                   ? 'bg-blue-600 text-white shadow-xs'
                   : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-              }`}
+                }`}
             >
               {tab}
             </button>
@@ -83,9 +82,8 @@ export const NotificationCenter: React.FC = () => {
                   if (n.actionRoute === 'messages') navigate('/messages');
                   else if (n.actionRoute === 'project-details') navigate('/market');
                 }}
-                className={`bg-white rounded-2xl p-4 flex gap-3.5 border transition-all cursor-pointer hover:bg-slate-50 ${
-                  !n.isRead && !readAll ? 'border-blue-300 shadow-xs' : 'border-slate-200/80'
-                }`}
+                className={`bg-white rounded-2xl p-4 flex gap-3.5 border transition-all cursor-pointer hover:bg-slate-50 ${!n.isRead && !readAll ? 'border-blue-300 shadow-xs' : 'border-slate-200/80'
+                  }`}
               >
                 <div className="w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
                   {n.type === 'project' ? <Briefcase className="w-5 h-5" /> : n.type === 'message' ? <MessageSquare className="w-5 h-5" /> : <AlertTriangle className="w-5 h-5 text-amber-600" />}

@@ -12,7 +12,7 @@ interface DashboardNavbarProps {
 export const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   onOpenNotifications,
   onOpenCreateProject,
-  unreadCount = 2
+  unreadCount = 0
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -44,7 +44,7 @@ export const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
         </button>
 
         {/* Primary Navigation is handled via Sidebar. Top Nav is for Utilities Only. */}
-        
+
         {/* Fill empty space */}
         <div className="flex-1"></div>
 
@@ -66,7 +66,13 @@ export const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
           {/* User Profile Menu */}
           <div className="relative" ref={roleMenuRef}>
             <button onClick={() => setShowRoleMenu(!showRoleMenu)} className="flex items-center gap-2 p-1 rounded-full hover:bg-slate-100 transition-colors border border-slate-200/80">
-              <img src={currentUser.avatar} alt={currentUser.name} className="w-8 h-8 rounded-full object-cover ring-2 ring-blue-500/20" />
+              {currentUser.avatar ? (
+                <img src={currentUser.avatar} alt={currentUser.name} className="w-8 h-8 rounded-full object-cover ring-2 ring-blue-500/20" />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 ring-2 ring-blue-500/20">
+                  <User className="w-4 h-4" />
+                </div>
+              )}
               <ChevronDown className="w-3.5 h-3.5 text-slate-500 pr-0.5 hidden sm:block" />
             </button>
 

@@ -13,7 +13,7 @@ export const AdminOverview: React.FC = () => {
   return (
     <div className="min-h-[calc(100vh-80px)] bg-[#f8f9ff] pb-24 pt-4 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto space-y-5">
-        
+
 
         {/* Header Title */}
         <div className="space-y-1">
@@ -103,11 +103,11 @@ export const AdminOverview: React.FC = () => {
               <option>This Year</option>
             </select>
           </div>
-          
+
           <div className="h-48 flex items-end justify-between gap-3 px-2">
             {[40, 70, 45, 90, 65, 85, 120].map((val, i) => (
               <div key={i} className="w-full relative group flex justify-center h-full items-end">
-                <div 
+                <div
                   className="w-full max-w-[48px] bg-blue-100 group-hover:bg-blue-500 rounded-t-xl transition-all duration-300 relative cursor-pointer"
                   style={{ height: `${(val / 120) * 100}%` }}
                 >

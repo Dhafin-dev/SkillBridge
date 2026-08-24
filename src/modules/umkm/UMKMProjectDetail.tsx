@@ -10,14 +10,26 @@ export const UMKMProjectDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [project, setProject] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
 
-  const timelineEvents = [
-    { title: 'Project Created', date: 'Oct 1, 2023', status: 'completed', icon: CheckCircle },
-    { title: 'AI Matching Started', date: 'Oct 2, 2023', status: 'completed', icon: Users },
-    { title: 'First Application Received', date: 'Oct 3, 2023', status: 'completed', icon: Briefcase },
-    { title: 'Student Selected', date: 'Pending', status: 'pending', icon: Activity }
-  ];
-
+  const handleRespondApplicant = async (studentId: string, action: 'accept' | 'reject') => {
+    if (!id) return;
+    setActionLoadingId(studentId);
+    try {
+      if (action === 'accept') {
+        await projectService.acceptApplicant(id, studentId);
+      } else {
+        await projectService.rejectApplicant(id, studentId);
+      }
+      const data = await projectService.getProjectById(id);
+      setProject(data);
+    } catch (err) {
+      console.error(`Failed to ${action} applicant`, err);
+      alert('Action failed. Please try again.');
+    } finally {
+      setActionLoadingId(null);
+    }
+  };
   useEffect(() => {
     if (id) {
       projectService.getProjectById(id).then(data => {
@@ -30,8 +42,40 @@ export const UMKMProjectDetail: React.FC = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        navigate('/umkm/projects');
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [navigate]);
+
   if (isLoading) return <div className="p-8 text-center text-slate-500 font-semibold">Loading project details...</div>;
   if (!project) return <div className="p-8 text-center text-red-500 font-semibold">Project not found.</div>;
+
+  const timelineEvents = [
+    {
+      title: 'Project Created',
+      date: new Date(project.createdAt).toLocaleDateString('en-ID', { month: 'short', day: 'numeric', year: 'numeric' }),
+      status: 'completed',
+      icon: CheckCircle
+    },
+    {
+      title: 'First Application Received',
+      date: project.applications?.length > 0 ? 'Received' : 'Pending',
+      status: project.applications?.length > 0 ? 'completed' : 'pending',
+      icon: Briefcase
+    },
+    {
+      title: 'Student Selected',
+      date: project.applications?.some((app: any) => app.status === 'ACCEPTED') ? 'Selected' : 'Pending',
+      status: project.applications?.some((app: any) => app.status === 'ACCEPTED') ? 'completed' : 'pending',
+      icon: Activity
+    }
+  ];
+
 
   return (
     <div className="min-h-screen bg-[#f8f9ff] text-slate-900 pb-24">
@@ -39,7 +83,7 @@ export const UMKMProjectDetail: React.FC = () => {
       <div className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-200/80 px-4 py-3 sm:px-6">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <button 
+            <button
               onClick={() => navigate('/umkm/projects')}
               className="p-2 -ml-2 rounded-xl text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-colors"
             >
@@ -54,7 +98,7 @@ export const UMKMProjectDetail: React.FC = () => {
       </div>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 space-y-6">
-        
+
         {/* Project Summary Card */}
         <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs relative overflow-hidden">
           <div className="flex flex-col sm:flex-row justify-between items-start gap-4 z-10 relative">
@@ -72,12 +116,12 @@ export const UMKMProjectDetail: React.FC = () => {
                 {project.title}
               </h2>
               <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-500 mt-4">
-                <div className="flex items-center gap-1.5"><Calendar className="w-4 h-4 text-slate-400"/> {project.duration || 'Flexible'}</div>
-                <div className="flex items-center gap-1.5"><DollarSign className="w-4 h-4 text-slate-400"/> {project.budget || 'Negotiable'}</div>
-                <div className="flex items-center gap-1.5"><Users className="w-4 h-4 text-slate-400"/> {project.maxStudents || 1} spots left</div>
+                <div className="flex items-center gap-1.5"><Calendar className="w-4 h-4 text-slate-400" /> {project.duration || 'Flexible'}</div>
+                <div className="flex items-center gap-1.5"><DollarSign className="w-4 h-4 text-slate-400" /> {project.budget || 'Negotiable'}</div>
+                <div className="flex items-center gap-1.5"><Users className="w-4 h-4 text-slate-400" /> {project.maxStudents || 1} spots left</div>
               </div>
             </div>
-            
+
             <div className="flex flex-wrap gap-2">
               {project.requiredSkills?.split(',').map((skill: string, idx: number) => (
                 <span key={idx} className="px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-100 text-xs font-bold text-slate-700">
@@ -115,19 +159,17 @@ export const UMKMProjectDetail: React.FC = () => {
 
         {/* Tab Navigation */}
         <div className="flex gap-2 border-b border-slate-200">
-          <button 
+          <button
             onClick={() => setActiveTab('applicants')}
-            className={`px-4 py-3 text-sm font-bold border-b-2 transition-colors ${
-              activeTab === 'applicants' ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-800'
-            }`}
+            className={`px-4 py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'applicants' ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-800'
+              }`}
           >
             Applicants ({project._count?.applications || 0})
           </button>
-          <button 
+          <button
             onClick={() => setActiveTab('timeline')}
-            className={`px-4 py-3 text-sm font-bold border-b-2 transition-colors ${
-              activeTab === 'timeline' ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-800'
-            }`}
+            className={`px-4 py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'timeline' ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-800'
+              }`}
           >
             Project Timeline
           </button>
@@ -140,7 +182,7 @@ export const UMKMProjectDetail: React.FC = () => {
               <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
               <input type="text" placeholder="Search applicants by name or skill..." className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-blue-100 outline-none" />
             </div>
-            
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {project.applications?.map((app: any) => {
                 const student = app.student;
@@ -154,16 +196,8 @@ export const UMKMProjectDetail: React.FC = () => {
                           <p className="text-[11px] font-semibold text-slate-500">{student.institution}</p>
                         </div>
                       </div>
-                      
-                      {/* AI Match Score highlighted */}
-                      <div className="flex flex-col items-end">
-                        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-indigo-50 border border-indigo-100">
-                          <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
-                          <span className="text-[11px] font-black text-indigo-700">95% AI Match</span>
-                        </div>
-                      </div>
                     </div>
-                    
+
                     <div className="flex flex-wrap gap-1.5">
                       {student.skills?.slice(0, 3).map((skill: string, i: number) => (
                         <span key={i} className="px-2 py-1 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-semibold text-slate-600">
@@ -174,13 +208,26 @@ export const UMKMProjectDetail: React.FC = () => {
                         <span className="px-2 py-1 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-semibold text-slate-600">+{student.skills.length - 3}</span>
                       )}
                     </div>
-                    
+
                     <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
                       <button onClick={() => navigate(`/students/${student.id}`)} className="px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50 transition">View Profile</button>
                       <div className="flex items-center gap-2">
-                        <button onClick={() => alert('Applicant Rejected')} className="w-8 h-8 rounded-xl bg-red-50 text-red-600 flex items-center justify-center hover:bg-red-100 transition"><X className="w-4 h-4" /></button>
+                        <button
+                          onClick={() => handleRespondApplicant(student.id, 'reject')}
+                          disabled={actionLoadingId !== null}
+                          className="w-8 h-8 rounded-xl bg-red-50 text-red-600 flex items-center justify-center hover:bg-red-100 transition disabled:opacity-50"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
                         <button onClick={() => navigate(`/chat/${student.id}`)} className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center hover:bg-blue-100 transition"><MessageSquare className="w-4 h-4" /></button>
-                        <button onClick={() => alert('Application Accepted!')} className="px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700 transition shadow-sm flex items-center gap-1.5"><Check className="w-3.5 h-3.5"/> Accept</button>
+                        <button
+                          onClick={() => handleRespondApplicant(student.id, 'accept')}
+                          disabled={actionLoadingId !== null}
+                          className="px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700 transition shadow-sm flex items-center gap-1.5 disabled:opacity-50"
+                        >
+                          {actionLoadingId === student.id ? <span className="animate-spin w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full" /> : <Check className="w-3.5 h-3.5" />}
+                          Accept
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -195,9 +242,8 @@ export const UMKMProjectDetail: React.FC = () => {
             <div className="relative border-l-2 border-slate-100 ml-4 space-y-8 pb-4">
               {timelineEvents.map((event, idx) => (
                 <div key={idx} className="relative pl-8">
-                  <div className={`absolute -left-[17px] top-0 w-8 h-8 rounded-full border-4 border-white flex items-center justify-center ${
-                    event.status === 'completed' ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20' : 'bg-slate-100 text-slate-400'
-                  }`}>
+                  <div className={`absolute -left-[17px] top-0 w-8 h-8 rounded-full border-4 border-white flex items-center justify-center ${event.status === 'completed' ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20' : 'bg-slate-100 text-slate-400'
+                    }`}>
                     <event.icon className="w-3.5 h-3.5" />
                   </div>
                   <div className="pt-1">

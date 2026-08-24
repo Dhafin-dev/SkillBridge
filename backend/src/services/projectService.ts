@@ -1,4 +1,6 @@
 import { projectRepository } from '../repositories/projectRepository';
+import { notificationService } from './notificationService';
+import { userRepository } from '../repositories/userRepository';
 
 export class ProjectService {
   async getPublishedProjects() {
@@ -32,6 +34,7 @@ export class ProjectService {
     return {
       id: project.id,
       title: project.title,
+      createdAt: project.createdAt.toISOString(),
       companyName: project.owner.name,
       companyLogo: project.owner.umkmProfile?.companyLogo || '',
       matchScore: project.matchScore,
@@ -70,7 +73,8 @@ export class ProjectService {
       id: app.project.id,
       title: app.project.title,
       companyName: app.project.owner.name,
-      status: app.status === 'ACCEPTED' ? 'In Progress' : (app.status === 'REJECTED' ? 'Rejected' : 'Pending'),
+      status: app.status === 'PENDING' ? 'Pending' : 
+             (app.status === 'ACCEPTED' ? (app.project.status === 'COMPLETED' ? 'Completed' : 'Active') : 'Rejected'),
       applicationStatus: app.status,
       phaseName: app.status === 'ACCEPTED' ? 'Active Project' : 'Application Phase',
       dueDate: app.project.deadline?.toLocaleDateString('en-ID', { day: '2-digit', month: 'short', year: 'numeric' }) || 'TBD',
@@ -90,10 +94,84 @@ export class ProjectService {
       progressPercent: 0,
       lastUpdate: p.updatedAt.toLocaleDateString('en-ID', { day: '2-digit', month: 'short', year: 'numeric' }),
       category: (p as any).category?.name || 'Other',
-      applicantCount: (p as any)._count?.applications ?? 0,
+      applicationsCount: (p as any)._count?.applications ?? 0,
       stipend: p.stipend,
       level: p.level,
     }));
+  }
+
+  async createProject(umkmId: string, data: any) {
+    const projectData = {
+      title: data.title,
+      categoryName: data.category || 'Other',
+      level: data.level || 'Beginner',
+      duration: data.duration || 'Flexible',
+      stipend: data.stipend || 'Unpaid',
+      description: data.description || '',
+      overview: data.overview || '',
+      objectives: JSON.stringify(data.objectives || []),
+      deliverables: JSON.stringify(data.deliverables || []),
+      tags: JSON.stringify(data.tags || []),
+      status: data.status || 'PUBLISHED',
+      teamSize: data.teamSize || '1',
+      ownerId: umkmId
+    };
+    return projectRepository.create(projectData);
+  }
+
+  async applyProject(projectId: string, studentId: string) {
+    const project = await projectRepository.findById(projectId);
+    if (!project) throw new Error('Project not found');
+    
+    const student = await userRepository.findById(studentId);
+    
+    const result = await projectRepository.createApplication(projectId, studentId);
+    
+    await notificationService.createNotification(
+      project.ownerId, 
+      'PROJECT', 
+      'New Application Received', 
+      `${student?.name || 'A student'} has applied to your project: ${project.title}.`,
+      `/umkm/projects/${projectId}`
+    );
+    
+    return result;
+  }
+
+  async acceptApplication(umkmId: string, projectId: string, studentId: string) {
+    const project = await projectRepository.findById(projectId);
+    if (!project) throw new Error('Project not found');
+    if (project.ownerId !== umkmId) throw new Error('Unauthorized access');
+    
+    const result = await projectRepository.acceptApplication(projectId, studentId, umkmId);
+    
+    await notificationService.createNotification(
+      studentId,
+      'PROJECT',
+      'Application Accepted',
+      `Congratulations! Your application for ${project.title} has been accepted.`,
+      `/student/my-projects`
+    );
+    
+    return result;
+  }
+
+  async rejectApplication(umkmId: string, projectId: string, studentId: string) {
+    const project = await projectRepository.findById(projectId);
+    if (!project) throw new Error('Project not found');
+    if (project.ownerId !== umkmId) throw new Error('Unauthorized access');
+    
+    const result = await projectRepository.rejectApplication(projectId, studentId);
+    
+    await notificationService.createNotification(
+      studentId,
+      'PROJECT',
+      'Application Update',
+      `Your application for ${project.title} was not selected this time. Keep exploring other opportunities!`,
+      `/projects/${projectId}`
+    );
+    
+    return result;
   }
 
   private parseJson<T>(value: string | null | undefined, fallback: T): T {

@@ -11,7 +11,7 @@ import { StatCard } from '../../shared/components/ui/StatCard';
 export const UMKMDashboard: React.FC = () => {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
-  
+
   const { data: recommendedStudents = [] } = useQuery({
     queryKey: ['recommendedStudents'],
     queryFn: () => userService.getRecommendedStudents()
@@ -22,15 +22,15 @@ export const UMKMDashboard: React.FC = () => {
     queryFn: () => projectService.getMyProjectsUMKM()
   });
 
-  const activeProjectsCount = projects.filter(p => p.status === 'Active').length;
-  const completedProjectsCount = projects.filter(p => p.status === 'Completed').length;
-  const draftProjectsCount = projects.filter(p => p.status === 'Draft').length;
+  const activeProjectsCount = projects.filter(p => p.status === 'ACTIVE').length;
+  const completedProjectsCount = projects.filter(p => p.status === 'COMPLETED').length;
+  const draftProjectsCount = projects.filter(p => p.status === 'DRAFT').length;
   const totalAppsCount = projects.reduce((acc, p) => acc + (p.applicationsCount || 0), 0);
 
   const performanceData = [
-    { label: 'Views', value: '1.2k', trend: '+12%' },
-    { label: 'Applications', value: totalAppsCount.toString(), trend: '+5%' },
-    { label: 'Avg Match', value: '92%', trend: '+2%' },
+    { label: 'Total Projects', value: projects.length.toString(), trend: '' },
+    { label: 'Total Applications', value: totalAppsCount.toString(), trend: '' },
+    { label: 'Active Projects', value: activeProjectsCount.toString(), trend: '' },
   ];
 
   if (!currentUser) return null;
@@ -38,7 +38,7 @@ export const UMKMDashboard: React.FC = () => {
   return (
     <div className="min-h-[calc(100vh-80px)] bg-[#f8f9ff] pb-24 pt-4 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto space-y-6">
-        
+
         {/* Header Greeting */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="space-y-1">
@@ -49,8 +49,8 @@ export const UMKMDashboard: React.FC = () => {
               Here's your business collaboration overview.
             </p>
           </div>
-          <button 
-            onClick={() => navigate('/umkm/projects?create=true')} 
+          <button
+            onClick={() => navigate('/umkm/projects?create=true')}
 
             className="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold hover:bg-blue-700 transition shadow-md flex items-center gap-1.5"
           >
@@ -114,7 +114,7 @@ export const UMKMDashboard: React.FC = () => {
         </div>
 
         {/* Main Content Split */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6">
           {/* Recent Project Requests */}
           <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4 flex flex-col">
             <div className="flex items-center justify-between">
@@ -122,14 +122,14 @@ export const UMKMDashboard: React.FC = () => {
                 <Briefcase className="w-5 h-5 text-blue-600" />
                 Recent Projects
               </h2>
-              <button 
+              <button
                 onClick={() => navigate('/umkm/projects')}
                 className="text-xs font-bold text-blue-600 hover:text-blue-700"
               >
                 View All
               </button>
             </div>
-            
+
             <div className="space-y-3 flex-1">
               {isLoadingProjects ? (
                 <div className="text-center py-6 text-slate-500 font-semibold text-sm">Loading projects...</div>
@@ -142,10 +142,9 @@ export const UMKMDashboard: React.FC = () => {
                       <h4 className="text-sm font-bold text-slate-900">{req.title}</h4>
                       <p className="text-[11px] text-slate-500 font-medium">{req.applicationsCount || 0} applications</p>
                     </div>
-                    <span className={`px-2 py-1 rounded-lg text-[10px] font-bold ${
-                      req.status === 'Active' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-700'
-                    }`}>
-                      {req.status}
+                    <span className={`px-2 py-1 rounded-lg text-[10px] font-bold ${req.status === 'ACTIVE' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-700'
+                      }`}>
+                      {req.status === 'ACTIVE' ? 'Active' : req.status === 'DRAFT' ? 'Draft' : req.status}
                     </span>
                   </div>
                 ))
@@ -153,55 +152,25 @@ export const UMKMDashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* AI Student Recommendations */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4 flex flex-col">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-indigo-600" />
-                Top Matches
-              </h2>
-              <button 
-                onClick={() => navigate('/students')}
-                className="text-xs font-bold text-blue-600 hover:text-blue-700"
-              >
-                Find More
-              </button>
-            </div>
-
-            <div className="space-y-3 flex-1">
-              {recommendedStudents.slice(0, 2).map((student, idx) => (
-                <div key={idx} className="p-3 rounded-2xl bg-indigo-50/50 border border-indigo-100/50 flex items-center justify-between hover:bg-indigo-50 transition cursor-pointer" onClick={() => navigate(`/students/${student.id}`)}>
-                  <div className="flex items-center gap-3">
-                    <img src={student.avatar} alt={student.name} className="w-10 h-10 rounded-full border-2 border-white shadow-sm" />
-                    <div>
-                      <h4 className="text-sm font-bold text-slate-900">{student.name}</h4>
-                      <p className="text-[11px] text-indigo-600 font-semibold">{student.matchScore}% Match</p>
-                    </div>
-                  </div>
-                  <ChevronRight className="w-4 h-4 text-slate-400" />
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
 
         {/* Recent Notifications Quick View */}
         <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
-           <div className="flex items-center justify-between">
-              <h2 className="text-lg font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
-                <Bell className="w-5 h-5 text-amber-500" />
-                Recent Activity
-              </h2>
-              <button 
-                onClick={() => navigate('/notifications')}
-                className="text-xs font-bold text-blue-600 hover:text-blue-700"
-              >
-                All Activity
-              </button>
-            </div>
-            <div className="space-y-3">
-              <div className="text-center py-6 text-slate-500 font-semibold text-sm">No recent activity.</div>
-            </div>
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+              <Bell className="w-5 h-5 text-amber-500" />
+              Recent Activity
+            </h2>
+            <button
+              onClick={() => navigate('/notifications')}
+              className="text-xs font-bold text-blue-600 hover:text-blue-700"
+            >
+              All Activity
+            </button>
+          </div>
+          <div className="space-y-3">
+            <div className="text-center py-6 text-slate-500 font-semibold text-sm">No recent activity.</div>
+          </div>
         </div>
 
       </div>

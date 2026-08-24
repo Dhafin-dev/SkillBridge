@@ -16,16 +16,7 @@ export const HelpCenter: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#f8f9ff] text-slate-900 pb-20 pt-4 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      {/* Top back navigation */}
-      <div className="mb-4">
-        <button
-          onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-2 text-xs font-semibold text-slate-600 hover:text-blue-600 transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back</span>
-        </button>
-      </div>
+
 
       {/* Hero Section & Search */}
       <div className="relative rounded-3xl overflow-hidden mb-12 p-8 sm:p-12 min-h-[280px] flex flex-col justify-center items-center text-center bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900 text-white shadow-lg">

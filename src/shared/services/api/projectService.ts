@@ -13,12 +13,31 @@ export const projectService = {
   },
 
   getMyProjectsStudent: async (): Promise<ActiveStudentProject[]> => {
-    const response = await apiClient.get('/projects/student/active');
+    const response = await apiClient.get('/projects/student/me');
     return response.data;
   },
 
   getMyProjectsUMKM: async (): Promise<ClientRequest[]> => {
-    const response = await apiClient.get('/projects/umkm/requests');
+    const response = await apiClient.get('/projects/umkm/me');
+    return response.data;
+  },
+
+  createProject: async (data: any): Promise<any> => {
+    const response = await apiClient.post('/projects', data);
+    return response.data;
+  },
+
+  applyToProject: async (projectId: string): Promise<void> => {
+    await apiClient.post(`/projects/${projectId}/applications`);
+  },
+
+  acceptApplicant: async (projectId: string, studentId: string): Promise<any> => {
+    const response = await apiClient.post(`/projects/${projectId}/applications/${studentId}/accept`);
+    return response.data;
+  },
+
+  rejectApplicant: async (projectId: string, studentId: string): Promise<any> => {
+    const response = await apiClient.post(`/projects/${projectId}/applications/${studentId}/reject`);
     return response.data;
   }
 };

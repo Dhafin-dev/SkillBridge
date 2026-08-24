@@ -146,31 +146,28 @@ export const MatchingManagement: React.FC = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setActiveFilter('all')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors border ${
-              activeFilter === 'all'
+            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors border ${activeFilter === 'all'
                 ? 'bg-slate-900 text-white border-slate-900'
                 : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
-            }`}
+              }`}
           >
             All ({recommendations.length})
           </button>
           <button
             onClick={() => setActiveFilter('high')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors border ${
-              activeFilter === 'high'
+            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors border ${activeFilter === 'high'
                 ? 'bg-blue-600 text-white border-blue-600'
                 : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
-            }`}
+              }`}
           >
             90%+ Match
           </button>
           <button
             onClick={() => setActiveFilter('medium')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors border ${
-              activeFilter === 'medium'
+            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors border ${activeFilter === 'medium'
                 ? 'bg-blue-600 text-white border-blue-600'
                 : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
-            }`}
+              }`}
           >
             &lt; 90% Match
           </button>

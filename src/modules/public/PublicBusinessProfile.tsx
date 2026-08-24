@@ -37,10 +37,6 @@ export const PublicBusinessProfile: React.FC = () => {
                 <span className="text-xs font-semibold bg-slate-100 text-slate-700 px-3 py-0.5 rounded-full">
                   Food & Beverage
                 </span>
-                <div className="flex items-center gap-1 text-xs font-bold text-amber-500">
-                  <Star className="w-4 h-4 fill-amber-500" />
-                  <span>4.8 (124 reviews)</span>
-                </div>
               </div>
               <p className="text-xs text-slate-600 max-w-xl leading-relaxed">
                 Crafting sustainable, locally-sourced coffee experiences while empowering local farmers. We blend traditional roasting techniques with modern cafe aesthetics.

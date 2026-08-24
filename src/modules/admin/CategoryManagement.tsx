@@ -72,43 +72,43 @@ export const CategoryManagement: React.FC = () => {
         {isLoading && <div className="text-center py-10 text-slate-500 font-semibold col-span-full">Loading categories...</div>}
         {!isLoading && categories.length === 0 && <div className="text-center py-10 text-slate-500 font-semibold col-span-full">No categories found.</div>}
         {!isLoading && categories.map((cat) => (
-            <div
-              key={cat.id}
-              className="bg-white rounded-2xl p-6 shadow-xs border border-slate-200/80 hover:shadow-md transition-all group relative overflow-hidden flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex justify-between items-start mb-6">
-                  <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600">
-                    <FileText className="w-6 h-6" />
-                  </div>
-                  <div className="flex gap-1">
-                    <button className="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors">
-                      <Edit2 className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => handleDeleteCategory(cat.id)}
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
+          <div
+            key={cat.id}
+            className="bg-white rounded-2xl p-6 shadow-xs border border-slate-200/80 hover:shadow-md transition-all group relative overflow-hidden flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex justify-between items-start mb-6">
+                <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600">
+                  <FileText className="w-6 h-6" />
                 </div>
-
-                <div className="flex items-center gap-2 mb-1">
-                  <h3 className="text-base font-bold text-slate-900">{cat.name}</h3>
+                <div className="flex gap-1">
+                  <button className="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors">
+                    <Edit2 className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => handleDeleteCategory(cat.id)}
+                    className="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
                 </div>
-                <p className="text-xs text-slate-500 mb-6 min-h-[36px] line-clamp-2">
-                  Specialization category.
-                </p>
               </div>
 
-              <div className="flex justify-between items-center border-t border-slate-100 pt-4">
-                <span className="text-xs font-medium text-slate-500">Active Projects</span>
-                <span className="text-xs font-bold bg-slate-100 text-slate-800 px-3 py-1 rounded-full">
-                  {cat.projectCount}
-                </span>
+              <div className="flex items-center gap-2 mb-1">
+                <h3 className="text-base font-bold text-slate-900">{cat.name}</h3>
               </div>
+              <p className="text-xs text-slate-500 mb-6 min-h-[36px] line-clamp-2">
+                Specialization category.
+              </p>
             </div>
+
+            <div className="flex justify-between items-center border-t border-slate-100 pt-4">
+              <span className="text-xs font-medium text-slate-500">Active Projects</span>
+              <span className="text-xs font-bold bg-slate-100 text-slate-800 px-3 py-1 rounded-full">
+                {cat.projectCount}
+              </span>
+            </div>
+          </div>
         ))}
       </div>
     </div>

@@ -68,7 +68,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
       <div className="w-full max-w-xl h-[85vh] bg-white rounded-3xl shadow-2xl border border-slate-100 flex flex-col animate-in fade-in zoom-in-95 duration-150 overflow-hidden">
-        
+
         {/* Chat Header matching Screenshot 4 & 5 */}
         <div className="p-4 bg-white border-b border-slate-100 flex items-center justify-between shadow-xs">
           <div className="flex items-center gap-3">
@@ -108,11 +108,10 @@ export const ChatModal: React.FC<ChatModalProps> = ({
               />
               <div className={`max-w-[80%] space-y-1 ${msg.isMe ? 'text-right' : 'text-left'}`}>
                 <div
-                  className={`p-3.5 rounded-2xl text-xs sm:text-sm leading-relaxed font-medium shadow-xs ${
-                    msg.isMe
+                  className={`p-3.5 rounded-2xl text-xs sm:text-sm leading-relaxed font-medium shadow-xs ${msg.isMe
                       ? 'bg-blue-600 text-white rounded-br-xs'
                       : 'bg-white text-slate-800 border border-slate-200/80 rounded-bl-xs'
-                  }`}
+                    }`}
                 >
                   {msg.text}
                 </div>

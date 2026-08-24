@@ -8,7 +8,7 @@ interface BottomNavProps {
 }
 
 export const BottomNav: React.FC<BottomNavProps> = ({
-  chatUnreadCount = 1
+  chatUnreadCount = 0
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -37,13 +37,11 @@ export const BottomNav: React.FC<BottomNavProps> = ({
             else if (currentUser.role === 'umkm') navigate('/umkm/dashboard');
             else navigate('/');
           }}
-          className={`flex flex-col items-center gap-1 transition-all ${
-            activeTab === 'home' ? 'text-emerald-700 font-bold' : 'text-slate-500 hover:text-slate-900'
-          }`}
+          className={`flex flex-col items-center gap-1 transition-all ${activeTab === 'home' ? 'text-emerald-700 font-bold' : 'text-slate-500 hover:text-slate-900'
+            }`}
         >
-          <div className={`p-1.5 rounded-xl transition-all ${
-            activeTab === 'home' ? 'bg-emerald-300/80 text-emerald-900 shadow-xs scale-105' : ''
-          }`}>
+          <div className={`p-1.5 rounded-xl transition-all ${activeTab === 'home' ? 'bg-emerald-300/80 text-emerald-900 shadow-xs scale-105' : ''
+            }`}>
             <Home className="w-5 h-5" />
           </div>
           <span className="text-[11px] font-medium tracking-tight">Home</span>
@@ -52,13 +50,11 @@ export const BottomNav: React.FC<BottomNavProps> = ({
         {/* Market Tab */}
         <button
           onClick={() => navigate('/market')}
-          className={`flex flex-col items-center gap-1 transition-all ${
-            activeTab === 'market' ? 'text-emerald-700 font-bold' : 'text-slate-500 hover:text-slate-900'
-          }`}
+          className={`flex flex-col items-center gap-1 transition-all ${activeTab === 'market' ? 'text-emerald-700 font-bold' : 'text-slate-500 hover:text-slate-900'
+            }`}
         >
-          <div className={`p-1.5 rounded-xl transition-all ${
-            activeTab === 'market' ? 'bg-emerald-300/80 text-emerald-900 shadow-xs scale-105' : ''
-          }`}>
+          <div className={`p-1.5 rounded-xl transition-all ${activeTab === 'market' ? 'bg-emerald-300/80 text-emerald-900 shadow-xs scale-105' : ''
+            }`}>
             <Store className="w-5 h-5" />
           </div>
           <span className="text-[11px] font-medium tracking-tight">Market</span>
@@ -70,28 +66,24 @@ export const BottomNav: React.FC<BottomNavProps> = ({
             if (currentUser.role === 'student') navigate('/student/my-projects');
             else navigate('/umkm/projects');
           }}
-          className={`flex flex-col items-center gap-1 transition-all relative ${
-            activeTab === 'workspace' ? 'text-emerald-700 font-bold' : 'text-slate-500 hover:text-slate-900'
-          }`}
+          className={`flex flex-col items-center gap-1 transition-all relative ${activeTab === 'workspace' ? 'text-emerald-700 font-bold' : 'text-slate-500 hover:text-slate-900'
+            }`}
         >
-          <div className={`p-1.5 rounded-xl transition-all relative ${
-            activeTab === 'workspace' ? 'bg-emerald-300/80 text-emerald-900 shadow-xs scale-105' : ''
-          }`}>
+          <div className={`p-1.5 rounded-xl transition-all relative ${activeTab === 'workspace' ? 'bg-emerald-300/80 text-emerald-900 shadow-xs scale-105' : ''
+            }`}>
             <Briefcase className="w-5 h-5" />
           </div>
           <span className="text-[11px] font-medium tracking-tight">Workspace</span>
         </button>
-        
+
         {/* Messages Tab */}
         <button
           onClick={() => navigate('/messages')}
-          className={`flex flex-col items-center gap-1 transition-all relative ${
-            activeTab === 'messages' ? 'text-emerald-700 font-bold' : 'text-slate-500 hover:text-slate-900'
-          }`}
+          className={`flex flex-col items-center gap-1 transition-all relative ${activeTab === 'messages' ? 'text-emerald-700 font-bold' : 'text-slate-500 hover:text-slate-900'
+            }`}
         >
-          <div className={`p-1.5 rounded-xl transition-all relative ${
-            activeTab === 'messages' ? 'bg-emerald-300/80 text-emerald-900 shadow-xs scale-105' : ''
-          }`}>
+          <div className={`p-1.5 rounded-xl transition-all relative ${activeTab === 'messages' ? 'bg-emerald-300/80 text-emerald-900 shadow-xs scale-105' : ''
+            }`}>
             <MessageSquare className="w-5 h-5" />
             {chatUnreadCount > 0 && (
               <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-blue-600 border-2 border-white rounded-full"></span>
@@ -105,17 +97,15 @@ export const BottomNav: React.FC<BottomNavProps> = ({
           onClick={() => {
             navigate('/profile');
           }}
-          className={`flex flex-col items-center gap-1 transition-all ${
-            activeTab === 'profile'
+          className={`flex flex-col items-center gap-1 transition-all ${activeTab === 'profile'
               ? 'text-emerald-700 font-bold'
               : 'text-slate-500 hover:text-slate-900'
-          }`}
+            }`}
         >
-          <div className={`p-1.5 rounded-xl transition-all ${
-            activeTab === 'profile'
+          <div className={`p-1.5 rounded-xl transition-all ${activeTab === 'profile'
               ? 'bg-emerald-300/80 text-emerald-900 shadow-xs scale-105'
               : ''
-          }`}>
+            }`}>
             <User className="w-5 h-5" />
           </div>
           <span className="text-[11px] font-medium tracking-tight">Profile</span>

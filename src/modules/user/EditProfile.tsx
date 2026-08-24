@@ -2,20 +2,22 @@ import React, { useState } from 'react';
 import { Camera, Save, X, User, Brain, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../shared/context/AuthContext';
+import { userService } from '../../shared/services/api/userService';
 
 export const EditProfile: React.FC = () => {
   const navigate = useNavigate();
-  const { currentUser } = useAuth();
-  
+  const { currentUser, setCurrentUser } = useAuth();
+
   const nameParts = currentUser.name.split(' ');
-  const [firstName, setFirstName] = useState(nameParts[0] || 'Alex');
-  const [lastName, setLastName] = useState(nameParts.slice(1).join(' ') || 'Rivers');
-  const [headline, setHeadline] = useState(currentUser.institution || 'Senior Computer Science Student @ Tech University');
-  const [bio, setBio] = useState(currentUser.bio || 'Passionate about building intuitive digital experiences that bridge the gap between complex functionality and user needs. Experienced in React, Figma, and modern web architectures.');
-  const [skills, setSkills] = useState<string[]>(currentUser.skills || ['UI/UX Design', 'React.js', 'Tailwind CSS']);
+  const [firstName, setFirstName] = useState(nameParts[0] || '');
+  const [lastName, setLastName] = useState(nameParts.slice(1).join(' ') || '');
+  const [headline, setHeadline] = useState(currentUser.institution || '');
+  const [bio, setBio] = useState(currentUser.bio || '');
+  const [skills, setSkills] = useState<string[]>(currentUser.skills || []);
   const [newSkillInput, setNewSkillInput] = useState('');
   const [availableForProjects, setAvailableForProjects] = useState(true);
   const [avatarUrl, setAvatarUrl] = useState(currentUser.avatar);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleAddSkill = () => {
     if (newSkillInput.trim() && !skills.includes(newSkillInput.trim())) {
@@ -28,9 +30,29 @@ export const EditProfile: React.FC = () => {
     setSkills(skills.filter(s => s !== skillToRemove));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate('/profile');
+    setIsSaving(true);
+    try {
+      await userService.updateProfile({
+        name: `${firstName} ${lastName}`,
+        institution: headline,
+        bio,
+        skills,
+        avatar: avatarUrl
+      });
+
+      // Force refresh of the global user state
+      const updatedUser = await userService.getProfile();
+      setCurrentUser(updatedUser);
+
+      navigate('/profile');
+    } catch (error) {
+      console.error('Failed to update profile:', error);
+      alert('Failed to save changes. Please try again.');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -38,11 +60,11 @@ export const EditProfile: React.FC = () => {
       <div className="max-w-4xl mx-auto">
         {/* Navigation back */}
         <button
-          onClick={() => navigate('/settings')}
+          onClick={() => navigate('/profile')}
           className="inline-flex items-center gap-2 text-xs font-semibold text-slate-600 hover:text-blue-600 mb-6 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to Settings</span>
+          <span>Back to Profile</span>
         </button>
 
         <div className="mb-8">
@@ -57,17 +79,23 @@ export const EditProfile: React.FC = () => {
             {/* Photo Card */}
             <div className="bg-white rounded-2xl p-6 shadow-xs border border-slate-200/80 flex flex-col items-center text-center">
               <div className="relative w-32 h-32 rounded-full overflow-hidden mb-4 group cursor-pointer border-4 border-slate-50 shadow-sm">
-                <img
-                  src={avatarUrl}
-                  alt={currentUser.name}
-                  className="w-full h-full object-cover group-hover:opacity-80 transition-opacity"
-                />
+                {avatarUrl ? (
+                  <img
+                    src={avatarUrl}
+                    alt={currentUser.name}
+                    className="w-full h-full object-cover group-hover:opacity-80 transition-opacity"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-slate-100 flex items-center justify-center text-slate-400 group-hover:opacity-80 transition-opacity">
+                    <User className="w-12 h-12" />
+                  </div>
+                )}
                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                   <Camera className="w-6 h-6 text-white" />
                 </div>
               </div>
               <h3 className="text-base font-bold text-slate-900">{firstName} {lastName}</h3>
-              <p className="text-xs text-slate-500 mb-4">UI/UX Designer & Frontend Dev</p>
+              <p className="text-xs text-slate-500 mb-4">{headline || 'No headline set'}</p>
 
               <div className="w-full space-y-2">
                 <button
@@ -82,7 +110,7 @@ export const EditProfile: React.FC = () => {
                 </button>
                 <button
                   type="button"
-                  onClick={() => setAvatarUrl('https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80')}
+                  onClick={() => setAvatarUrl('')}
                   className="w-full bg-transparent text-red-600 text-xs font-semibold py-2 px-4 rounded-xl border border-red-200 hover:bg-red-50 transition-colors h-10"
                 >
                   Remove Photo
@@ -214,20 +242,22 @@ export const EditProfile: React.FC = () => {
             </div>
 
             {/* Actions */}
-            <div className="flex justify-end gap-3 pt-2">
+            <div className="flex justify-end gap-3 pt-6 border-t border-slate-100">
               <button
                 type="button"
                 onClick={() => navigate('/settings')}
-                className="px-6 py-3 rounded-xl text-xs font-semibold text-slate-700 border border-slate-200 hover:bg-slate-100 transition-colors h-11"
+                className="px-6 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors"
+                disabled={isSaving}
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-6 py-3 rounded-xl text-xs font-semibold bg-blue-600 text-white hover:bg-blue-700 shadow-sm transition-all h-11 flex items-center gap-2"
+                disabled={isSaving}
+                className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-sm transition-all disabled:opacity-70"
               >
-                <Save className="w-4 h-4" />
-                <span>Save Changes</span>
+                {isSaving ? <span className="animate-spin w-4 h-4 border-2 border-white/30 border-t-white rounded-full" /> : <Save className="w-4 h-4" />}
+                {isSaving ? 'Saving...' : 'Save Changes'}
               </button>
             </div>
           </div>

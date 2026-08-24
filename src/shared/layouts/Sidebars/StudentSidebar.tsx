@@ -1,12 +1,12 @@
 import React from 'react';
-import { Home, Store, Briefcase, MessageSquare, User, Settings } from 'lucide-react';
+import { Home, Store, Briefcase, MessageSquare, User, Settings, GraduationCap } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 interface SidebarProps {
   chatUnreadCount?: number;
 }
 
-export const StudentSidebar: React.FC<SidebarProps> = ({ chatUnreadCount = 1 }) => {
+export const StudentSidebar: React.FC<SidebarProps> = ({ chatUnreadCount = 0 }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
@@ -32,11 +32,16 @@ export const StudentSidebar: React.FC<SidebarProps> = ({ chatUnreadCount = 1 }) 
 
   return (
     <aside className="hidden md:flex fixed left-0 top-0 bottom-0 w-64 bg-white border-r border-slate-200/80 flex-col z-50 shadow-sm">
-      <div className="p-6 flex items-center gap-2 mb-4 border-b border-slate-100">
-        <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-          <span className="text-white font-bold text-sm">SB</span>
+      <div className="p-6 mb-4 border-b border-slate-100">
+        <div 
+          className="flex items-center gap-2 cursor-pointer w-fit opacity-100 hover:opacity-80 transition-opacity"
+          onClick={() => navigate('/student/dashboard')}
+        >
+          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <GraduationCap className="w-5 h-5 text-white" />
+          </div>
+          <span className="font-extrabold text-slate-900 text-lg tracking-tight">SkillBridge</span>
         </div>
-        <span className="font-extrabold text-slate-900 text-lg tracking-tight">SkillBridge</span>
       </div>
 
       <nav className="flex-1 px-4 space-y-2 overflow-y-auto">
@@ -53,11 +58,11 @@ export const StudentSidebar: React.FC<SidebarProps> = ({ chatUnreadCount = 1 }) 
           >
             <item.icon className={`w-5 h-5 ${activeTab === item.id ? 'text-emerald-600' : 'text-slate-400'}`} />
             <span>{item.label}</span>
-            {item.badge && item.badge > 0 && (
+            {item.badge !== undefined && item.badge > 0 ? (
               <span className="absolute right-3 w-5 h-5 bg-blue-600 text-white text-[10px] flex items-center justify-center rounded-full">
                 {item.badge}
               </span>
-            )}
+            ) : null}
           </button>
         ))}
       </nav>
