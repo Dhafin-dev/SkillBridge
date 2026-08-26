@@ -6,6 +6,8 @@ const envSchema = z.object({
   DATABASE_URL: z.string(),
   JWT_SECRET: z.string().min(10),
   JWT_EXPIRES_IN: z.string().default('7d'),
+  CORS_ORIGIN: z.string().default('http://localhost:3000,http://localhost:5173'),
+  NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
 });
 
 const _env = envSchema.safeParse(process.env);

@@ -14,7 +14,8 @@ export const getProjects = async (req: Request, res: Response, next: NextFunctio
 export const getProjectById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { id } = req.params;
-    const result = await projectService.getProjectById(id as string);
+    const requester = (req as any).user;
+    const result = await projectService.getProjectById(id as string, requester);
     res.json(ApiResponse.success(result));
   } catch (error) {
     next(error);

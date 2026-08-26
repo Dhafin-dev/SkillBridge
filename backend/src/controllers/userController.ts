@@ -20,3 +20,13 @@ export const updateMe = async (req: Request, res: Response, next: NextFunction):
     next(error);
   }
 };
+
+export const changePassword = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const userId = (req as any).user.id;
+    const result = await userService.changePassword(userId, req.body.currentPassword, req.body.newPassword);
+    res.json(ApiResponse.success(result, 'Password changed. Please sign in again.'));
+  } catch (error) {
+    next(error);
+  }
+};

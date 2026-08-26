@@ -1,4 +1,6 @@
 import { userRepository } from '../repositories/userRepository';
+import bcrypt from 'bcryptjs';
+import { AppError } from '../utils/AppError';
 
 export class UserService {
   async getRecommendedStudents() {
@@ -67,6 +69,15 @@ export class UserService {
          data: updateData
        });
     });
+  }
+
+  async changePassword(userId: string, currentPassword: string, newPassword: string) {
+    const user = await userRepository.findById(userId);
+    if (!user || !(await bcrypt.compare(currentPassword, user.passwordHash))) {
+      throw new AppError('Current password is incorrect', 400);
+    }
+    const passwordHash = await bcrypt.hash(newPassword, 12);
+    return userRepository.updatePassword(userId, passwordHash);
   }
 }
 

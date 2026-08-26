@@ -6,6 +6,14 @@ export class UserRepository {
     return prisma.user.findUnique({ where: { email } });
   }
 
+  async updatePassword(id: string, passwordHash: string) {
+    return prisma.user.update({
+      where: { id },
+      data: { passwordHash, tokenVersion: { increment: 1 } },
+      select: { id: true, role: true, tokenVersion: true },
+    });
+  }
+
   async findById(id: string) {
     return prisma.user.findUnique({
       where: { id },
