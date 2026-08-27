@@ -23,8 +23,6 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
 export const getMe = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const userId = (req as any).user.id;
-    // We should get this from userService technically, but I'll let authController call userService.
-    // Wait, the logic is in userService.getMe
     const { userService } = await import('../services/userService');
     const result = await userService.getMe(userId);
     res.json(ApiResponse.success(result));
@@ -32,3 +30,23 @@ export const getMe = async (req: Request, res: Response, next: NextFunction): Pr
     next(error);
   }
 };
+
+export const forgotPassword = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const result = await authService.requestPasswordReset(req.body.email);
+    res.json(ApiResponse.success(result, 'Password reset request processed'));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const resetPassword = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const { token, newPassword } = req.body;
+    const result = await authService.resetPassword(token, newPassword);
+    res.json(ApiResponse.success(result, 'Password reset successful'));
+  } catch (error) {
+    next(error);
+  }
+};
+

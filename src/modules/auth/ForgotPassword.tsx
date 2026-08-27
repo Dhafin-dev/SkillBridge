@@ -1,18 +1,36 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Mail, Lock, CheckCircle } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
+import { authService } from '../../shared/services/api/authService';
 
 export const ForgotPassword: React.FC = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [resetToken, setResetToken] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
+    if (!email.trim()) return;
+
+    setErrorMsg('');
+    setIsSubmitting(true);
+    try {
+      const res = await authService.forgotPassword(email.trim());
       setSubmitted(true);
+      if (res.resetToken) {
+        setResetToken(res.resetToken);
+      }
+    } catch (err: any) {
+      const msg = err.response?.data?.message || err.message || 'Failed to request password reset.';
+      setErrorMsg(msg);
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
 
   return (
     <div className="min-h-[calc(100vh-80px)] bg-[#f8f9ff] flex flex-col justify-center items-center p-4 relative overflow-hidden">
@@ -51,6 +69,12 @@ export const ForgotPassword: React.FC = () => {
                 </p>
               </div>
 
+              {errorMsg && (
+                <div className="p-3 bg-red-50 border border-red-200 rounded-2xl text-xs font-medium text-red-600 mb-4">
+                  {errorMsg}
+                </div>
+              )}
+
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-2" htmlFor="email">
@@ -74,9 +98,10 @@ export const ForgotPassword: React.FC = () => {
 
                 <button
                   type="submit"
-                  className="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-2xl shadow-sm bg-blue-600 text-white hover:bg-blue-700 font-semibold text-xs transition-all duration-200"
+                  disabled={isSubmitting}
+                  className="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-2xl shadow-sm bg-blue-600 text-white hover:bg-blue-700 font-semibold text-xs transition-all duration-200 disabled:opacity-50"
                 >
-                  Send Reset Link
+                  {isSubmitting ? 'Sending Link...' : 'Send Reset Link'}
                 </button>
               </form>
             </>
@@ -89,6 +114,22 @@ export const ForgotPassword: React.FC = () => {
               <p className="text-xs text-slate-500 leading-relaxed">
                 We've sent a password reset email to <span className="font-bold text-slate-800">{email}</span>. Please check your inbox.
               </p>
+
+              {resetToken && (
+                <div className="p-3 bg-blue-50 border border-blue-200 rounded-2xl text-xs text-blue-800 text-left space-y-2">
+                  <p className="font-semibold">Development Mode Token:</p>
+                  <code className="block bg-white p-2 rounded-xl border border-blue-100 font-mono text-[11px] break-all">
+                    {resetToken}
+                  </code>
+                  <Link
+                    to={`/reset-password?token=${resetToken}`}
+                    className="inline-block font-semibold text-blue-600 underline hover:text-blue-800"
+                  >
+                    Click here to reset password directly &rarr;
+                  </Link>
+                </div>
+              )}
+
               <Link
                 to="/login"
                 className="block text-center w-full mt-4 py-3 px-4 rounded-2xl bg-blue-600 text-white font-semibold text-xs hover:bg-blue-700 transition-colors"
@@ -97,6 +138,7 @@ export const ForgotPassword: React.FC = () => {
               </Link>
             </div>
           )}
+
 
           {/* Footer Link */}
           <div className="mt-6 text-center border-t border-slate-100 pt-4">

@@ -2,6 +2,11 @@ import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
+import dotenv from "dotenv";
+
+// Load root .env and backend/.env
+dotenv.config();
+dotenv.config({ path: path.resolve(process.cwd(), "backend", ".env") });
 
 async function startServer() {
   const app = express();
@@ -14,6 +19,7 @@ async function startServer() {
     try {
       const { studentProfile, projectDetails } = req.body;
       const apiKey = process.env.GEMINI_API_KEY;
+
 
       if (!apiKey) {
         return res.json({

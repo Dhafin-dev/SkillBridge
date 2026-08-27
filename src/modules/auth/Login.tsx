@@ -27,11 +27,13 @@ export const Login: React.FC = () => {
       else if (response.user.role === 'umkm') navigate('/umkm/dashboard');
       else navigate('/student/dashboard');
     } catch (err: any) {
-      setError(err.message || 'Login failed. Please check your credentials.');
+      const serverMsg = err.response?.data?.error || err.response?.data?.message || err.message;
+      setError(serverMsg || 'Login failed. Please check your credentials.');
     } finally {
       setIsLoading(false);
     }
   };
+
 
   return (
     <div className="min-h-[calc(100vh-80px)] bg-gradient-to-b from-blue-50/50 via-white to-blue-50/30 py-8 px-4 flex items-center justify-center">

@@ -18,10 +18,15 @@ export const Register: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters long');
+      return;
+    }
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
+
 
     setIsLoading(true);
     setError(null);
@@ -33,11 +38,13 @@ export const Register: React.FC = () => {
       if (response.user.role === 'umkm') navigate('/umkm/dashboard');
       else navigate('/student/dashboard');
     } catch (err: any) {
-      setError(err.message || 'Registration failed. Please try again.');
+      const serverMsg = err.response?.data?.error || err.response?.data?.message || err.message;
+      setError(serverMsg || 'Registration failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
   };
+
 
   return (
     <div className="min-h-[calc(100vh-80px)] bg-gradient-to-b from-blue-50/50 via-white to-blue-50/30 py-8 px-4 flex items-center justify-center">

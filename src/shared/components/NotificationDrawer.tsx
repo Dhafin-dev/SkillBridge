@@ -51,9 +51,10 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({ onClose 
                   } catch (e) { }
                 }
                 if (n.actionRoute) {
-                  if (n.actionRoute === 'messages') navigate('/messages');
-                  else if (n.actionRoute === 'market') navigate('/market');
+                  const target = n.actionRoute.startsWith('/') ? n.actionRoute : `/${n.actionRoute}`;
+                  navigate(target);
                 }
+
                 onClose();
               }}
               className={`p-3.5 rounded-2xl border space-y-1 transition-colors cursor-pointer ${n.isRead

@@ -211,6 +211,9 @@ async function main() {
     data: { name: 'Data & Analytics', description: 'Data science, analytics, and business intelligence' },
   });
 
+  // Helper for dynamic future/past dates
+  const fromNow = (days: number) => new Date(Date.now() + days * 24 * 60 * 60 * 1000);
+
   // ─── 5. PROJECTS ───────────────────────────────────────────
   const project1 = await prisma.project.create({
     data: {
@@ -234,7 +237,7 @@ async function main() {
       ]),
       tags: JSON.stringify(['React', 'Next.js', 'Node.js', 'Tailwind CSS']),
       status: 'ACTIVE',
-      deadline: new Date('2025-09-15T00:00:00Z'),
+      deadline: fromNow(45),
       teamSize: '2 Students',
       matchScore: 98,
       ownerId: umkm1.id,
@@ -262,7 +265,7 @@ async function main() {
       ]),
       tags: JSON.stringify(['Figma', 'Adobe Illustrator', 'Brand Strategy']),
       status: 'PUBLISHED',
-      deadline: new Date('2025-08-24T00:00:00Z'),
+      deadline: fromNow(30),
       teamSize: '2–3 Students',
       matchScore: 92,
       ownerId: umkm1.id,
@@ -290,7 +293,7 @@ async function main() {
       ]),
       tags: JSON.stringify(['Next.js', 'TypeScript', 'Prisma', 'WhatsApp API']),
       status: 'PUBLISHED',
-      deadline: new Date('2025-10-01T00:00:00Z'),
+      deadline: fromNow(60),
       teamSize: '2 Students',
       matchScore: 88,
       ownerId: umkm2.id,
@@ -318,7 +321,7 @@ async function main() {
       ]),
       tags: JSON.stringify(['Social Media', 'Instagram Ads', 'Content Strategy', 'Canva']),
       status: 'PUBLISHED',
-      deadline: new Date('2025-08-31T00:00:00Z'),
+      deadline: fromNow(20),
       teamSize: '1 Student',
       matchScore: 85,
       ownerId: umkm2.id,
@@ -346,7 +349,7 @@ async function main() {
       ]),
       tags: JSON.stringify(['Flutter', 'Firebase', 'Google Maps API', 'Financial Modeling']),
       status: 'DRAFT',
-      deadline: new Date('2025-11-01T00:00:00Z'),
+      deadline: fromNow(90),
       teamSize: '2 Students',
       matchScore: 76,
       ownerId: umkm3.id,
@@ -374,7 +377,7 @@ async function main() {
       ]),
       tags: JSON.stringify(['Python', 'Pandas', 'Machine Learning', 'Tableau']),
       status: 'PUBLISHED',
-      deadline: new Date('2025-09-30T00:00:00Z'),
+      deadline: fromNow(50),
       teamSize: '1–2 Students',
       matchScore: 90,
       ownerId: umkm1.id,
@@ -408,10 +411,10 @@ async function main() {
       progressPercent: 65,
       tasks: {
         create: [
-          { title: 'Design Wireframes (Desktop + Mobile)', completed: true, dueDate: new Date('2025-08-10T00:00:00Z'), assignedTo: student1.id },
-          { title: 'Implement Checkout Flow', completed: false, dueDate: new Date('2025-08-20T00:00:00Z'), assignedTo: student1.id },
-          { title: 'Subscription Integration (Midtrans)', completed: false, dueDate: new Date('2025-08-28T00:00:00Z'), assignedTo: student1.id },
-          { title: 'Performance Audit & Optimization', completed: false, dueDate: new Date('2025-09-10T00:00:00Z'), assignedTo: student1.id },
+          { title: 'Design Wireframes (Desktop + Mobile)', completed: true, dueDate: fromNow(-5), assignedTo: student1.id },
+          { title: 'Implement Checkout Flow', completed: false, dueDate: fromNow(5), assignedTo: student1.id },
+          { title: 'Subscription Integration (Midtrans)', completed: false, dueDate: fromNow(15), assignedTo: student1.id },
+          { title: 'Performance Audit & Optimization', completed: false, dueDate: fromNow(25), assignedTo: student1.id },
         ],
       },
       messages: {
@@ -434,10 +437,10 @@ async function main() {
       progressPercent: 40,
       tasks: {
         create: [
-          { title: 'Instagram Audit & Competitor Analysis', completed: true, dueDate: new Date('2025-08-05T00:00:00Z'), assignedTo: student2.id },
-          { title: 'Draft 60-Day Content Calendar', completed: true, dueDate: new Date('2025-08-12T00:00:00Z'), assignedTo: student2.id },
-          { title: 'Create Ad Creatives for Campaign #1', completed: false, dueDate: new Date('2025-08-18T00:00:00Z'), assignedTo: student2.id },
-          { title: 'Launch & Monitor Campaign #1', completed: false, dueDate: new Date('2025-08-25T00:00:00Z'), assignedTo: student2.id },
+          { title: 'Instagram Audit & Competitor Analysis', completed: true, dueDate: fromNow(-10), assignedTo: student2.id },
+          { title: 'Draft 60-Day Content Calendar', completed: true, dueDate: fromNow(-2), assignedTo: student2.id },
+          { title: 'Create Ad Creatives for Campaign #1', completed: false, dueDate: fromNow(7), assignedTo: student2.id },
+          { title: 'Launch & Monitor Campaign #1', completed: false, dueDate: fromNow(14), assignedTo: student2.id },
         ],
       },
       messages: {
@@ -448,6 +451,7 @@ async function main() {
       },
     },
   });
+
 
   // ─── 8. NOTIFICATIONS ──────────────────────────────────────
   await prisma.notification.createMany({

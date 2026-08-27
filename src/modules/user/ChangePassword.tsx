@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff, Save, ArrowLeft } from 'lucide-react';
+import { Eye, EyeOff, Save, ArrowLeft, CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { userService } from '../../shared/services/api/userService';
 
 export const ChangePassword: React.FC = () => {
   const navigate = useNavigate();
@@ -13,6 +14,8 @@ export const ChangePassword: React.FC = () => {
   const [showConfirm, setShowConfirm] = useState(false);
 
   const [errorMsg, setErrorMsg] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Password strength calculation
   const getStrength = (pass: string) => {
@@ -35,8 +38,11 @@ export const ChangePassword: React.FC = () => {
 
   const strengthInfo = getStrengthLabel();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMsg('');
+    setSuccessMsg('');
+
     if (!currentPassword) {
       setErrorMsg('Please enter your current password.');
       return;
@@ -50,9 +56,24 @@ export const ChangePassword: React.FC = () => {
       return;
     }
 
-    setErrorMsg('');
-    navigate('/settings');
+    setIsSubmitting(true);
+    try {
+      await userService.changePassword(currentPassword, newPassword);
+      setSuccessMsg('Your password has been changed successfully.');
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+      setTimeout(() => {
+        navigate('/settings');
+      }, 1500);
+    } catch (err: any) {
+      const msg = err.response?.data?.message || err.message || 'Failed to change password. Please check your current password.';
+      setErrorMsg(msg);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
 
   return (
     <div className="min-h-screen bg-[#f8f9ff] py-8 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center">
@@ -82,6 +103,14 @@ export const ChangePassword: React.FC = () => {
                 {errorMsg}
               </div>
             )}
+
+            {successMsg && (
+              <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs font-medium text-emerald-700 flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-emerald-600" />
+                <span>{successMsg}</span>
+              </div>
+            )}
+
 
             {/* Current Password */}
             <div>
@@ -182,11 +211,13 @@ export const ChangePassword: React.FC = () => {
               </button>
               <button
                 type="submit"
-                className="bg-blue-600 text-white rounded-2xl h-12 px-6 text-xs font-semibold hover:bg-blue-700 transition-colors shadow-sm flex items-center gap-2"
+                disabled={isSubmitting}
+                className="bg-blue-600 text-white rounded-2xl h-12 px-6 text-xs font-semibold hover:bg-blue-700 transition-colors shadow-sm flex items-center gap-2 disabled:opacity-50"
               >
                 <Save className="w-4 h-4" />
-                <span>Save Changes</span>
+                <span>{isSubmitting ? 'Saving...' : 'Save Changes'}</span>
               </button>
+
             </div>
           </form>
         </div>

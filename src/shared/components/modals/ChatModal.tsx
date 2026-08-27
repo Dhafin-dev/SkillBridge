@@ -21,49 +21,54 @@ export const ChatModal: React.FC<ChatModalProps> = ({
   onClose
 }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+
   const [inputText, setInputText] = useState('');
+  const [isSending, setIsSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
 
   useEffect(() => {
-    try {
-      chatService.getChatMessages(projectId).then(history => {
-        setMessages(history);
+    let isMounted = true;
+    setError(null);
+    chatService.getChatMessages(projectId)
+      .then(history => {
+        if (isMounted) setMessages(history || []);
+      })
+      .catch(e => {
+        console.error('Failed to load chat history:', e);
+        if (isMounted) setError('Unable to load chat history.');
       });
-    } catch (e) {
-      console.error(e);
-    }
+    return () => { isMounted = false; };
   }, [projectId]);
 
-
-  const handleSendMessage = (e: React.FormEvent) => {
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputText.trim()) return;
+    const textToSend = inputText.trim();
+    if (!textToSend || isSending) return;
 
-    const newMsg: ChatMessage = {
-      id: 'msg-' + Date.now(),
-      sender: currentUser.name,
-      senderAvatar: currentUser.avatar,
-      isMe: true,
-      text: inputText.trim(),
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    };
-
-    setMessages(prev => [...prev, newMsg]);
-    const sentText = inputText;
+    setIsSending(true);
     setInputText('');
 
-    // Simulate instant friendly reply from partner after 1 second
-    setTimeout(() => {
-      const replyMsg: ChatMessage = {
-        id: 'reply-' + Date.now(),
-        sender: partnerName,
-        senderAvatar: partnerAvatar,
-        isMe: false,
-        text: `Got your message regarding "${sentText.slice(0, 30)}..."! Thanks for keeping us updated.`,
+    try {
+      const persistedMsg = await chatService.sendMessage(projectId, textToSend);
+      setMessages(prev => [...prev, persistedMsg]);
+    } catch (err: any) {
+      console.error('Failed to send message:', err);
+      // Fallback local display with error indication
+      const fallbackMsg: ChatMessage = {
+        id: 'msg-' + Date.now(),
+        sender: currentUser.name,
+        senderAvatar: currentUser.avatar,
+        isMe: true,
+        text: textToSend,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
-      setMessages(prev => [...prev, replyMsg]);
-    }, 1000);
+      setMessages(prev => [...prev, fallbackMsg]);
+    } finally {
+      setIsSending(false);
+    }
   };
+
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">

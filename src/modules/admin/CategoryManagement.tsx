@@ -16,19 +16,31 @@ export const CategoryManagement: React.FC = () => {
     });
   }, []);
 
-  const handleCreateCategory = () => {
-    const title = prompt('Enter category name:');
-    if (title) {
-      // Logic for adding new category via service would go here
-      alert('Functionality to be implemented via API');
+  const handleCreateCategory = async () => {
+    const title = prompt('Enter new category name:');
+    if (title && title.trim()) {
+      try {
+        const newCat = await adminService.createCategory(title.trim());
+        setCategories(prev => [...prev, newCat]);
+        alert(`Category "${title.trim()}" created successfully!`);
+      } catch (err: any) {
+        alert(err.response?.data?.error || 'Failed to create category.');
+      }
     }
   };
 
-  const handleDeleteCategory = (id: string) => {
-    if (confirm('Are you sure you want to delete this category?')) {
-      setCategories(prev => prev.filter(c => c.id !== id));
+  const handleDeleteCategory = async (id: string, name: string) => {
+    if (confirm(`Are you sure you want to delete the category "${name}"?`)) {
+      try {
+        await adminService.deleteCategory(id);
+        setCategories(prev => prev.filter(c => c.id !== id));
+        alert(`Category "${name}" deleted successfully!`);
+      } catch (err: any) {
+        alert(err.response?.data?.error || 'Failed to delete category.');
+      }
     }
   };
+
 
   return (
     <div className="min-h-screen bg-[#f8f9ff] text-slate-900 pb-24 pt-4 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -86,11 +98,12 @@ export const CategoryManagement: React.FC = () => {
                     <Edit2 className="w-4 h-4" />
                   </button>
                   <button
-                    onClick={() => handleDeleteCategory(cat.id)}
+                    onClick={() => handleDeleteCategory(cat.id, cat.name)}
                     className="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
+
                 </div>
               </div>
 

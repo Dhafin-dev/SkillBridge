@@ -28,8 +28,9 @@ export const adminService = {
       ...u,
       verified: u.isVerified,
       status: 'Active',
-      avatar: u.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'
+      avatar: u.avatar || ''
     }));
+
   },
 
   getAllProjects: async () => {
@@ -70,38 +71,87 @@ export const adminService = {
     }));
   },
 
+  createCategory: async (name: string, description?: string) => {
+    return prisma.category.create({
+      data: {
+        name,
+        description: description || `Projects related to ${name}`,
+      }
+    });
+  },
+
+  deleteCategory: async (id: string) => {
+    return prisma.category.delete({
+      where: { id }
+    });
+  },
+
   getMatchRecommendations: async () => {
-    // For now, return a mock response that looks real since AI matching isn't fully implemented in DB yet
-    // To satisfy the "no prototype remnants" rule, we would normally query a Match table. 
-    // Since there isn't one, we'll query actual Projects and Users and build a composite array.
+
     const projects = await prisma.project.findMany({
-      where: { status: 'PUBLISHED' },
-      take: 5,
-      include: { owner: true }
+      where: { status: { in: ['PUBLISHED', 'ACTIVE'] } },
+      take: 10,
+      include: { owner: true, category: true }
     });
     const students = await prisma.user.findMany({
       where: { role: 'STUDENT' },
-      take: 5,
+      take: 10,
       include: { studentProfile: true }
     });
 
     if (projects.length === 0 || students.length === 0) return [];
 
-    return projects.map((p: any, idx: number) => {
-      const s = students[idx % students.length];
-      return {
-        id: `match_${p.id}_${s.id}`,
-        projectTitle: p.title,
-        companyName: p.owner.name,
-        compatibility: 85 + (idx % 15), // Pseudo-random 85-99
-        studentName: s.name,
-        studentAvatar: s.avatar || 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80',
-        studentInfo: s.studentProfile?.institution || 'University Student',
-        reason: 'Strong skill alignment based on recent project data and requested category.',
-        status: 'pending'
-      };
-    });
+    const recommendations: any[] = [];
+
+    for (const p of projects) {
+      let projectTags: string[] = [];
+      try {
+        projectTags = JSON.parse(p.tags || '[]');
+      } catch {
+        projectTags = [];
+      }
+
+      for (const s of students) {
+        let studentSkills: string[] = [];
+        try {
+          studentSkills = JSON.parse(s.studentProfile?.skills || '[]');
+        } catch {
+          studentSkills = [];
+        }
+
+        // Calculate skill overlap
+        const matchedSkills = studentSkills.filter(skill =>
+          projectTags.some(tag => tag.toLowerCase().includes(skill.toLowerCase()) || skill.toLowerCase().includes(tag.toLowerCase()))
+        );
+
+        const overlapScore = projectTags.length > 0
+          ? (matchedSkills.length / projectTags.length) * 50
+          : 25;
+        const portfolioScoreComponent = ((s.studentProfile?.portfolioScore || 70) / 100) * 40;
+        const compatibility = Math.min(99, Math.max(60, Math.round(overlapScore + portfolioScoreComponent + 10)));
+
+        const reason = matchedSkills.length > 0
+          ? `Matched on key skills: ${matchedSkills.slice(0, 3).join(', ')} with ${s.studentProfile?.institution || 'institution'} profile alignment.`
+          : `Aligned with category "${(p as any).category?.name || 'General'}" based on student portfolio score (${s.studentProfile?.portfolioScore || 75}/100).`;
+
+        recommendations.push({
+          id: `match_${p.id}_${s.id}`,
+          projectTitle: p.title,
+          companyName: p.owner.name,
+          compatibility,
+          studentName: s.name,
+          studentAvatar: s.avatar || 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80',
+          studentInfo: s.studentProfile?.institution || 'University Student',
+          reason,
+          status: 'pending'
+        });
+      }
+    }
+
+    // Sort by highest compatibility score and return top matches
+    return recommendations.sort((a, b) => b.compatibility - a.compatibility).slice(0, 8);
   },
+
 
   getVerifications: async () => {
     // Get all users who are not verified, except admins

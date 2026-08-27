@@ -13,6 +13,7 @@ export const ProjectDetails: React.FC = () => {
   const currentUserRole = currentUser?.role || 'guest';
   const [isSaved, setIsSaved] = useState(false);
   const [project, setProject] = useState<Project | null>(null);
+  const [hasApplied, setHasApplied] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isApplying, setIsApplying] = useState(false);
 
@@ -26,10 +27,14 @@ export const ProjectDetails: React.FC = () => {
     setIsApplying(true);
     try {
       await projectService.applyToProject(project.id);
+      setHasApplied(true);
       alert('Application submitted successfully!');
-      // Optionally re-fetch project or update state here
     } catch (error: any) {
-      alert(error.response?.data?.message || 'Failed to submit application. You might have already applied.');
+      const serverMsg = error.response?.data?.error || error.response?.data?.message;
+      if (serverMsg && serverMsg.toLowerCase().includes('already')) {
+        setHasApplied(true);
+      }
+      alert(serverMsg || 'Failed to submit application. You might have already applied.');
     } finally {
       setIsApplying(false);
     }
@@ -41,6 +46,9 @@ export const ProjectDetails: React.FC = () => {
       try {
         const data = await projectService.getProjectById(id || '');
         setProject(data);
+        if (data?.hasApplied) {
+          setHasApplied(true);
+        }
       } catch (error) {
         console.error('Failed to fetch project details', error);
       } finally {
@@ -49,6 +57,7 @@ export const ProjectDetails: React.FC = () => {
     };
     if (id) fetchProject();
   }, [id]);
+
 
   if (isLoading) {
     return (
@@ -242,20 +251,72 @@ export const ProjectDetails: React.FC = () => {
             <span>{isSaved ? 'Saved' : 'Save Project'}</span>
           </button>
 
-          <button
-            onClick={handleApply}
-            disabled={isApplying}
-            className={`w-full sm:flex-1 flex justify-center items-center gap-2 py-3.5 px-6 rounded-2xl text-white font-extrabold text-sm shadow-md transition-all ${isApplying
-                ? 'bg-blue-400 cursor-not-allowed shadow-none'
-                : 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 shadow-blue-600/25'
+          {/* Role-Aware Actions */}
+          {(currentUser?.id && (project.ownerId === currentUser.id || currentUser.role === 'umkm')) ? (
+            <div className="flex-1 w-full flex flex-col sm:flex-row gap-3">
+              {project.status === 'DRAFT' ? (
+                <button
+                  onClick={async () => {
+                    await projectService.updateProject(project.id, { status: 'PUBLISHED' });
+                    navigate(`/umkm/projects/${project.id}`);
+                  }}
+                  className="flex-1 flex justify-center items-center gap-2 py-3.5 px-6 rounded-2xl text-white font-extrabold text-sm shadow-md bg-blue-600 hover:bg-blue-700 transition-all"
+                >
+                  <span>Publish to Marketplace</span>
+                  <span className="text-base font-normal">▷</span>
+                </button>
+              ) : (
+                <button
+                  onClick={() => navigate(`/umkm/workspace/${project.id}`)}
+                  className="flex-1 flex justify-center items-center gap-2 py-3.5 px-6 rounded-2xl text-white font-extrabold text-sm shadow-md bg-blue-600 hover:bg-blue-700 transition-all"
+                >
+                  <span>Open Collaboration Workspace</span>
+                  <span className="text-base font-normal">▷</span>
+                </button>
+              )}
+              <button
+                onClick={() => navigate(`/umkm/projects/${project.id}`)}
+                className="px-6 py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition-colors"
+              >
+                Manage in Portal
+              </button>
+            </div>
+          ) : project.applicationStatus === 'ACCEPTED' ? (
+            <button
+              onClick={() => navigate(`/student/workspace/${project.id}`)}
+              className="w-full sm:flex-1 flex justify-center items-center gap-2 py-3.5 px-6 rounded-2xl text-white font-extrabold text-sm shadow-md bg-blue-600 hover:bg-blue-700 shadow-blue-600/20 transition-all"
+            >
+              <CheckCircle className="w-5 h-5 text-white" />
+              <span>Open Project Workspace</span>
+              <span className="text-base font-normal">▷</span>
+            </button>
+          ) : hasApplied ? (
+            <button
+              disabled
+              className="w-full sm:flex-1 flex justify-center items-center gap-2 py-3.5 px-6 rounded-2xl text-white font-extrabold text-sm shadow-md bg-emerald-600 shadow-emerald-600/25 cursor-default transition-all"
+            >
+              <CheckCircle className="w-5 h-5 text-white" />
+              <span>Applied (Under Review)</span>
+            </button>
+          ) : (
+            <button
+              onClick={handleApply}
+              disabled={isApplying}
+              className={`w-full sm:flex-1 flex justify-center items-center gap-2 py-3.5 px-6 rounded-2xl text-white font-extrabold text-sm shadow-md transition-all ${
+                isApplying
+                  ? 'bg-blue-400 cursor-not-allowed shadow-none'
+                  : 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 shadow-blue-600/25'
               }`}
-          >
-            <span>{isApplying ? 'Applying...' : 'Apply Now'}</span>
-            {!isApplying && <span className="text-base font-normal">▷</span>}
-          </button>
+            >
+              <span>{isApplying ? 'Applying...' : 'Apply Now'}</span>
+              {!isApplying && <span className="text-base font-normal">▷</span>}
+            </button>
+          )}
         </div>
+
 
       </div>
     </div>
   );
 };
+

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getOverviewStats, getAllUsers, getAllProjects, getAllCategories, getMatchRecommendations, getVerifications, approveVerification } from '../controllers/adminController';
+import { getOverviewStats, getAllUsers, getAllProjects, getAllCategories, createCategory, deleteCategory, getMatchRecommendations, getVerifications, approveVerification } from '../controllers/adminController';
 import { authenticate, requireRole } from '../middleware/auth';
 
 const router = Router();
@@ -11,8 +11,11 @@ router.get('/stats', getOverviewStats);
 router.get('/users', getAllUsers);
 router.get('/projects', getAllProjects);
 router.get('/categories', getAllCategories);
+router.post('/categories', createCategory);
+router.delete('/categories/:id', deleteCategory);
 router.get('/match-recommendations', getMatchRecommendations);
 router.get('/verifications', getVerifications);
 router.post('/verifications/:id/approve', approveVerification);
 
 export default router;
+

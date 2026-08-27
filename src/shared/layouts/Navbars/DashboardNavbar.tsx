@@ -36,7 +36,7 @@ export const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   if (!currentUser) return null;
 
   return (
-    <header className="sticky top-0 z-60 bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-xs px-4 py-3 transition-all">
+    <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-xs px-4 py-3 transition-all">
       <div className="flex items-center justify-between gap-3">
         {/* Mobile Menu Button - (You could add logic here to open a mobile sidebar later) */}
         <button className="md:hidden p-2 text-slate-500 hover:text-slate-900 rounded-lg">

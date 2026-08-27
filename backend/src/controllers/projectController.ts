@@ -84,3 +84,27 @@ export const applyProject = async (req: Request, res: Response, next: NextFuncti
     next(error);
   }
 };
+
+export const completeProject = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const umkmId = (req as any).user.id;
+    const { id: projectId } = req.params;
+    const result = await projectService.completeProject(umkmId, projectId as string, req.body);
+    res.json(ApiResponse.success(result, 'Project marked as completed with review successfully'));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateProject = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const userId = (req as any).user.id;
+    const { id: projectId } = req.params;
+    const result = await projectService.updateProject(userId, projectId as string, req.body);
+    res.json(ApiResponse.success(result, 'Project updated successfully'));
+  } catch (error) {
+    next(error);
+  }
+};
+
+
