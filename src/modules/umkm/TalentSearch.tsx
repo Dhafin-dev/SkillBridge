@@ -26,10 +26,15 @@ export const TalentSearch: React.FC = () => {
     s.skills.some(sk => sk.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  const handleInvite = (student: StudentCandidate) => {
+  const handleInvite = async (student: StudentCandidate) => {
     setInvitedMap(prev => ({ ...prev, [student.id]: true }));
-    // In real app, make API call to invite student
+    try {
+      await userService.inviteStudent(student.id, { projectName });
+    } catch (error) {
+      console.error('Failed to send project invitation:', error);
+    }
   };
+
 
   return (
     <div className="min-h-[calc(100vh-80px)] bg-[#f8f9ff] pb-24 pt-3 px-4 sm:px-6">

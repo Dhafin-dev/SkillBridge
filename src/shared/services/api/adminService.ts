@@ -79,10 +79,20 @@ export const adminService = {
     return response.data;
   },
 
+  createCategory: async (name: string, description?: string): Promise<AdminCategory> => {
+    const response = await apiClient.post('/admin/categories', { name, description });
+    return response.data;
+  },
+
+  deleteCategory: async (id: string): Promise<void> => {
+    await apiClient.delete(`/admin/categories/${id}`);
+  },
+
   getMatchRecommendations: async (): Promise<MatchRecommendation[]> => {
     const response = await apiClient.get('/admin/match-recommendations');
     return response.data;
   },
+
 
   getVerifications: async (): Promise<VerificationRequest[]> => {
     const response = await apiClient.get('/admin/verifications');

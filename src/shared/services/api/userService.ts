@@ -16,5 +16,17 @@ export const userService = {
   updateProfile: async (data: Partial<UserProfile>): Promise<UserProfile> => {
     const response = await apiClient.patch('/users/me', data);
     return response.data;
+  },
+
+  changePassword: async (currentPassword: string, newPassword: string): Promise<{ message: string }> => {
+    const response = await apiClient.patch('/users/me/password', { currentPassword, newPassword });
+    return response.data;
+  },
+
+  inviteStudent: async (studentId: string, data?: { projectName?: string; projectId?: string }): Promise<any> => {
+    const response = await apiClient.post(`/users/${studentId}/invite`, data || {});
+    return response.data;
   }
 };
+
+

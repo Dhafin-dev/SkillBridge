@@ -39,6 +39,27 @@ export const getAllCategories = async (req: Request, res: Response, next: NextFu
   }
 };
 
+export const createCategory = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const { name, description } = req.body;
+    const result = await adminService.createCategory(name, description);
+    res.status(201).json(ApiResponse.success(result, 'Category created successfully', 201));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteCategory = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const id = req.params.id as string;
+    await adminService.deleteCategory(id);
+    res.json(ApiResponse.success({ message: 'Category deleted successfully' }));
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 export const getMatchRecommendations = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const result = await adminService.getMatchRecommendations();

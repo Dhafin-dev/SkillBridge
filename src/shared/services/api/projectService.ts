@@ -39,5 +39,17 @@ export const projectService = {
   rejectApplicant: async (projectId: string, studentId: string): Promise<any> => {
     const response = await apiClient.post(`/projects/${projectId}/applications/${studentId}/reject`);
     return response.data;
+  },
+
+  completeProject: async (projectId: string, data: { studentId: string; rating: number; comment: string; feedbackTags?: string[] }): Promise<any> => {
+    const response = await apiClient.post(`/projects/${projectId}/complete`, data);
+    return response.data;
+  },
+
+  updateProject: async (projectId: string, data: any): Promise<any> => {
+    const response = await apiClient.patch(`/projects/${projectId}`, data);
+    return response.data;
   }
 };
+
+

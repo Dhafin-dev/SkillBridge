@@ -15,7 +15,17 @@ export const ProjectMarket: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
-  const categories = ['All Projects', 'Branding & Design', 'Website/App Development', 'Marketing & Data Analysis'];
+  const categories = [
+    'All Projects',
+    'Branding & Design',
+    'Website/App Development',
+    'UI/UX Design',
+    'Digital Marketing & Social Media',
+    'Data Analytics & Research',
+    'Mobile Development',
+    'Content Creation & Copywriting',
+  ];
+
 
   useEffect(() => {
     const fetchProjects = async () => {

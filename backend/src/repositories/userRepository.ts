@@ -3,8 +3,15 @@ import { Prisma } from '@prisma/client';
 
 export class UserRepository {
   async findByEmail(email: string) {
-    return prisma.user.findUnique({ where: { email } });
+    return prisma.user.findUnique({
+      where: { email },
+      include: {
+        studentProfile: true,
+        umkmProfile: true,
+      },
+    });
   }
+
 
   async updatePassword(id: string, passwordHash: string) {
     return prisma.user.update({

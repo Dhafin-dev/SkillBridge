@@ -20,16 +20,20 @@ const PublicBusinessProfile = React.lazy(() => import('../modules/public/PublicB
 const Login = React.lazy(() => import('../modules/auth/Login').then(m => ({ default: m.Login })));
 const Register = React.lazy(() => import('../modules/auth/Register').then(m => ({ default: m.Register })));
 const ForgotPassword = React.lazy(() => import('../modules/auth/ForgotPassword').then(m => ({ default: m.ForgotPassword })));
+const ResetPassword = React.lazy(() => import('../modules/auth/ResetPassword').then(m => ({ default: m.ResetPassword })));
+
 
 // Student Module
 const StudentDashboard = React.lazy(() => import('../modules/student/StudentDashboard').then(m => ({ default: m.StudentDashboard })));
 const MyProjectsWorkspace = React.lazy(() => import('../modules/student/MyProjectsWorkspace').then(m => ({ default: m.MyProjectsWorkspace })));
+const WorkspaceView = React.lazy(() => import('../modules/workspace/WorkspaceView').then(m => ({ default: m.WorkspaceView })));
 
 // UMKM Module
 const UMKMDashboard = React.lazy(() => import('../modules/umkm/UMKMDashboard').then(m => ({ default: m.UMKMDashboard })));
 const UMKMProjects = React.lazy(() => import('../modules/umkm/UMKMProjects').then(m => ({ default: m.UMKMProjects })));
 const UMKMProjectDetail = React.lazy(() => import('../modules/umkm/UMKMProjectDetail').then(m => ({ default: m.UMKMProjectDetail })));
 const TalentSearch = React.lazy(() => import('../modules/umkm/TalentSearch').then(m => ({ default: m.TalentSearch })));
+
 
 // Admin Module
 const AdminOverview = React.lazy(() => import('../modules/admin/AdminOverview').then(m => ({ default: m.AdminOverview })));
@@ -65,7 +69,9 @@ export const router = createBrowserRouter([
           { path: 'login', element: <Login /> },
           { path: 'register', element: <Register /> },
           { path: 'forgot-password', element: <ForgotPassword /> },
+          { path: 'reset-password', element: <ResetPassword /> },
         ]
+
       }
     ]
   },
@@ -87,6 +93,7 @@ export const router = createBrowserRouter([
           { path: 'settings/change-password', element: <ChangePassword /> },
           { path: 'messages', element: <ChatList /> },
           { path: 'messages/:id', element: <ChatDetail /> },
+          { path: 'chat/:id', element: <ChatDetail /> },
         ]
       },
 
@@ -97,8 +104,10 @@ export const router = createBrowserRouter([
         children: [
           { path: 'dashboard', element: <StudentDashboard /> },
           { path: 'my-projects', element: <MyProjectsWorkspace /> },
+          { path: 'workspace/:id', element: <WorkspaceView /> },
         ]
       },
+
 
       // UMKM Routes
       {
@@ -108,9 +117,11 @@ export const router = createBrowserRouter([
           { path: 'dashboard', element: <UMKMDashboard /> },
           { path: 'projects', element: <UMKMProjects /> },
           { path: 'projects/:id', element: <UMKMProjectDetail /> },
+          { path: 'workspace/:id', element: <WorkspaceView /> },
           { path: 'talent-search', element: <TalentSearch /> },
         ]
       },
+
 
       // Admin Routes
       {
