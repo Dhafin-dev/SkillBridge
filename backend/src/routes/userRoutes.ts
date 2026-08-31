@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { changePassword, getRecommendedStudents, getUserById, updateMe, inviteStudent } from '../controllers/userController';
 import { getMe } from '../controllers/authController';
-import { authenticate, requireRole } from '../middleware/auth';
+import { authenticate, optionalAuthenticate, requireRole } from '../middleware/auth';
 import { validate } from '../middleware/validate';
 import { z } from 'zod';
 
@@ -41,7 +41,7 @@ const changePasswordSchema = z.object({
   }),
 });
 
-router.get('/students/recommended', authenticate, requireRole(['UMKM']), getRecommendedStudents);
+router.get('/students/recommended', optionalAuthenticate, getRecommendedStudents);
 router.get('/me', authenticate, getMe);
 router.get('/:id', getUserById);
 router.patch('/me', authenticate, validate(updateProfileSchema), updateMe);
