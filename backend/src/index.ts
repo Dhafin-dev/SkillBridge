@@ -26,14 +26,7 @@ const allowedOrigins = env.CORS_ORIGIN
   : ['http://localhost:3000', 'http://localhost:5173'];
 
 app.use(cors({
-  origin: (origin, callback) => {
-    // Allow non-browser clients (curl, mobile, server-to-server) or matching allowed origins
-    if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
-      callback(null, true);
-    } else {
-      callback(new Error(`Origin ${origin} not allowed by CORS policy`));
-    }
-  },
+  origin: true,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -61,8 +54,8 @@ app.get('/health', (req, res) => {
 
 app.use(errorHandler);
 
-const PORT = env.PORT || 5000;
+const PORT = Number(env.PORT) || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server is running on http://0.0.0.0:${PORT}`);
 });
