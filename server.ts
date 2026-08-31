@@ -1,4 +1,5 @@
 import express from "express";
+import http from "http";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
@@ -8,9 +9,47 @@ import dotenv from "dotenv";
 dotenv.config();
 dotenv.config({ path: path.resolve(process.cwd(), "backend", ".env") });
 
+function proxyToBackend(req: express.Request, res: express.Response, targetPath: string) {
+  const options: http.RequestOptions = {
+    hostname: "127.0.0.1",
+    port: 5000,
+    path: targetPath,
+    method: req.method,
+    headers: {
+      ...req.headers,
+      host: "127.0.0.1:5000",
+    },
+  };
+
+  const proxyReq = http.request(options, (proxyRes) => {
+    res.writeHead(proxyRes.statusCode || 200, proxyRes.headers);
+    proxyRes.pipe(res);
+  });
+
+  proxyReq.on("error", (err) => {
+    console.error("Backend Proxy Error:", err.message);
+    if (!res.headersSent) {
+      res.status(502).json({ error: "Backend service unreachable on port 5000" });
+    }
+  });
+
+  req.pipe(proxyReq);
+}
+
 async function startServer() {
   const app = express();
   const PORT = 3000;
+
+  // Stream proxy for all backend APIs and uploads (runs before express.json body parsing)
+  app.use((req, res, next) => {
+    if (req.url === "/api/ai-match" && req.method === "POST") {
+      return next(); // handled by Gemini AI route below
+    }
+    if (req.url.startsWith("/api") || req.url.startsWith("/uploads")) {
+      return proxyToBackend(req, res, req.url);
+    }
+    next();
+  });
 
   app.use(express.json());
 
@@ -19,7 +58,6 @@ async function startServer() {
     try {
       const { studentProfile, projectDetails } = req.body;
       const apiKey = process.env.GEMINI_API_KEY;
-
 
       if (!apiKey) {
         return res.json({
@@ -111,7 +149,7 @@ Return raw JSON only without markdown formatting.`;
   }
 
   app.listen(PORT, "0.0.0.0", () => {
-    console.log(`SkillBridge server running on http://localhost:${PORT}`);
+    console.log(`SkillBridge server running on http://0.0.0.0:${PORT}`);
   });
 }
 

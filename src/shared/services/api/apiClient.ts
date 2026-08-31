@@ -1,18 +1,8 @@
 import axios from 'axios';
 import { storageService } from '../storageService';
 
-const getBaseUrl = () => {
-  if ((import.meta as any).env?.VITE_API_URL) {
-    return (import.meta as any).env.VITE_API_URL;
-  }
-  if (typeof window !== 'undefined' && window.location?.hostname) {
-    return `http://${window.location.hostname}:5000/api`;
-  }
-  return 'http://localhost:5000/api';
-};
-
 const apiClient = axios.create({
-  baseURL: getBaseUrl(),
+  baseURL: (import.meta as any).env?.VITE_API_URL || '/api',
   headers: {
     'Content-Type': 'application/json',
   },
