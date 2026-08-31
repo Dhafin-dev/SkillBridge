@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
-    "build": "vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
+    "build": "cd backend && npx prisma generate && cd .. && vite build",
     "start": "node dist/server.cjs",
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
@@ -13,9 +13,11 @@
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
+    "@prisma/client": "^7.10.0",
     "@tailwindcss/vite": "^4.1.14",
     "@tanstack/react-query": "^5.101.4",
     "@types/cors": "^2.8.19",
+    "@vercel/node": "^10.0.0",
     "@vitejs/plugin-react": "^5.0.4",
     "axios": "^1.19.0",
     "cors": "^2.8.6",
@@ -23,6 +25,7 @@
     "express": "^4.21.2",
     "lucide-react": "^0.546.0",
     "motion": "^12.23.24",
+    "prisma": "^8.0.0-rc.12",
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
     "react-router-dom": "^7.18.2",

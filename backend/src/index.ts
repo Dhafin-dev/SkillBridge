@@ -56,6 +56,11 @@ app.use(errorHandler);
 
 const PORT = Number(env.PORT) || 5000;
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server is running on http://0.0.0.0:${PORT}`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server is running on http://0.0.0.0:${PORT}`);
+  });
+}
+
+export { app };
+export default app;
