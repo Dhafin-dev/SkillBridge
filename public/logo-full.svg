@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 100" width="100%" height="100%">
+  <defs>
+    <linearGradient id="sbGradientFull" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB" />
+      <stop offset="100%" stop-color="#1D4ED8" />
+    </linearGradient>
+    <filter id="sbShadowFull" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#1D4ED8" flood-opacity="0.2" />
+    </filter>
+  </defs>
+
+  <!-- Logo Icon Container (Left) -->
+  <g transform="translate(10, 10)">
+    <rect width="80" height="80" rx="22" fill="url(#sbGradientFull)" filter="url(#sbShadowFull)" />
+    <g transform="translate(14, 14) scale(2.17)" fill="#FFFFFF">
+      <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z" />
+      <path d="M5 13.18v4.32L12 21l7-3.5v-4.32l-7 3.82-7-3.82z" opacity="0.85" />
+      <path d="M9 15.5v3.2h2v-3.2H9zm4 0v3.2h2v-3.2h-2z" opacity="0.95" />
+    </g>
+  </g>
+
+  <!-- Brand Text (Right) -->
+  <g transform="translate(108, 22)">
+    <!-- Main Title -->
+    <text x="0" y="38" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="36" font-weight="900" fill="#1D4ED8" letter-spacing="-0.5px">
+      Skill<tspan fill="#2563EB">Bridge</tspan>
+    </text>
+    <!-- Tagline / Subtitle -->
+    <text x="2" y="60" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#3B82F6" letter-spacing="2px">
+      ACADEMIA × ENTERPRISE
+    </text>
+  </g>
+</svg>

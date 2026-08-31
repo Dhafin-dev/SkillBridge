@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <defs>
+    <linearGradient id="sbGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB" />
+      <stop offset="100%" stop-color="#1D4ED8" />
+    </linearGradient>
+    <filter id="sbShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#1D4ED8" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <!-- Rounded Background Container -->
+  <rect width="100" height="100" rx="26" fill="url(#sbGradient)" filter="url(#sbShadow)" />
+
+  <!-- SkillBridge Graduation Cap & Bridge Symbol -->
+  <g transform="translate(18, 18) scale(2.67)" fill="#FFFFFF">
+    <!-- Mortarboard Cap (Academia) -->
+    <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z" />
+    <!-- Bridge Arch Pillars (Enterprise Collaboration) -->
+    <path d="M5 13.18v4.32L12 21l7-3.5v-4.32l-7 3.82-7-3.82z" opacity="0.85" />
+    <!-- Pillars -->
+    <path d="M9 15.5v3.2h2v-3.2H9zm4 0v3.2h2v-3.2h-2z" opacity="0.95" />
+  </g>
+</svg>
