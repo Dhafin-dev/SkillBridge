@@ -49,6 +49,17 @@ export const createCategory = async (req: Request, res: Response, next: NextFunc
   }
 };
 
+export const updateCategory = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const id = req.params.id as string;
+    const { name, description } = req.body;
+    const result = await adminService.updateCategory(id, name, description);
+    res.json(ApiResponse.success(result, 'Category updated successfully'));
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const deleteCategory = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const id = req.params.id as string;
@@ -59,6 +70,26 @@ export const deleteCategory = async (req: Request, res: Response, next: NextFunc
   }
 };
 
+export const deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const id = req.params.id as string;
+    await adminService.deleteUser(id);
+    res.json(ApiResponse.success({ message: 'User deleted successfully' }));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const toggleUserStatus = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const id = req.params.id as string;
+    const { isVerified } = req.body;
+    const result = await adminService.toggleUserStatus(id, !!isVerified);
+    res.json(ApiResponse.success(result, 'User status updated'));
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const getMatchRecommendations = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -81,12 +112,43 @@ export const getVerifications = async (req: Request, res: Response, next: NextFu
 export const approveVerification = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const id = req.params.id as string;
-    // We update user isVerified to true
     await prisma.user.update({
       where: { id },
       data: { isVerified: true }
     });
+    await prisma.notification.create({
+      data: {
+        userId: id,
+        type: 'SYSTEM',
+        title: 'Account Verified!',
+        message: 'Congratulations! Your verification request has been approved by SkillBridge Administration.',
+        actionRoute: 'profile'
+      }
+    });
     res.json(ApiResponse.success({ message: 'User verified successfully' }));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const rejectVerification = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const id = req.params.id as string;
+    const { reason } = req.body || {};
+    const result = await adminService.rejectVerification(id, reason);
+    res.json(ApiResponse.success(result, 'Verification rejected successfully'));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteAdminProject = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const id = req.params.id as string;
+    await prisma.project.delete({
+      where: { id }
+    });
+    res.json(ApiResponse.success({ message: 'Project removed by administrator' }));
   } catch (error) {
     next(error);
   }

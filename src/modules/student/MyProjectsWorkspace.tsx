@@ -256,13 +256,23 @@ export const MyProjectsWorkspace: React.FC = () => {
 
                 {/* Actions */}
                 <div className="grid grid-cols-2 gap-3 pt-1">
-                  <button
-                    onClick={() => navigate(`/projects/${proj.id}`)}
-                    className="py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition-colors shadow-xs flex items-center justify-center gap-1.5"
-                  >
-                    <span>Project Details</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </button>
+                  {!isCompleted && proj.status !== 'Pending' ? (
+                    <button
+                      onClick={() => navigate(`/student/workspace/${proj.id}`)}
+                      className="py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition-colors shadow-md shadow-blue-600/20 flex items-center justify-center gap-1.5"
+                    >
+                      <FolderKanban className="w-3.5 h-3.5" />
+                      <span>Open Workspace</span>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => navigate(`/projects/${proj.id}`)}
+                      className="py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition-colors shadow-xs flex items-center justify-center gap-1.5"
+                    >
+                      <span>Project Details</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </button>
+                  )}
 
                   <button
                     onClick={() => navigate(`/chat/${proj.id}`)}

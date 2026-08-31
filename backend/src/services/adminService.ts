@@ -80,10 +80,70 @@ export const adminService = {
     });
   },
 
+  updateCategory: async (id: string, name: string, description?: string) => {
+    return prisma.category.update({
+      where: { id },
+      data: {
+        name,
+        ...(description !== undefined ? { description } : {})
+      }
+    });
+  },
+
   deleteCategory: async (id: string) => {
+    // 1. Check if category exists
+    const category = await prisma.category.findUnique({
+      where: { id },
+      include: { _count: { select: { projects: true } } }
+    });
+    if (!category) throw new Error('Category not found');
+
+    // 2. If projects are using this category, safely reassign them to a fallback "General" category
+    if (category._count.projects > 0) {
+      let defaultCat = await prisma.category.findUnique({ where: { name: 'General' } });
+      if (!defaultCat) {
+        defaultCat = await prisma.category.create({
+          data: { name: 'General', description: 'General & Multi-disciplinary projects' }
+        });
+      }
+      if (defaultCat.id !== id) {
+        await prisma.project.updateMany({
+          where: { categoryId: id },
+          data: { categoryId: defaultCat.id }
+        });
+      }
+    }
+
+    // 3. Delete category safely without foreign key constraint violations
     return prisma.category.delete({
       where: { id }
     });
+  },
+
+  deleteUser: async (id: string) => {
+    return prisma.user.delete({
+      where: { id }
+    });
+  },
+
+  toggleUserStatus: async (id: string, isVerified: boolean) => {
+    return prisma.user.update({
+      where: { id },
+      data: { isVerified }
+    });
+  },
+
+  rejectVerification: async (id: string, reason?: string) => {
+    await prisma.notification.create({
+      data: {
+        userId: id,
+        type: 'SYSTEM',
+        title: 'Verification Request Update',
+        message: reason || 'Your verification request was not approved. Please ensure your document scan is legible and re-apply.',
+        actionRoute: 'profile'
+      }
+    });
+    return { success: true, message: 'Verification rejected and notification sent' };
   },
 
   getMatchRecommendations: async () => {

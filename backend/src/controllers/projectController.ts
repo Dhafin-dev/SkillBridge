@@ -107,4 +107,16 @@ export const updateProject = async (req: Request, res: Response, next: NextFunct
   }
 };
 
+export const deleteProject = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const userId = (req as any).user.id;
+    const { id: projectId } = req.params;
+    await projectService.deleteProject(userId, projectId as string);
+    res.json(ApiResponse.success({ message: 'Project deleted successfully' }));
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 

@@ -17,6 +17,13 @@ export const ProjectDetails: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isApplying, setIsApplying] = useState(false);
 
+  const [toastMessage, setToastMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  const showToast = (text: string, type: 'success' | 'error' = 'success') => {
+    setToastMessage({ text, type });
+    setTimeout(() => setToastMessage(null), 3500);
+  };
+
   const handleApply = async () => {
     if (currentUserRole === 'guest') {
       navigate('/login');
@@ -28,13 +35,13 @@ export const ProjectDetails: React.FC = () => {
     try {
       await projectService.applyToProject(project.id);
       setHasApplied(true);
-      alert('Application submitted successfully!');
+      showToast('Application submitted successfully! Track your status in My Projects.');
     } catch (error: any) {
       const serverMsg = error.response?.data?.error || error.response?.data?.message;
       if (serverMsg && serverMsg.toLowerCase().includes('already')) {
         setHasApplied(true);
       }
-      alert(serverMsg || 'Failed to submit application. You might have already applied.');
+      showToast(serverMsg || 'Failed to submit application. You might have already applied.', 'error');
     } finally {
       setIsApplying(false);
     }
@@ -97,13 +104,18 @@ export const ProjectDetails: React.FC = () => {
           <h1 className="text-xl font-bold text-slate-900 tracking-tight">
             Project Details
           </h1>
-          <button
-            className="p-2 rounded-full bg-white hover:bg-slate-100 text-slate-700 transition-colors border border-slate-200 shadow-xs"
-            aria-label="Options"
-          >
-            <MoreVertical className="w-5 h-5" />
-          </button>
+          <div className="w-9" />
         </div>
+
+        {/* Toast Alert Banner */}
+        {toastMessage && (
+          <div className={`p-4 rounded-2xl text-xs font-bold shadow-md flex items-center gap-2 animate-fade-in ${
+            toastMessage.type === 'success' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'
+          }`}>
+            <CheckCircle className="w-4 h-4 shrink-0" />
+            <span>{toastMessage.text}</span>
+          </div>
+        )}
 
         {/* Top Hero Card matching Screenshot 2 */}
         <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-5 relative overflow-hidden">
@@ -292,11 +304,11 @@ export const ProjectDetails: React.FC = () => {
             </button>
           ) : hasApplied ? (
             <button
-              disabled
-              className="w-full sm:flex-1 flex justify-center items-center gap-2 py-3.5 px-6 rounded-2xl text-white font-extrabold text-sm shadow-md bg-emerald-600 shadow-emerald-600/25 cursor-default transition-all"
+              onClick={() => navigate('/student/my-projects?tab=Pending')}
+              className="w-full sm:flex-1 flex justify-center items-center gap-2 py-3.5 px-6 rounded-2xl text-white font-extrabold text-sm shadow-md bg-emerald-600 hover:bg-emerald-700 shadow-emerald-600/25 transition-all"
             >
               <CheckCircle className="w-5 h-5 text-white" />
-              <span>Applied (Under Review)</span>
+              <span>Applied • View in My Projects</span>
             </button>
           ) : (
             <button

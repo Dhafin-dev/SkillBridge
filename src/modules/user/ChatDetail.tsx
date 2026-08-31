@@ -17,19 +17,23 @@ import {
 
 import { EmptyState } from '../../shared/components/ui/EmptyState';
 import { chatService, ChatContextData } from '../../shared/services/api/chatService';
+import { uploadService } from '../../shared/services/api/uploadService';
 import { useAuth } from '../../shared/context/AuthContext';
 
 export const ChatDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { currentUser } = useAuth();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [chatData, setChatData] = useState<ChatContextData | null>(null);
   const [messages, setMessages] = useState<any[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [isRefreshing, setIsRefreshing] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -108,7 +112,7 @@ export const ChatDetail: React.FC = () => {
     } catch (err: any) {
       console.error('Failed to send message', err);
       setMessages(prev => prev.filter(m => m.id !== tempId));
-      alert(err.response?.data?.error || 'Failed to deliver message.');
+      setError(err.response?.data?.error || 'Failed to deliver message.');
     } finally {
       setIsSending(false);
     }
@@ -270,6 +274,31 @@ export const ChatDetail: React.FC = () => {
 
         {/* Composer Footer Bar */}
         <footer className="bg-white border-t border-slate-100 p-3 sm:p-4 shrink-0">
+          <input
+            type="file"
+            ref={fileInputRef}
+            className="hidden"
+            accept="image/*,.pdf,.doc,.docx,.zip"
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              if (!file || !id) return;
+              try {
+                setIsUploading(true);
+                const uploadRes = await uploadService.uploadPhoto(file);
+                const attachmentText = `📎 Shared Attachment: ${uploadRes.url}`;
+                await chatService.sendMessage(id, attachmentText);
+                const updated = await chatService.getChatContext(id);
+                setChatData(updated);
+                setMessages(updated.messages || []);
+              } catch (err) {
+                console.error('Failed to upload file in chat', err);
+              } finally {
+                setIsUploading(false);
+                if (fileInputRef.current) fileInputRef.current.value = '';
+              }
+            }}
+          />
+
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -279,11 +308,12 @@ export const ChatDetail: React.FC = () => {
           >
             <button
               type="button"
-              onClick={() => alert('Deliverable and file attachments supported for active projects.')}
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isUploading}
               className="p-2 text-slate-400 hover:text-blue-600 hover:bg-white rounded-xl transition-all shrink-0"
-              title="Attach File"
+              title="Attach File or Screenshot"
             >
-              <Paperclip className="w-4 h-4" />
+              <Paperclip className={`w-4 h-4 ${isUploading ? 'animate-spin text-blue-600' : ''}`} />
             </button>
 
             <input
@@ -291,13 +321,13 @@ export const ChatDetail: React.FC = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder={`Message ${partnerName}...`}
-              disabled={isLoading || isSending}
+              disabled={isLoading || isSending || isUploading}
               className="flex-1 bg-transparent px-2 text-xs sm:text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none disabled:opacity-50"
             />
 
             <button
               type="submit"
-              disabled={!input.trim() || isSending}
+              disabled={!input.trim() || isSending || isUploading}
               className="w-9 h-9 bg-blue-600 hover:bg-blue-700 text-white rounded-xl flex items-center justify-center shrink-0 shadow-xs hover:shadow-md transition-all disabled:opacity-40 disabled:cursor-not-allowed"
               title="Send Message"
             >

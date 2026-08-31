@@ -63,40 +63,41 @@ export const PublicNavbar: React.FC = () => {
         </div>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-1 text-sm font-medium">
+        <nav className="hidden md:flex items-center gap-1 text-sm font-semibold">
           <button
-            onClick={() => {
-              if (currentPath !== '/') navigate('/#landing');
-              else window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            className={`px-3.5 py-1.5 rounded-lg transition-all ${
-              currentPath === '/' && activeSection === 'landing' ? 'text-blue-700 font-bold' : 'text-slate-600 hover:text-slate-900'
+            onClick={() => navigate('/')}
+            className={`px-3.5 py-1.5 rounded-xl transition-all ${
+              currentPath === '/' ? 'text-blue-700 bg-blue-50 font-bold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
             }`}
           >
-            Landing
+            Home
           </button>
 
           <button
-            onClick={() => {
-              if (currentPath !== '/') navigate('/#about');
-              else document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className={`px-3.5 py-1.5 rounded-lg transition-all ${
-              currentPath === '/' && activeSection === 'about' ? 'text-blue-700 font-bold' : 'text-slate-600 hover:text-slate-900'
+            onClick={() => navigate('/market')}
+            className={`px-3.5 py-1.5 rounded-xl transition-all ${
+              currentPath === '/market' ? 'text-blue-700 bg-blue-50 font-bold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+            }`}
+          >
+            Market
+          </button>
+
+          <button
+            onClick={() => navigate('/about')}
+            className={`px-3.5 py-1.5 rounded-xl transition-all ${
+              currentPath === '/about' ? 'text-blue-700 bg-blue-50 font-bold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
             }`}
           >
             About
           </button>
+
           <button
-            onClick={() => {
-              if (currentPath !== '/') navigate('/#help');
-              else document.getElementById('help')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className={`px-3.5 py-1.5 rounded-lg transition-all ${
-              currentPath === '/' && activeSection === 'help' ? 'text-blue-700 font-bold' : 'text-slate-600 hover:text-slate-900'
+            onClick={() => navigate('/help')}
+            className={`px-3.5 py-1.5 rounded-xl transition-all ${
+              currentPath === '/help' ? 'text-blue-700 bg-blue-50 font-bold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
             }`}
           >
-            Help
+            Help & FAQ
           </button>
         </nav>
 
