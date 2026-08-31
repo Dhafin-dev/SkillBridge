@@ -24,15 +24,15 @@ export const PublicHome: React.FC = () => {
 
   return (
     <div className="flex flex-col w-full">
-      <section id="landing">
+      <section id="landing" className="scroll-mt-20">
         <LandingHero />
       </section>
       
-      <section id="about">
+      <section id="about" className="scroll-mt-20">
         <About />
       </section>
       
-      <section id="help">
+      <section id="help" className="scroll-mt-20">
         <HelpCenter />
       </section>
 

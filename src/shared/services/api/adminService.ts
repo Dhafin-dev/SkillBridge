@@ -84,15 +84,31 @@ export const adminService = {
     return response.data;
   },
 
+  updateCategory: async (id: string, name: string, description?: string): Promise<AdminCategory> => {
+    const response = await apiClient.put(`/admin/categories/${id}`, { name, description });
+    return response.data;
+  },
+
   deleteCategory: async (id: string): Promise<void> => {
     await apiClient.delete(`/admin/categories/${id}`);
+  },
+
+  deleteUser: async (id: string): Promise<void> => {
+    await apiClient.delete(`/admin/users/${id}`);
+  },
+
+  toggleUserStatus: async (id: string, isVerified: boolean): Promise<void> => {
+    await apiClient.patch(`/admin/users/${id}/status`, { isVerified });
+  },
+
+  deleteProject: async (id: string): Promise<void> => {
+    await apiClient.delete(`/admin/projects/${id}`);
   },
 
   getMatchRecommendations: async (): Promise<MatchRecommendation[]> => {
     const response = await apiClient.get('/admin/match-recommendations');
     return response.data;
   },
-
 
   getVerifications: async (): Promise<VerificationRequest[]> => {
     const response = await apiClient.get('/admin/verifications');
@@ -101,5 +117,9 @@ export const adminService = {
 
   approveVerification: async (id: string): Promise<void> => {
     await apiClient.post(`/admin/verifications/${id}/approve`);
+  },
+
+  rejectVerification: async (id: string, reason?: string): Promise<void> => {
+    await apiClient.post(`/admin/verifications/${id}/reject`, { reason });
   }
 };

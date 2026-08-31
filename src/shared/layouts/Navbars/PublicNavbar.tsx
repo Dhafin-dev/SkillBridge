@@ -1,29 +1,37 @@
-import React from 'react';
-
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { User, LogOut, ChevronDown } from 'lucide-react';
+import { User, LogOut, ChevronDown, Compass } from 'lucide-react';
 
 export const PublicNavbar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
   const { currentUser, logout } = useAuth();
-  const [showRoleMenu, setShowRoleMenu] = React.useState(false);
-  const [activeSection, setActiveSection] = React.useState('landing');
+  const [showRoleMenu, setShowRoleMenu] = useState(false);
+  const [activeSection, setActiveSection] = useState('landing');
 
-  React.useEffect(() => {
-    if (currentPath !== '/') return;
+  // Track active section on scroll when on homepage
+  useEffect(() => {
+    if (currentPath !== '/') {
+      if (currentPath === '/market') setActiveSection('market');
+      else if (currentPath === '/about') setActiveSection('about');
+      else if (currentPath === '/help') setActiveSection('help');
+      else setActiveSection('');
+      return;
+    }
 
     const handleScroll = () => {
       const sections = ['landing', 'about', 'help'];
       let current = 'landing';
-      
+      const scrollPos = window.scrollY + 200;
+
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 300) {
+          const top = element.offsetTop;
+          const height = element.offsetHeight;
+          if (scrollPos >= top && scrollPos < top + height) {
             current = section;
           }
         }
@@ -31,18 +39,37 @@ export const PublicNavbar: React.FC = () => {
       setActiveSection(current);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll(); // Initial check
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, [currentPath]);
 
+  const handleNavClick = (sectionId: string) => {
+    if (currentPath === '/') {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+        setActiveSection(sectionId);
+      }
+    } else {
+      navigate(`/#${sectionId}`);
+    }
+  };
+
   return (
     <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-xs px-4 py-3 transition-all">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
+        
         {/* Brand Logo */}
         <div 
-          onClick={() => navigate('/')} 
+          onClick={() => {
+            if (currentPath === '/') {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+              navigate('/');
+            }
+          }} 
           className="flex items-center gap-2.5 cursor-pointer group select-none"
         >
           <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
@@ -62,41 +89,50 @@ export const PublicNavbar: React.FC = () => {
           </div>
         </div>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-1 text-sm font-medium">
+        {/* Desktop Navigation Links (Home, About, Help & FAQ, then Market on the far right) */}
+        <nav className="hidden md:flex items-center gap-1.5 text-sm font-semibold">
           <button
-            onClick={() => {
-              if (currentPath !== '/') navigate('/#landing');
-              else window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            className={`px-3.5 py-1.5 rounded-lg transition-all ${
-              currentPath === '/' && activeSection === 'landing' ? 'text-blue-700 font-bold' : 'text-slate-600 hover:text-slate-900'
+            onClick={() => handleNavClick('landing')}
+            className={`px-4 py-2 rounded-2xl transition-all ${
+              currentPath === '/' && activeSection === 'landing'
+                ? 'text-blue-700 bg-blue-50 font-bold shadow-2xs'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
             }`}
           >
-            Landing
+            Home
           </button>
 
           <button
-            onClick={() => {
-              if (currentPath !== '/') navigate('/#about');
-              else document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className={`px-3.5 py-1.5 rounded-lg transition-all ${
-              currentPath === '/' && activeSection === 'about' ? 'text-blue-700 font-bold' : 'text-slate-600 hover:text-slate-900'
+            onClick={() => handleNavClick('about')}
+            className={`px-4 py-2 rounded-2xl transition-all ${
+              (currentPath === '/' && activeSection === 'about') || currentPath === '/about'
+                ? 'text-blue-700 bg-blue-50 font-bold shadow-2xs'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
             }`}
           >
             About
           </button>
+
           <button
-            onClick={() => {
-              if (currentPath !== '/') navigate('/#help');
-              else document.getElementById('help')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className={`px-3.5 py-1.5 rounded-lg transition-all ${
-              currentPath === '/' && activeSection === 'help' ? 'text-blue-700 font-bold' : 'text-slate-600 hover:text-slate-900'
+            onClick={() => handleNavClick('help')}
+            className={`px-4 py-2 rounded-2xl transition-all ${
+              (currentPath === '/' && activeSection === 'help') || currentPath === '/help'
+                ? 'text-blue-700 bg-blue-50 font-bold shadow-2xs'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
             }`}
           >
-            Help
+            Help & FAQ
+          </button>
+
+          <button
+            onClick={() => navigate('/market')}
+            className={`px-4 py-2 rounded-2xl transition-all flex items-center gap-1.5 ${
+              currentPath === '/market'
+                ? 'text-blue-700 bg-blue-50 font-bold shadow-2xs'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+            }`}
+          >
+            <span>Market</span>
           </button>
         </nav>
 
@@ -132,7 +168,7 @@ export const PublicNavbar: React.FC = () => {
                   </div>
 
                   <div className="py-1">
-                    <button onClick={() => { setShowRoleMenu(false); navigate(`/${currentUser.role}/dashboard`); }} className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+                    <button onClick={() => { setShowRoleMenu(false); navigate(`/${currentUser.role.toLowerCase()}/dashboard`); }} className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-50 transition-colors">
                       <svg className="w-3.5 h-3.5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                       </svg>

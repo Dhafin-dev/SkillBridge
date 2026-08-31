@@ -253,7 +253,7 @@ export const Settings: React.FC = () => {
               </button>
 
               <button
-                onClick={() => navigate('/help')}
+                onClick={() => navigate('/about')}
                 className="w-full flex items-center justify-between px-5 py-3.5 hover:bg-slate-50 transition-colors text-left"
               >
                 <div className="flex items-center gap-3">
@@ -264,7 +264,7 @@ export const Settings: React.FC = () => {
               </button>
 
               <button
-                onClick={() => navigate('/help')}
+                onClick={() => navigate('/terms')}
                 className="w-full flex items-center justify-between px-5 py-3.5 hover:bg-slate-50 transition-colors text-left"
               >
                 <div className="flex items-center gap-3">

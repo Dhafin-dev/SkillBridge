@@ -2,6 +2,7 @@ import { projectRepository } from '../repositories/projectRepository';
 import { notificationService } from './notificationService';
 import { userRepository } from '../repositories/userRepository';
 import { AppError } from '../utils/AppError';
+import prisma from '../utils/prisma';
 
 export class ProjectService {
   async getPublishedProjects() {
@@ -364,6 +365,24 @@ export class ProjectService {
     });
   }
 
+  async deleteProject(userId: string, projectId: string) {
+    const project = await prisma.project.findUnique({
+      where: { id: projectId }
+    });
+    if (!project) throw new AppError('Project not found', 404);
+
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    const isOwner = project.ownerId === userId;
+    const isAdmin = user?.role?.toUpperCase() === 'ADMIN';
+
+    if (!isOwner && !isAdmin) {
+      throw new AppError('You are not authorized to delete this project', 403);
+    }
+
+    return prisma.project.delete({
+      where: { id: projectId }
+    });
+  }
 
   private parseCapacity(teamSizeStr?: string | null): number {
     if (!teamSizeStr) return 1;

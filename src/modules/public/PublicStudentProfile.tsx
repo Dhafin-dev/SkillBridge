@@ -78,6 +78,8 @@ export const PublicStudentProfile: React.FC = () => {
   const rankLabel = portfolioScore >= 90 ? 'Top 5% Student' : portfolioScore >= 75 ? 'Top 15% Student' : portfolioScore > 0 ? 'Rising Talent' : 'New Member';
   const matchScore = portfolioScore > 0 ? Math.min(99, portfolioScore + 4) : 90;
 
+  const [copiedToast, setCopiedToast] = useState(false);
+
   return (
     <div className="min-h-screen bg-[#f8f9ff] text-slate-900 pb-24">
       {/* Top Bar */}
@@ -98,7 +100,8 @@ export const PublicStudentProfile: React.FC = () => {
                 navigator.share({ title: student.name, url: window.location.href });
               } else {
                 navigator.clipboard.writeText(window.location.href);
-                alert('Profile link copied to clipboard!');
+                setCopiedToast(true);
+                setTimeout(() => setCopiedToast(false), 3000);
               }
             }}
             className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-full transition-colors"
@@ -107,6 +110,12 @@ export const PublicStudentProfile: React.FC = () => {
           </button>
         </div>
       </header>
+
+      {copiedToast && (
+        <div className="max-w-md mx-auto mt-3 mx-4 p-3 bg-emerald-600 text-white rounded-xl text-xs font-bold shadow-md text-center">
+          Profile link copied to clipboard!
+        </div>
+      )}
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6 py-6 space-y-6">
         {/* Hero Card */}

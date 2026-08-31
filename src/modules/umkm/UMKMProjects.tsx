@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import {
   Search,
-  MoreVertical,
   Eye,
-  Edit2,
-  MessageSquare,
   Plus,
   Clock,
   UserCheck,
-  Sparkles,
   Send,
-  AlertCircle,
+  Trash2,
   FolderPlus,
   ArrowRight,
-  Layers
+  CheckCircle2,
+  AlertCircle,
+  Loader2
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { projectService } from '../../shared/services/api/projectService';
@@ -28,16 +26,19 @@ export const UMKMProjects: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [toastMessage, setToastMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
-  const fetchProjects = () => {
+  const fetchProjects = async () => {
     setIsLoading(true);
-    projectService.getMyProjectsUMKM().then(data => {
+    try {
+      const data = await projectService.getMyProjectsUMKM();
       setRequests(data);
-      setIsLoading(false);
-    }).catch(err => {
+    } catch (err) {
       console.error(err);
+    } finally {
       setIsLoading(false);
-    });
+    }
   };
 
   useEffect(() => {
@@ -50,17 +51,41 @@ export const UMKMProjects: React.FC = () => {
     }
   }, []);
 
+  const showToast = (text: string, type: 'success' | 'error' = 'success') => {
+    setToastMessage({ text, type });
+    setTimeout(() => setToastMessage(null), 3500);
+  };
+
   const handlePublishProject = async (e: React.MouseEvent, projectId: string) => {
     e.stopPropagation();
     setActionLoadingId(projectId);
     try {
       await projectService.updateProject(projectId, { status: 'PUBLISHED' });
-      fetchProjects();
+      showToast('Project brief successfully published to the marketplace!');
+      await fetchProjects();
     } catch (err) {
       console.error('Failed to publish project:', err);
-      alert('Failed to publish project. Please try again.');
+      showToast('Failed to publish project. Please try again.', 'error');
     } finally {
       setActionLoadingId(null);
+    }
+  };
+
+  const handleDeleteProject = async (e: React.MouseEvent, projectId: string, title: string) => {
+    e.stopPropagation();
+    if (!window.confirm(`Are you sure you want to delete "${title}"? This cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      setDeletingId(projectId);
+      await projectService.deleteProject(projectId);
+      setRequests(prev => prev.filter(r => r.id !== projectId));
+      showToast(`Project "${title}" deleted.`);
+    } catch (err: any) {
+      showToast(err.response?.data?.message || err.response?.data?.error || 'Failed to delete project.', 'error');
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -84,6 +109,16 @@ export const UMKMProjects: React.FC = () => {
     <div className="min-h-[calc(100vh-80px)] bg-[#f8f9ff] pb-24 pt-4 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto space-y-5">
 
+        {/* Toast Notification */}
+        {toastMessage && (
+          <div className={`p-4 rounded-2xl text-xs font-bold shadow-md flex items-center gap-2 animate-fade-in ${
+            toastMessage.type === 'success' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'
+          }`}>
+            {toastMessage.type === 'success' ? <CheckCircle2 className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
+            <span>{toastMessage.text}</span>
+          </div>
+        )}
+
         {/* Header Title & Actions */}
         <div className="flex items-center justify-between">
           <div>
@@ -91,7 +126,7 @@ export const UMKMProjects: React.FC = () => {
               My Projects
             </h1>
             <p className="text-xs text-slate-500 font-medium mt-0.5">
-              Manage your draft listings, published recruitment, and active workspaces
+              Manage draft briefs, published recruitment, and active collaborative workspaces
             </p>
           </div>
 
@@ -138,7 +173,7 @@ export const UMKMProjects: React.FC = () => {
         <div className="space-y-4">
           {isLoading && (
             <div className="text-center py-16 space-y-2">
-              <div className="w-8 h-8 border-3 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto" />
+              <Loader2 className="w-8 h-8 animate-spin mx-auto text-blue-600" />
               <p className="text-xs text-slate-500 font-semibold">Loading your projects...</p>
             </div>
           )}
@@ -179,7 +214,6 @@ export const UMKMProjects: React.FC = () => {
             const statusUpper = req.status?.toUpperCase();
             const isDraft = statusUpper === 'DRAFT';
             const isPublished = statusUpper === 'PUBLISHED';
-            const isActive = statusUpper === 'ACTIVE';
             const isCompleted = statusUpper === 'COMPLETED';
 
             return (
@@ -188,7 +222,7 @@ export const UMKMProjects: React.FC = () => {
                 onClick={() => navigate(`/umkm/projects/${req.id}`)}
                 className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4 hover:shadow-md transition-all relative cursor-pointer group"
               >
-                {/* Top Row: Badge & Publish Action */}
+                {/* Top Row: Badge & Action Buttons */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className={`px-3 py-1 rounded-full text-xs font-bold border ${
@@ -210,21 +244,37 @@ export const UMKMProjects: React.FC = () => {
                     )}
                   </div>
 
-                  {/* One-Click Publish Button for Drafts */}
-                  {isDraft && (
+                  <div className="flex items-center gap-2">
+                    {/* One-Click Publish Button for Drafts */}
+                    {isDraft && (
+                      <button
+                        onClick={(e) => handlePublishProject(e, req.id)}
+                        disabled={actionLoadingId === req.id}
+                        className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition shadow-xs flex items-center gap-1.5"
+                      >
+                        {actionLoadingId === req.id ? (
+                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        ) : (
+                          <Send className="w-3.5 h-3.5" />
+                        )}
+                        <span>Publish</span>
+                      </button>
+                    )}
+
+                    {/* Delete Project Button */}
                     <button
-                      onClick={(e) => handlePublishProject(e, req.id)}
-                      disabled={actionLoadingId === req.id}
-                      className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition shadow-xs flex items-center gap-1.5"
+                      onClick={(e) => handleDeleteProject(e, req.id, req.title)}
+                      disabled={deletingId === req.id}
+                      className="p-1.5 rounded-xl text-slate-400 hover:text-red-600 hover:bg-red-50 transition"
+                      title="Delete Project"
                     >
-                      {actionLoadingId === req.id ? (
-                        <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      {deletingId === req.id ? (
+                        <Loader2 className="w-4 h-4 animate-spin text-red-600" />
                       ) : (
-                        <Send className="w-3.5 h-3.5" />
+                        <Trash2 className="w-4 h-4" />
                       )}
-                      <span>Publish to Market</span>
                     </button>
-                  )}
+                  </div>
                 </div>
 
                 {/* Title & Assigned Status */}
@@ -239,7 +289,7 @@ export const UMKMProjects: React.FC = () => {
                     </div>
                   ) : isDraft ? (
                     <p className="text-xs text-amber-700 font-medium mt-1">
-                      Draft mode • Click "Publish" so students can view and apply
+                      Draft mode • Click "Publish" so students can discover and apply
                     </p>
                   ) : (
                     <div className="flex items-center gap-2 text-xs font-medium text-slate-500 mt-1">

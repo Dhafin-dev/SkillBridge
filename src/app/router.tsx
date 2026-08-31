@@ -15,6 +15,9 @@ const ProjectDetails = React.lazy(() => import('../modules/public/ProjectDetails
 const GlobalSearch = React.lazy(() => import('../modules/public/GlobalSearch').then(m => ({ default: m.GlobalSearch })));
 const PublicStudentProfile = React.lazy(() => import('../modules/public/PublicStudentProfile').then(m => ({ default: m.PublicStudentProfile })));
 const PublicBusinessProfile = React.lazy(() => import('../modules/public/PublicBusinessProfile').then(m => ({ default: m.PublicBusinessProfile })));
+const HelpCenter = React.lazy(() => import('../modules/public/HelpCenter').then(m => ({ default: m.HelpCenter })));
+const AboutPage = React.lazy(() => import('../modules/public/AboutPage').then(m => ({ default: m.AboutPage })));
+const TermsPage = React.lazy(() => import('../modules/public/TermsPage').then(m => ({ default: m.TermsPage })));
 
 // Auth Module
 const Login = React.lazy(() => import('../modules/auth/Login').then(m => ({ default: m.Login })));
@@ -61,6 +64,9 @@ export const router = createBrowserRouter([
       { path: 'search', element: <GlobalSearch /> },
       { path: 'students/:id', element: <PublicStudentProfile /> },
       { path: 'umkm/:id', element: <PublicBusinessProfile /> },
+      { path: 'help', element: <HelpCenter /> },
+      { path: 'about', element: <AboutPage /> },
+      { path: 'terms', element: <TermsPage /> },
 
       // Auth Routes mapped behind GuestRoute to prevent logged-in users from seeing them
       {
@@ -71,7 +77,6 @@ export const router = createBrowserRouter([
           { path: 'forgot-password', element: <ForgotPassword /> },
           { path: 'reset-password', element: <ResetPassword /> },
         ]
-
       }
     ]
   },
@@ -94,6 +99,9 @@ export const router = createBrowserRouter([
           { path: 'messages', element: <ChatList /> },
           { path: 'messages/:id', element: <ChatDetail /> },
           { path: 'chat/:id', element: <ChatDetail /> },
+          { path: 'help', element: <HelpCenter /> },
+          { path: 'about', element: <AboutPage /> },
+          { path: 'terms', element: <TermsPage /> },
         ]
       },
 
@@ -130,6 +138,7 @@ export const router = createBrowserRouter([
         children: [
           { path: 'overview', element: <AdminOverview /> },
           { path: 'projects', element: <AdminProjectManagement /> },
+          { path: 'projects/:id', element: <ProjectDetails /> },
           { path: 'categories', element: <CategoryManagement /> },
           { path: 'matching', element: <MatchingManagement /> },
           { path: 'settings', element: <Settings /> },
