@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import http from "http";
 import path from "path";
 import { createServer as createViteServer } from "vite";
@@ -10,6 +11,14 @@ dotenv.config();
 dotenv.config({ path: path.resolve(process.cwd(), "backend", ".env") });
 
 function proxyToBackend(req: express.Request, res: express.Response, targetPath: string) {
+  // Handle preflight OPTIONS immediately
+  if (req.method === "OPTIONS") {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    return res.status(204).end();
+  }
+
   const options: http.RequestOptions = {
     hostname: "127.0.0.1",
     port: 5000,
@@ -22,6 +31,9 @@ function proxyToBackend(req: express.Request, res: express.Response, targetPath:
   };
 
   const proxyReq = http.request(options, (proxyRes) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
     res.writeHead(proxyRes.statusCode || 200, proxyRes.headers);
     proxyRes.pipe(res);
   });
@@ -39,6 +51,13 @@ function proxyToBackend(req: express.Request, res: express.Response, targetPath:
 async function startServer() {
   const app = express();
   const PORT = 3000;
+
+  app.use(cors({
+    origin: true,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }));
 
   // Stream proxy for all backend APIs and uploads (runs before express.json body parsing)
   app.use((req, res, next) => {
