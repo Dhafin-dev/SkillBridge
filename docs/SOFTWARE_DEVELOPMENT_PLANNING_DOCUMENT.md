@@ -9,12 +9,8 @@
 <br>
 
 **Disusun Oleh:**
-### TIM PENGEMBANG SKILLBRIDGE
-1. **187241057** | Ahmad Dhafin Al Farisy *(Lead Software Architect & Fullstack Engineer)*
-2. **187241025** | Fira Novi Puspita Saputri *(System Analyst & Technical Writer)*
-3. **187241044** | Shavira Elvaretta Wijaya *(UI/UX Designer & Frontend Specialist)*
-4. **187241074** | Iltizam Muhammad Hasan *(Backend & AI Integration Engineer)*
-5. **187241084** | Mohammad Nafi Ainur *(Database Administrator & QA Engineer)*
+### PENGEMBANG UTAMA (SOLO DEVELOPER)
+**187241057** | Ahmad Dhafin Al Farisy *(Lead Software Architect & Fullstack Engineer)*
 
 <br>
 
@@ -353,21 +349,20 @@ Pengembangan perangkat lunak SkillBridge Hub menerapkan metodologi **Agile Softw
 ---
 
 ## 3.2 Struktur Tim Rekayasa Perangkat Lunak (Development Team Structure)
-Proyek rekayasa perangkat lunak SkillBridge Hub diorganisasikan ke dalam struktur tim multidisiplin dengan pembagian peran spesifik yang saling terintegrasi:
+Pengembangan perangkat lunak SkillBridge Hub dilaksanakan secara mandiri (*Solo Fullstack Engineering*) oleh **Ahmad Dhafin Al Farisy** yang memegang tanggung jawab penuh secara *end-to-end* dalam seluruh dimensi rekayasa sistem:
 
 ```
-                    ┌──────────────────────────────────────┐
-                    │      Project Manager / Lead Architect│
-                    │         (Ahmad Dhafin Al Farisy)     │
-                    └──────────────────┬───────────────────┘
-                                       │
-         ┌─────────────────────────────┼─────────────────────────────┐
-         │                             │                             │
-┌────────┴────────┐           ┌────────┴────────┐           ┌────────┴────────┐
-│ System Analyst  │           │ UI/UX & Frontend│           │ Backend, AI & DB│
-│  & Tech Writer  │           │   Specialist    │           │    QA Specialist│
-│  (Fira Novi P.) │           │(Shavira E. W.)  │           │(Iltizam & Nafi) │
-└─────────────────┘           └─────────────────┘           └─────────────────┘
+                    ┌────────────────────────────────────────────────────────┐
+                    │               FULLSTACK SOFTWARE ENGINEER              │
+                    │                 (Ahmad Dhafin Al Farisy)               │
+                    └───────────────────────────┬────────────────────────────┘
+                                                │
+         ┌──────────────────────────────┬───────┴───────┬──────────────────────────────┐
+         │                              │               │                              │
+┌────────┴─────────────┐ ┌──────────────┴─────┐ ┌───────┴──────────────┐ ┌─────────────┴────────────┐
+│   System Analysis    │ │   UI/UX Design &   │ │ Backend Architecture │ │ Database Administration  │
+│   & Requirements     │ │ Frontend Reaktif   │ │ & AI GenAI Engine    │ │ & Quality Assurance (QA) │
+└──────────────────────┘ └────────────────────┘ └──────────────────────┘ └──────────────────────────┘
 ```
 
 ---
@@ -1161,6 +1156,6 @@ Untuk meningkatkan kapabilitas dan nilai guna platform di masa mendatang, bebera
 
 **Ditetapkan di**: Surabaya, Jawa Timur  
 **Tanggal**: 1 September 2026  
-**Disahkan Oleh**: Tim Pengembang Perangkat Lunak SkillBridge Hub  
+**Disahkan Oleh**: Ahmad Dhafin Al Farisy *(Pengembang Utama SkillBridge Hub)*  
 
 *(Dokumen ini disusun sebagai pedoman teknis dan operasional resmi dalam pelaksanaan seluruh siklus rekayasa perangkat lunak SkillBridge Hub).*
