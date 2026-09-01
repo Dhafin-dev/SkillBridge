@@ -33,7 +33,7 @@
   - [1.3 Solusi yang Diusulkan (Proposed Solution)](#13-solusi-yang-diusulkan-proposed-solution)
   - [1.4 Tujuan Proyek (Project Objectives)](#14-tujuan-proyek-project-objectives)
   - [1.5 Manfaat Proyek (Benefits)](#15-manfaat-proyek-benefits)
-  - [1.6 Ruang Lingkup Proyek (Project Scope)](#16-ruang-lingkup-proyek-project-scope)
+  - [1.6 Ruang Lingkup & Kategorisasi Fitur (MVP, Core, Future)](#16-ruang-lingkup--kategorisasi-fitur-mvp-core-future)
   - [1.7 Asumsi Proyek (Project Assumptions)](#17-asumsi-proyek-project-assumptions)
   - [1.8 Batasan Proyek (Project Constraints)](#18-batasan-proyek-project-constraints)
 - [BAB 2 — SOFTWARE REQUIREMENTS](#bab-2--software-requirements)
@@ -44,27 +44,27 @@
   - [2.5 Kebutuhan Lingkungan Pengembangan (Development Requirements)](#25-kebutuhan-lingkungan-pengembangan-development-requirements)
   - [2.6 Kebutuhan Lingkungan Penerapan Target (Target Deployment Requirements)](#26-kebutuhan-lingkungan-penerapan-target-target-deployment-requirements)
 - [BAB 3 — SOFTWARE DEVELOPMENT PLANNING](#bab-3--software-development-planning)
-  - [3.1 Metodologi Pengembangan (Development Methodology)](#31-metodologi-pengembangan-development-methodology)
+  - [3.1 Metodologi Pengembangan: Agile Iterative / Sprint-Based](#31-metodologi-pengembangan-agile-iterative--sprint-based)
   - [3.2 Peran dan Tanggung Jawab dalam Solo Development](#32-peran-dan-tanggung-jawab-dalam-solo-development)
   - [3.3 Alur Kerja Pengembangan (Development Workflow)](#33-alur-kerja-pengembangan-development-workflow)
   - [3.4 Work Breakdown Structure (WBS)](#34-work-breakdown-structure-wbs)
-  - [3.5 Rencana Tahapan dan Jadwal Pengembangan (Timeline & Sprints)](#35-rencana-tahapan-dan-jadwal-pengembangan-timeline--sprints)
+  - [3.5 Rencana Tahapan Iterasi dan Timeline (Sprint Schedule)](#35-rencana-tahapan-iterasi-dan-timeline-sprint-schedule)
   - [3.6 Tonggak Pencapaian Proyek (Project Milestones)](#36-tonggak-pencapaian-proyek-project-milestones)
   - [3.7 Luaran Proyek (Deliverables)](#37-luaran-proyek-deliverables)
   - [3.8 Rencana Manajemen Perubahan (Change Management Plan)](#38-rencana-manajemen-perubahan-change-management-plan)
 - [BAB 4 — HIGH-LEVEL ARCHITECTURE AND DESIGN PLANNING](#bab-4--high-level-architecture-and-design-planning)
-  - [4.1 Perencanaan Arsitektur Sistem (System Architecture Plan)](#41-perencanaan-arsitektur-sistem-system-architecture-plan)
+  - [4.1 Perencanaan Arsitektur Sistem (High-Level 3-Tier Architecture)](#41-perencanaan-arsitektur-sistem-high-level-3-tier-architecture)
   - [4.2 Perancangan Alur Proses Bisnis (Business Process & BPMN)](#42-perancangan-alur-proses-bisnis-business-process--bpmn)
   - [4.3 Perancangan Use Case dan Skenario (Use Case Plan & Scenarios)](#43-perancangan-use-case-dan-skenario-use-case-plan--scenarios)
-  - [4.4 Perancangan Basis Data (Database Design Plan)](#44-perancangan-basis-data-database-design-plan)
-  - [4.5 Perancangan Arsitektur Frontend (Frontend Architecture Plan)](#45-perancangan-arsitektur-frontend-frontend-architecture-plan)
-  - [4.6 Perancangan Arsitektur Backend (Backend Architecture Plan)](#46-perancangan-arsitektur-backend-backend-architecture-plan)
+  - [4.4 Perancangan Basis Data Tingkat Tinggi (Database Design Plan)](#44-perancangan-basis-data-tingkat-tinggi-database-design-plan)
+  - [4.5 Perancangan Modul Frontend (Frontend Modular Plan)](#45-perancangan-modul-frontend-frontend-modular-plan)
+  - [4.6 Perancangan Modul Backend (Backend Service Plan)](#46-perancangan-modul-backend-backend-service-plan)
 - [BAB 5 — IMPLEMENTATION PLAN](#bab-5--implementation-plan)
   - [5.1 Keputusan Tumpukan Teknologi (Technology Stack Decision)](#51-keputusan-tumpukan-teknologi-technology-stack-decision)
-  - [5.2 Rencana Implementasi Frontend (Frontend Implementation Plan)](#52-rencana-implementasi-frontend-frontend-implementation-plan)
-  - [5.3 Rencana Implementasi Backend dan API (Backend Implementation Plan)](#53-rencana-implementasi-backend-dan-api-backend-implementation-plan)
-  - [5.4 Rencana Implementasi Basis Data (Database Implementation Plan)](#54-rencana-implementasi-basis-data-database-implementation-plan)
-  - [5.5 Rencana Integrasi Mesin AI (AI Integration Plan)](#55-rencana-integrasi-mesin-ai-ai-integration-plan)
+  - [5.2 Rencana Implementasi Antarmuka (Frontend Plan)](#52-rencana-implementasi-antarmuka-frontend-plan)
+  - [5.3 Rencana Implementasi Layanan Backend & Kontrak API](#53-rencana-implementasi-layanan-backend--kontrak-api)
+  - [5.4 Rencana Implementasi Basis Data (Database Plan)](#54-rencana-implementasi-basis-data-database-plan)
+  - [5.5 Rencana Integrasi Mesin Rekomendasi AI (AI Integration Plan)](#55-rencana-integrasi-mesin-rekomendasi-ai-ai-integration-plan)
   - [5.6 Rencana Manajemen Kode Sumber (Version Control Plan)](#56-rencana-manajemen-kode-sumber-version-control-plan)
 - [BAB 6 — TESTING AND QUALITY ASSURANCE PLAN](#bab-6--testing-and-quality-assurance-plan)
   - [6.1 Strategi Pengujian (Testing Strategy)](#61-strategi-pengujian-testing-strategy)
@@ -88,6 +88,7 @@
 
 # DAFTAR TABEL
 
+- **Tabel 1.1** Matriks Pengelompokan Fitur Sistem (MVP, Core, Future Enhancements)
 - **Tabel 2.1** Matriks Analisis Pemangku Kepentingan (Stakeholder Analysis)
 - **Tabel 2.2** Matriks Peran Pengguna dan Hak Akses Sistem
 - **Tabel 2.3** Matriks Spesifikasi Kebutuhan Fungsional (Functional Requirements)
@@ -95,7 +96,7 @@
 - **Tabel 2.5** Spesifikasi Kebutuhan Lingkungan Pengembangan (Development Environment)
 - **Tabel 2.6** Spesifikasi Kebutuhan Lingkungan Penerapan Target (Target Deployment)
 - **Tabel 3.1** Pembagian Peran dan Tanggung Jawab dalam Solo Development
-- **Tabel 3.2** Rencana Pembagian Tahapan Siklus Pengembangan
+- **Tabel 3.2** Rencana Pembagian Tahapan Siklus Pengembangan Iteratif
 - **Tabel 3.3** Daftar Tonggak Pencapaian Proyek (Project Milestones)
 - **Tabel 3.4** Rincian Luaran Proyek Perangkat Lunak (Deliverables)
 - **Tabel 4.1** Skenario Use Case: Pendaftaran dan Pengelolaan Profil Pengguna
@@ -117,14 +118,12 @@
 
 # DAFTAR GAMBAR
 
-- **Gambar 3.1** Diagram Alur Kerja Metodologi Agile Scrum
-- **Gambar 3.2** Visualisasi Struktur WBS dan Gantt Chart Proyek
-- **Gambar 4.1** Diagram Konsep Arsitektur Tiga Lapis (3-Tier Architecture)
+- **Gambar 3.1** Diagram Alur Kerja Metodologi Agile Iterative / Sprint-Based
+- **Gambar 3.2** Visualisasi Tahapan Pengembangan Iteratif (Gantt Chart)
+- **Gambar 4.1** Diagram Konsep Arsitektur Tiga Lapis (High-Level 3-Tier Architecture)
 - **Gambar 4.2** BPMN Alur Proses Bisnis Kolaborasi Proyek Terpadu
 - **Gambar 4.3** Use Case Diagram Sistem Informasi SkillBridge Hub
 - **Gambar 4.4** Entity Relationship Diagram (ERD) Basis Data Relasional
-- **Gambar 4.5** Diagram Alir Data (DFD) Level 0 (Context Diagram)
-- **Gambar 4.6** Diagram Alir Data (DFD) Level 1 Dekomposisi Sistem
 - **Gambar 5.1** Diagram Strategi Percabangan Git Alur Kerja Mandiri
 - **Gambar 6.1** Piramida Pengujian Kualitas Perangkat Lunak
 - **Gambar 6.2** Alur Siklus Hidup Penanganan Bug (Bug Lifecycle)
@@ -134,14 +133,14 @@
 # BAB 1 — PROJECT OVERVIEW
 
 ## 1.1 Latar Belakang (Background)
-Integrasi antara dunia akademik dan sektor industri riil menjadi pilar fundamental dalam mempersiapkan lulusan perguruan tinggi agar memiliki keterampilan praktis yang relevan dengan kebutuhan pasar. Mahasiswa dituntut untuk tidak hanya menguasai teori formal di ruang perkuliahan, tetapi juga memiliki pengalaman pengerjaan proyek nyata yang dapat dibuktikan melalui portofolio terpercaya. Di sisi lain, sektor Usaha Mikro, Kecil, dan Menengah (UMKM) serta unit usaha rintisan sering menghadapi kendala dalam melakukan digitalisasi bisnis—seperti pembuatan landing page, pengelolaan media sosial, perancangan antarmuka pengguna, maupun branding produk—akibat keterbatasan anggaran operasional dan akses ke tenaga profesional.
+Integrasi antara dunia akademik dan sektor industri riil merupakan aspek fundamental dalam mempersiapkan lulusan perguruan tinggi agar memiliki keterampilan praktis yang relevan dengan kebutuhan pasar kerja. Mahasiswa dituntut tidak hanya menguasai teori formal di ruang perkuliahan, tetapi juga memiliki pengalaman pengerjaan proyek nyata yang dapat dibuktikan melalui portofolio terpercaya. Di sisi lain, sektor Usaha Mikro, Kecil, dan Menengah (UMKM) sering menghadapi kendala dalam melakukan digitalisasi bisnis—seperti pembuatan landing page, pengelolaan media sosial, perancangan antarmuka pengguna, maupun branding produk—akibat keterbatasan anggaran operasional dan akses ke tenaga profesional.
 
 Kondisi eksisting menunjukkan bahwa proses kolaborasi antara mahasiswa dan UMKM masih berlangsung secara informal dan terfragmentasi. Mahasiswa kesulitan menemukan mitra usaha yang membutuhkan keahlian mereka secara transparan, sedangkan pemilik UMKM kesulitan menyaring pelamar secara manual karena keterbatasan waktu dan latar belakang teknis. Selain itu, pengerjaan proyek sering kali tidak memiliki ruang pemantauan kemajuan yang terstruktur sehingga rawan terjadi keterlambatan atau ketidaksesuaian hasil akhir. Di akhir proyek, mahasiswa juga jarang mendapatkan rekam jejak formal yang dapat divalidasi oleh pihak luar.
 
-Untuk menjawab permasalahan tersebut, dirancanglah sistem informasi **SkillBridge Hub**. Platform web ini dirancang untuk menghubungkan mahasiswa pencari proyek industri dengan UMKM yang membutuhkan solusi digitalisasi melalui mekanisme rekomendasi berbasis kecerdasan buatan, ruang kerja kolaboratif terstruktur, dan sistem evaluasi portofolio terverifikasi.
+Untuk menjawab permasalahan tersebut, dirancang sistem informasi **SkillBridge Hub**. Platform web ini bertujuan menghubungkan mahasiswa pencari proyek industri dengan UMKM yang membutuhkan solusi digitalisasi melalui mekanisme rekomendasi berbasis kecerdasan buatan, ruang kerja kolaboratif terstruktur, dan sistem evaluasi portofolio terverifikasi.
 
 ## 1.2 Rumusan Masalah (Problem Statement)
-Berdasarkan latar belakang di atas, rumusan masalah utama yang ditangani dalam pengembangan perangkat lunak ini adalah:
+Rumusan masalah utama yang ditangani dalam proyek rekayasa perangkat lunak ini adalah:
 1. **Ketidaksesuaian Kualifikasi Pelamar dan Kebutuhan Proyek**: UMKM kesulitan mencocokkan keterampilan teknis mahasiswa pelamar dengan kualifikasi pekerjaan yang dibutuhkan.
 2. **Inefisiensi Seleksi Kandidat**: Kurasi pelamar secara manual membutuhkan waktu lama dan rawan menghasilkan keputusan yang kurang tepat.
 3. **Ketiadaan Media Kolaborasi dan Pelacakan Terpusat**: Kurangnya wadah terpadu untuk memantau tahapan pengerjaan tugas, tenggat waktu, dan penyerahan hasil kerja antara mahasiswa dan UMKM.
@@ -149,7 +148,7 @@ Berdasarkan latar belakang di atas, rumusan masalah utama yang ditangani dalam p
 5. **Komunikasi yang Terpencar**: Koordinasi proyek sering dilakukan di luar platform tanpa dokumentasi riwayat pengerjaan yang rapi.
 
 ## 1.3 Solusi yang Diusulkan (Proposed Solution)
-Solusi yang diusulkan melalui pengembangan platform **SkillBridge Hub** meliputi:
+Solusi yang diusulkan melalui platform **SkillBridge Hub** meliputi:
 1. **Modul Rekomendasi Kecerdasan Buatan (AI Matchmaking Engine)**: Memanfaatkan model Large Language Model (Google Gemini 2.5 Flash API) untuk menganalisis kecocokan profil keterampilan mahasiswa terhadap deskripsi brief proyek, menghasilkan persentase kecocokan dan analisis kesesuaian sebagai *decision support* bagi UMKM.
 2. **Manajemen Profil dan Keahlian Mahasiswa**: Menyediakan wadah terstruktur bagi mahasiswa untuk mencantumkan keterampilan teknis, institusi asal, sertifikat, dan rekam jejak portofolio.
 3. **Katalog Marketplace Proyek**: Antarmuka terpusat bagi UMKM untuk menerbitkan kebutuhan digitalisasi dan bagi mahasiswa untuk mencari proyek sesuai kategori, durasi, dan stipend.
@@ -171,35 +170,39 @@ Tujuan dari perencanaan dan pengembangan perangkat lunak SkillBridge Hub adalah:
 3. **Bagi Institusi Pendidikan**: Membantu mendukung program kemitraan industri dan mempermudah dokumentasi karya praktis mahasiswa.
 4. **Bagi Pengembang**: Menguji kemampuan rekayasa perangkat lunak secara *end-to-end* mulai dari analisis, perancangan, pengkodean fullstack, hingga pengujian sistem.
 
-## 1.6 Ruang Lingkup Proyek (Project Scope)
-- **Fitur dalam Lingkup Pengembangan (In-Scope)**:
-  1. Manajemen autentikasi (Registrasi multi-peran, Login JWT, Reset Password, Token Versioning).
-  2. Manajemen profil pengguna (Profil Mahasiswa dengan keahlian/sertifikat dan Profil UMKM dengan data usaha).
-  3. Publikasi dan penjelajahan katalog proyek dengan filter multi-kategori.
-  4. Pengajuan lamaran proyek dan perhitungan skor AI Matchmaking sebagai pendukung keputusan.
-  5. Manajemen pelamar oleh UMKM (Terima/Tolak pelamar).
-  6. Ruang kerja bersama (Workspace) dengan checklist tugas dan kalkulasi persentase kemajuan.
-  7. Penyerahan berkas luaran proyek dan konfirmasi penyelesaian.
-  8. Sistem ulasan timbal balik (bintang 1-5 dan komentar) serta pembaruan skor portofolio.
-  9. Fitur perpesanan internal antar-pengguna dalam workspace dan pusat notifikasi.
-  10. Dasbor tata kelola administrator (statistik platform, manajemen kategori, moderasi proyek, log audit).
-- **Fitur di Luar Lingkup Pengembangan (Out-of-Scope)**:
-  1. Integrasi gerbang pembayaran otomatis (*escrow payment gateway*) untuk penahanan dana stipend.
-  2. Fitur panggilan video internal di dalam aplikasi.
-  3. Compiler/eksekutor kode terintegrasi di peramban.
-  4. Aplikasi mobile berbasis native (fokus saat ini adalah responsive web application).
+## 1.6 Ruang Lingkup & Kategorisasi Fitur (MVP, Core, Future)
+Untuk menjamin ketercapaian pengembangan secara realistis dalam skema pengembang mandiri, seluruh fitur sistem dikelompokkan ke dalam tiga tingkatan prioritas:
+
+##### Tabel 1.1 Matriks Pengelompokan Fitur Sistem (MVP, Core, Future Enhancements)
+| Kelompok Fitur | Nama Fitur / Modul | Deskripsi Lingkup Fungsional | Target Rilis |
+| :--- | :--- | :--- | :---: |
+| **1. MVP (Minimum Viable Product)** | **Autentikasi & Akun** | Registrasi peran Mahasiswa & UMKM, Login berbasis JWT, dan penyimpanan sesi aman. | Fase 1 |
+| | **Profil Pengguna Dasar** | Profil Mahasiswa (keahlian, institusi) dan Profil UMKM (data usaha, kontak). | Fase 1 |
+| | **Katalog Proyek** | Publikasi brief proyek oleh UMKM dan pencarian proyek dengan filter kategori. | Fase 1 |
+| | **Pengajuan Lamaran** | Form lamaran proyek (*apply*) oleh mahasiswa (1 lamaran per proyek). | Fase 1 |
+| | **Inisiasi Workspace Dasar** | Penerimaan pelamar oleh UMKM yang otomatis memicu pembuatan entitas workspace bersama. | Fase 1 |
+| **2. Core Features (Fitur Utama Kolaborasi)** | **AI Matchmaking Engine** | Analisis rekomendasi kecocokan pelamar terhadap proyek via Gemini AI (*Decision Support*). | Fase 2 |
+| | **Milestone & Task Checklist** | Pembuatan checklist tugas, penetapan batas waktu, dan kalkulasi persentase progres dinamis. | Fase 2 |
+| | **Penyerahan Deliverables** | Pengunggahan tautan hasil kerja akhir proyek dan validasi persetujuan oleh UMKM. | Fase 2 |
+| | **Two-Way Review & Scoring** | Penilaian rating bintang (1-5) timbal balik dan kalkulasi penambahan skor portofolio. | Fase 2 |
+| | **Perpesanan & Notifikasi** | Pesan langsung antaranggota workspace aktif dan laci pemberitahuan status. | Fase 2 |
+| | **Dasbor Tata Kelola Admin** | Metrik statistik platform, moderasi kategori proyek, dan pencatatan audit log aktivitas. | Fase 2 |
+| **3. Future Enhancements (Lanjutan)** | **Payment Gateway Escrow** | Penampungan dana stipend terintegrasi (Midtrans) dengan rilis dana pasca-persetujuan kerja. | Fase 3 |
+| | **Aplikasi Mobile Native** | Aplikasi Android/iOS menggunakan React Native / Flutter. | Fase 3 |
+| | **Automated Skill Assessment** | Uji kompetensi teknis otomatis (coding test) untuk validasi keahlian mahasiswa. | Fase 3 |
+| | **Video Conference Terintegrasi** | Modul panggilan video langsung di dalam workspace menggunakan WebRTC. | Fase 3 |
 
 ## 1.7 Asumsi Proyek (Project Assumptions)
-1. Mahasiswa dan mitra UMKM memiliki perangkat komputer/smartphone yang terhubung ke jaringan internet dengan peramban modern.
-2. Mitra UMKM memiliki itikad baik dalam memberikan informasi kebutuhan proyek dan mengevaluasi hasil kerja mahasiswa.
-3. Layanan eksternal Google Gemini API dapat diakses secara stabil selama pengujian dan operasional aplikasi.
-4. Pengguna bersedia mengisi data keahlian dan profil usaha secara akurat untuk mendukung akurasi rekomendasi sistem.
+1. Pengguna (Mahasiswa dan UMKM) memiliki perangkat komputer/smartphone dengan koneksi internet dan peramban web modern.
+2. Mitra UMKM menyediakan informasi deskripsi kebutuhan proyek secara jelas dan objektif.
+3. Layanan eksternal Google Gemini API dapat diakses dengan stabil selama proses pengujian dan demonstrasi.
+4. Pengguna mengisi informasi profil keahlian dan profil usaha secara akurat.
 
 ## 1.8 Batasan Proyek (Project Constraints)
 1. **Batasan Sumber Daya**: Proyek dikembangkan secara mandiri oleh satu orang pengembang (*Solo Developer*).
-2. **Batasan Waktu**: Jadwal pengembangan dibatasi oleh durasi kalender perkuliahan satu semester.
-3. **Batasan Biaya**: Infrastruktur pengembangan dan layanan cloud diprioritaskan menggunakan tingkatan gratis (*free/hobby tier*) yang hemat biaya.
-4. **Batasan Platform**: Sistem difokuskan berjalan optimal pada peramban web modern tanpa pembuatan aplikasi mobile terpisah pada fase ini.
+2. **Batasan Waktu**: Jadwal pengembangan diselesaikan dalam durasi kalender perkuliahan satu semester.
+3. **Batasan Biaya**: Infrastruktur hosting dan basis data memprioritaskan paket *free/hobby tier* yang efisien.
+4. **Batasan Platform**: Sistem difokuskan sebagai *Responsive Web Application* tanpa aplikasi mobile native pada rilis awal.
 
 ---
 
@@ -210,10 +213,10 @@ Tujuan dari perencanaan dan pengembangan perangkat lunak SkillBridge Hub adalah:
 ##### Tabel 2.1 Matriks Analisis Pemangku Kepentingan (Stakeholder Analysis)
 | ID | Pemangku Kepentingan | Peran dalam Sistem | Kepentingan & Kebutuhan |
 | :---: | :--- | :--- | :--- |
-| **SH-01** | **Mahasiswa (Talenta)** | Pengguna Utama | Mencari proyek digital nyata, mengunggah keahlian, berkolaborasi dalam workspace, dan membangun portofolio terverifikasi. |
+| **SH-01** | **Mahasiswa (Talenta)** | Pengguna Utama | Mencari proyek industri nyata, mengunggah keahlian, berkolaborasi dalam workspace, dan membangun portofolio terverifikasi. |
 | **SH-02** | **Mitra UMKM** | Pengguna Utama | Menerbitkan brief kebutuhan digitalisasi, menyeleksi pelamar dengan bantuan rekomendasi AI, memantau tugas, dan menilai hasil kerja. |
 | **SH-03** | **Administrator** | Pengelola Platform | Memantau statistik kesehatan sistem, mengelola kategori proyek, memoderasi konten, dan memeriksa catatan aktivitas keamanan. |
-| **SH-04** | **Dosen / Institusi Akademik** | Pengawas & Evaluator | Menilai kualitas perancangan sistem informasi, kepatuhan metodologi rekayasa perangkat lunak, dan luaran teknis proyek. |
+| **SH-04** | **Dosen / Evaluator Akademik** | Pengawas & Penilai | Menilai kualitas perancangan sistem informasi, metodologi pengembangan, dan luaran teknis proyek perangkat lunak. |
 | **SH-05** | **Pengembang Mandiri** | Rekayasawan Sistem | Merancang arsitektur, mengimplementasikan kode frontend/backend, merancang basis data, dan menguji fungsionalitas aplikasi. |
 
 ---
@@ -233,29 +236,29 @@ Tujuan dari perencanaan dan pengembangan perangkat lunak SkillBridge Hub adalah:
 ## 2.3 Kebutuhan Fungsional (Functional Requirements)
 
 ##### Tabel 2.3 Matriks Spesifikasi Kebutuhan Fungsional (Functional Requirements)
-| Kode FR | Nama Fitur | Deskripsi Kebutuhan Sistem | Aktor Utama | Prioritas |
+| Kode FR | Nama Fitur | Deskripsi Kebutuhan Sistem | Aktor Utama | Kategori |
 | :---: | :--- | :--- | :---: | :---: |
-| **FR-AUTH-01** | Registrasi Multi-Peran | Sistem memungkinkan pengguna baru mendaftar dengan memilih peran (Mahasiswa / UMKM) disertai enkripsi password Bcrypt. | Guest | Tinggi |
-| **FR-AUTH-02** | Login Berbasis JWT | Sistem memvalidasi kredensial login dan menerbitkan JSON Web Token untuk otentikasi sesi. | Semua Pengguna | Tinggi |
-| **FR-AUTH-03** | Pemulihan Kata Sandi | Sistem menyediakan alur permintaan tautan/token reset password melalui email. | Semua Pengguna | Sedang |
-| **FR-PROF-01** | Profil Mahasiswa | Sistem memfasilitasi pengelolaan profil mahasiswa, institusi, taksonomi keahlian, dan sertifikat. | Mahasiswa | Tinggi |
-| **FR-PROF-02** | Profil UMKM | Sistem memfasilitasi pengelolaan profil usaha UMKM, logo, bidang industri, lokasi, dan skala usaha. | UMKM | Tinggi |
-| **FR-PROJ-01** | Publikasi Brief Proyek | Sistem menyediakan form bagi UMKM untuk menerbitkan brief proyek (judul, kategori, durasi, stipend, sasaran, luaran, tags). | UMKM | Tinggi |
-| **FR-PROJ-02** | Katalog & Filter Proyek | Sistem menyediakan halaman pencarian proyek dengan filter berdasarkan kategori, level kesulitan, dan kata kunci. | Semua Pengguna | Tinggi |
-| **FR-AI-01** | Rekomendasi AI Matchmaking | Sistem menghitung skor kecocokan profil pelamar terhadap brief proyek via Google Gemini API sebagai alat bantu keputusan (*decision support*). | UMKM, Sistem | Tinggi |
-| **FR-APP-01** | Pengajuan Lamaran | Sistem memungkinkan mahasiswa mengajukan lamaran ke proyek terbuka (1 lamaran per mahasiswa per proyek). | Mahasiswa | Tinggi |
-| **FR-APP-02** | Seleksi Pelamar | Sistem menampilkan daftar pelamar proyek berurutan berdasarkan skor kecocokan dan memungkinkan UMKM menerima/menolak pelamar. | UMKM | Tinggi |
-| **FR-WORK-01** | Pembuatan Workspace Otomatis | Sistem secara otomatis menginisialisasi entitas ruang kerja kolaboratif saat UMKM menyetujui lamaran mahasiswa. | Sistem | Tinggi |
-| **FR-WORK-02** | Checklist Tugas Milestone | Sistem memungkinkan pembuatan, penugasan, penentuan tenggat waktu, dan penandaan selesai pada item tugas dalam workspace. | Mahasiswa, UMKM | Tinggi |
-| **FR-WORK-03** | Pelacakan Kemajuan Otomatis | Sistem memperbarui persentase progres workspace secara otomatis berdasarkan rasio tugas yang telah diselesaikan. | Sistem | Tinggi |
-| **FR-WORK-04** | Penyerahan Luaran Kerja | Sistem menyediakan antarmuka bagi mahasiswa untuk menyerahkan tautan luaran akhir dan memungkinkan UMKM memverifikasinya. | Mahasiswa, UMKM | Tinggi |
-| **FR-REV-01** | Ulasan Dua Arah | Sistem memfasilitasi pengisian rating bintang (1-5) dan komentar evaluasi antara mahasiswa dan UMKM setelah proyek tuntas. | Mahasiswa, UMKM | Tinggi |
-| **FR-REV-02** | Pembaruan Skor Portofolio | Sistem mengakumulasi skor portofolio mahasiswa secara otomatis berdasarkan ulasan positif yang diterima. | Sistem | Sedang |
-| **FR-CHAT-01** | Perpesanan Internal Workspace | Sistem menyediakan fitur pesan teks langsung antaranggota yang terikat pada konteks workspace aktif. | Mahasiswa, UMKM | Sedang |
-| **FR-NOTIF-01**| Pusat Notifikasi | Sistem mencatat dan menampilkan pemberitahuan saat status lamaran berubah, tugas diperbarui, atau pesan diterima. | Semua Pengguna | Sedang |
-| **FR-ADM-01** | Dasbor Analitik Admin | Sistem menyajikan statistik ringkasan total pengguna, proyek aktif, workspace berjalan, dan tingkat penyelesaian. | Admin | Sedang |
-| **FR-ADM-02** | Manajemen Kategori & Moderasi | Sistem memungkinkan admin mengelola master kategori dan mengubah status visibilitas proyek publik. | Admin | Sedang |
-| **FR-ADM-03** | Pencatatan Audit Log | Sistem merekam aktivitas administratif penting ke dalam tabel audit log untuk keperluan audit keamanan. | Admin, Sistem | Sedang |
+| **FR-AUTH-01** | Registrasi Multi-Peran | Sistem memungkinkan pendaftaran akun baru dengan peran Mahasiswa atau UMKM (password Bcrypt). | Guest | **MVP** |
+| **FR-AUTH-02** | Login Berbasis JWT | Sistem memvalidasi kredensial login dan menerbitkan JSON Web Token untuk otentikasi sesi. | Semua Pengguna | **MVP** |
+| **FR-AUTH-03** | Pemulihan Kata Sandi | Sistem menyediakan alur permintaan reset password berbasis token email. | Semua Pengguna | **Core** |
+| **FR-PROF-01** | Profil Mahasiswa | Sistem memfasilitasi pengelolaan profil mahasiswa, institusi, taksonomi keahlian, dan sertifikat. | Mahasiswa | **MVP** |
+| **FR-PROF-02** | Profil UMKM | Sistem memfasilitasi pengelolaan profil usaha UMKM, logo, bidang industri, lokasi, dan skala usaha. | UMKM | **MVP** |
+| **FR-PROJ-01** | Publikasi Brief Proyek | Sistem menyediakan form bagi UMKM untuk menerbitkan brief proyek (judul, kategori, durasi, stipend, tags). | UMKM | **MVP** |
+| **FR-PROJ-02** | Katalog & Filter Proyek | Sistem menyediakan halaman pencarian proyek dengan filter berdasarkan kategori, level, dan kata kunci. | Semua Pengguna | **MVP** |
+| **FR-AI-01** | Rekomendasi AI Matchmaking | Sistem menghitung skor kecocokan profil pelamar terhadap brief proyek via Google Gemini API (*decision support*). | UMKM, Sistem | **Core** |
+| **FR-APP-01** | Pengajuan Lamaran | Sistem memungkinkan mahasiswa mengajukan lamaran ke proyek terbuka (1 lamaran per proyek). | Mahasiswa | **MVP** |
+| **FR-APP-02** | Seleksi Pelamar | Sistem menampilkan daftar pelamar proyek berurutan skor AI dan memungkinkan UMKM menerima/menolak pelamar. | UMKM | **MVP** |
+| **FR-WORK-01** | Inisiasi Workspace Otomatis | Sistem menginisialisasi entitas ruang kerja kolaboratif saat UMKM menyetujui lamaran mahasiswa. | Sistem | **MVP** |
+| **FR-WORK-02** | Checklist Tugas Milestone | Sistem memungkinkan pembuatan, penugasan, penentuan tenggat waktu, dan penandaan selesai pada item tugas. | Mahasiswa, UMKM | **Core** |
+| **FR-WORK-03** | Pelacakan Kemajuan Dinamis | Sistem memperbarui persentase progres workspace secara otomatis berdasarkan rasio tugas selesai. | Sistem | **Core** |
+| **FR-WORK-04** | Penyerahan Luaran Kerja | Sistem menyediakan antarmuka bagi mahasiswa untuk menyerahkan tautan luaran akhir dan UMKM memvalidasinya. | Mahasiswa, UMKM | **Core** |
+| **FR-REV-01** | Ulasan Dua Arah | Sistem memfasilitasi pengisian rating bintang (1-5) dan komentar evaluasi antara mahasiswa dan UMKM. | Mahasiswa, UMKM | **Core** |
+| **FR-REV-02** | Pembaruan Skor Portofolio | Sistem mengakumulasi skor portofolio mahasiswa secara otomatis berdasarkan ulasan yang diterima. | Sistem | **Core** |
+| **FR-CHAT-01** | Perpesanan Internal Workspace | Sistem menyediakan fitur pesan teks langsung antaranggota yang terikat pada workspace aktif. | Mahasiswa, UMKM | **Core** |
+| **FR-NOTIF-01**| Pusat Notifikasi | Sistem mencatat dan menampilkan pemberitahuan saat status lamaran berubah, tugas diperbarui, atau pesan masuk. | Semua Pengguna | **Core** |
+| **FR-ADM-01** | Dasbor Analitik Admin | Sistem menyajikan statistik ringkasan total pengguna, proyek aktif, workspace berjalan, dan tingkat penyelesaian. | Admin | **Core** |
+| **FR-ADM-02** | Manajemen Kategori & Moderasi | Sistem memungkinkan admin mengelola master kategori dan mengubah status visibilitas proyek publik. | Admin | **Core** |
+| **FR-ADM-03** | Pencatatan Audit Log | Sistem merekam aktivitas administratif penting ke dalam tabel audit log untuk keperluan audit keamanan. | Admin, Sistem | **Core** |
 
 ---
 
@@ -264,15 +267,15 @@ Tujuan dari perencanaan dan pengembangan perangkat lunak SkillBridge Hub adalah:
 ##### Tabel 2.4 Matriks Spesifikasi Kebutuhan Non-Fungsional (Non-Functional Requirements)
 | Parameter | Kode NFR | Spesifikasi Target Terukur |
 | :--- | :---: | :--- |
-| **Performa** | **NFR-P-01** | Waktu respons rata-rata REST API backend $\le 300\text{ ms}$ untuk operasi query data standar pada lingkungan pengujian lokal/staging. |
-| | **NFR-P-02** | Waktu respons inferensi analisis rekomendasi AI via Google Gemini API selesai dalam rentang waktu yang wajar ($\le 3.5\text{ detik}$). |
+| **Performa** | **NFR-P-01** | Waktu respons rata-rata REST API backend $\le 300\text{ ms}$ untuk operasi query data standar pada lingkungan lokal/staging. |
+| | **NFR-P-02** | Waktu respons inferensi analisis rekomendasi AI via Google Gemini API selesai dalam rentang waktu wajar ($\le 3.5\text{ detik}$). |
 | **Keamanan** | **NFR-S-01** | Seluruh kata sandi pengguna dienkripsi searah menggunakan algoritma **Bcrypt** dengan salt factor minimal 10. |
-| | **NFR-S-02** | Sesi pengguna divalidasi menggunakan JSON Web Token (JWT) yang dilengkapi mekanisme versi token (*Token Versioning*) untuk pembatalan sesi jika diperlukan. |
-| | **NFR-S-03** | Seluruh input dari pengguna pada rute API divalidasi menggunakan skema **Zod** untuk mencegah masukan tidak valid atau serangan injeksi. |
+| | **NFR-S-02** | Sesi pengguna divalidasi menggunakan JSON Web Token (JWT) yang dilengkapi mekanisme versi token (*Token Versioning*). |
+| | **NFR-S-03** | Seluruh input dari pengguna pada rute API divalidasi menggunakan skema **Zod** untuk mencegah masukan tidak valid. |
 | **Kegunaan** | **NFR-U-01** | Antarmuka web responsif dan dapat diakses dengan baik pada layar desktop, tablet, maupun ponsel pintar menggunakan Tailwind CSS v4. |
-| **Keandalan** | **NFR-R-01** | Sistem menerapkan penanganan galat terpusat (*Global Error Handler*) pada backend sehingga galat tidak menyebabkan server terhenti (*crash*). |
+| **Keandalan** | **NFR-R-01** | Sistem menerapkan penanganan galat terpusat (*Global Error Handler*) pada backend sehingga galat tidak menyebabkan server *crash*. |
 | **Kompatibilitas** | **NFR-C-01** | Aplikasi web kompatibel dengan peramban modern standar (Google Chrome, Mozilla Firefox, Microsoft Edge, Safari). |
-| **Kemudahan Rawat**| **NFR-M-01** | Basis kode ditulis menggunakan **TypeScript** bertipe ketat (*strict mode*) dan menerapkan pemisahan lapisan Controller, Service, dan Repository. |
+| **Kemudahan Rawat**| **NFR-M-01** | Basis kode ditulis menggunakan **TypeScript** bertipe ketat (*strict mode*) dan menerapkan pemisahan Controller, Service, dan Repository. |
 
 ---
 
@@ -308,16 +311,16 @@ Tujuan dari perencanaan dan pengembangan perangkat lunak SkillBridge Hub adalah:
 
 # BAB 3 — SOFTWARE DEVELOPMENT PLANNING
 
-## 3.1 Metodologi Pengembangan (Development Methodology)
-Pengembangan perangkat lunak SkillBridge Hub menggunakan pendekatan **Agile Software Development** yang disesuaikan untuk pengembang mandiri (*Solo Developer Scrum Framework*). 
+## 3.1 Metodologi Pengembangan: Agile Iterative / Sprint-Based
+Pengembangan perangkat lunak SkillBridge Hub menerapkan pendekatan **Agile Iterative / Sprint-Based Development**. Model ini berfokus pada pembagian fitur ke dalam siklus iterasi (sprint) modular tanpa beban seremonial tim besar, sangat cocok untuk pengembang mandiri (*solo developer*) yang mengutamakan kecepatan implementasi, kualitas kode, dan fleksibilitas penyesuaian fungsionalitas.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                 ALUR ITERASI PENGEMBANGAN MANDIRI (AGILE ITERATION)         │
 │                                                                             │
 │   ┌──────────────┐     ┌──────────────┐     ┌──────────────┐     ┌───────┐  │
-│   │ Product      │ ──▶ │ Sprint Plan  │ ──▶ │ Eksekusi Kode│ ──▶ │ Uji & │  │
-│   │ Backlog      │     │ (Modul Fitur)│     │ Fullstack    │     │ Review│  │
+│   │ Product      │ ──▶ │ Rencana      │ ──▶ │ Eksekusi Kode│ ──▶ │ Uji & │  │
+│   │ Backlog      │     │ Iterasi/Modul│     │ Fullstack    │     │ Review│  │
 │   └──────────────┘     └──────────────┘     └──────────────┘     └───────┘  │
 │                                                     │                │      │
 │                                                     ▼                ▼      │
@@ -326,12 +329,12 @@ Pengembangan perangkat lunak SkillBridge Hub menggunakan pendekatan **Agile Soft
 │                                            └─────────────────────────────────┘
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
-#### Gambar 3.1 Diagram Alur Kerja Metodologi Agile Scrum
+#### Gambar 3.1 Diagram Alur Kerja Metodologi Agile Iterative / Sprint-Based
 
-**Alasan Pemilihan Metodologi**:
-1. **Fleksibilitas terhadap Modul Fitur**: Fitur dapat diselesaikan per modul mandiri (Auth, Marketplace, AI Matchmaking, Workspace, Review) secara bertahap.
-2. **Kemudahan Uji Coba Cepat**: Eksperimen format prompt AI pada Google Gemini dapat disesuaikan secara berulang hingga menghasilkan keluaran yang stabil.
-3. **Kendali Penuh Pengembang Mandiri**: Mengurangi beban birokrasi koordinasi tim tanpa mengorbankan kualitas dokumentasi dan struktur kode.
+**Karakteristik Metodologi**:
+1. **Pengembangan Berbasis Kenaikan Bertahap (*Incremental Progress*)**: Fitur dikembangkan dari fondasi data, modul MVP, fitur inti kolaborasi, hingga integrasi AI secara bertahap.
+2. **Evaluasi Berulang pada Modul Kritis**: Penyesuaian format prompt Google Gemini AI dilakukan secara berulang pada fase iterasi AI hingga menghasilkan keluaran yang konsisten.
+3. **Efisiensi Pengembang Tunggal**: Memangkas waktu koordinasi tim formal dan mengalokasikan fokus maksimal pada perancangan arsitektur, penulisan kode berkualitas, dan pengujian.
 
 ---
 
@@ -370,26 +373,26 @@ Berikut adalah struktur rincian kerja (*Work Breakdown Structure*) proyek SkillB
     1.1 Identifikasi Masalah & Studi Lapangan
     1.2 Analisis Pemangku Kepentingan
     1.3 Penyusunan Spesifikasi Kebutuhan (FR & NFR)
-    1.4 Penetapan Asumsi dan Batasan Proyek
+    1.4 Pengelompokan Fitur (MVP, Core, Future)
 
 2.0 Perancangan Sistem (System Design)
     2.1 Pemodelan Alur Proses Bisnis (BPMN)
     2.2 Perancangan Use Case & Skenario
     2.3 Perancangan Skema Basis Data Relasional (ERD & Kamus Data)
-    2.4 Perancangan Antarmuka Pengguna (Wireframe & Desain Komponen)
+    2.4 Perancangan Antarmuka Pengguna Modular
     2.5 Perancangan Kontrak RESTful API
 
 3.0 Implementasi Perangkat Lunak (Development)
-    3.1 Inisialisasi Repositori & Konfigurasi TypeScript
-    3.2 Implementasi Skema Prisma, Migrasi, dan Data Seeding
-    3.3 Implementasi Modul Autentikasi JWT & Middleware RBAC
-    3.4 Implementasi Modul Katalog & Publikasi Proyek
-    3.5 Implementasi Integrasi Mesin Rekomendasi Google Gemini AI
-    3.6 Implementasi Modul Lamaran Proyek & Seleksi Kandidat
-    3.7 Implementasi Modul Ruang Kerja Kolaboratif (Workspace & Task Checklist)
-    3.8 Implementasi Modul Penyerahan Luaran & Ulasan Dua Arah
-    3.9 Implementasi Modul Perpesanan Internal & Notifikasi
-    3.10 Implementasi Modul Dasbor Administrasi & Audit Log
+    3.1 Inisialisasi Repositori & Konfigurasi TypeScript Fullstack
+    3.2 Implementasi Skema Prisma, Migrasi SQL, dan Seeding Data
+    3.3 Implementasi Modul Autentikasi JWT & Profil Peran (MVP)
+    3.4 Implementasi Modul Katalog & Publikasi Brief Proyek (MVP)
+    3.5 Implementasi Modul Lamaran Proyek & Inisiasi Workspace (MVP)
+    3.6 Implementasi Integrasi Mesin Rekomendasi Google Gemini AI (Core)
+    3.7 Implementasi Manajemen Tugas Milestone & Pelacakan Progres (Core)
+    3.8 Implementasi Penyerahan Luaran & Ulasan Dua Arah (Core)
+    3.9 Implementasi Perpesanan Internal & Notifikasi (Core)
+    3.10 Implementasi Dasbor Admin & Audit Logging (Core)
 
 4.0 Pengujian dan Penjaminan Mutu (Testing & QA)
     4.1 Pengujian Unit Logika Bisnis & Validasi Skema
@@ -406,19 +409,37 @@ Berikut adalah struktur rincian kerja (*Work Breakdown Structure*) proyek SkillB
 
 ---
 
-## 3.5 Rencana Tahapan dan Jadwal Pengembangan (Timeline & Sprints)
+## 3.5 Rencana Tahapan Iterasi dan Timeline (Sprint Schedule)
 
-##### Tabel 3.2 Rencana Pembagian Tahapan Siklus Pengembangan
-| Fase Pengembangan | Aktivitas Utama yang Dikerjakan | Target Luaran |
+##### Tabel 3.2 Rencana Pembagian Tahapan Siklus Pengembangan Iteratif
+| Iterasi / Tahap | Fokus Pekerjaan Utama | Target Luaran Terukur |
 | :---: | :--- | :--- |
-| **Tahap 1: Inisiasi & Analisis** | Penggalian masalah, analisis kebutuhan pengguna, dan penyusunan matriks FR/NFR. | Dokumen SRS dan Ruang Lingkup. |
-| **Tahap 2: Desain Arsitektur & Basis Data** | Perancangan BPMN, Use Case, ERD, skema Prisma, dan tata letak UI. | Diagram Desain Sistem dan Skema Basis Data. |
-| **Tahap 3: Pondasi Backend & Autentikasi** | Pengkodean rute auth JWT, middleware validasi Zod, dan tabel User/Profil. | Endpoint Auth & Profil Pengguna Berfungsi. |
-| **Tahap 4: Marketplace Proyek & Modul AI** | Pembangunan katalog proyek, form brief proyek, dan integrasi Google Gemini API. | Marketplace Proyek & Skor Rekomendasi AI. |
-| **Tahap 5: Modul Lamaran & Workspace** | Pembuatan alur lamaran, seleksi pelamar, inisiasi workspace, dan checklist tugas. | Workspace & Pelacakan Progres Berjalan. |
-| **Tahap 6: Deliverables, Ulasan & Chat** | Form submit luaran akhir, modul review dua arah, skor portofolio, dan chat internal. | Alur Kolaborasi Lengkap & Ulasan Aktif. |
-| **Tahap 7: Modul Admin & Audit Logging** | Dasbor metrik platform, manajemen kategori, moderasi proyek, dan tabel audit log. | Modul Administrator & Log Keamanan. |
-| **Tahap 8: Pengujian & Finalisasi Rilis** | Eksekusi uji fungsional, perbaikan bug, penyiapan deployment target, dan finalisasi dokumen. | Platform Teruji & Siap Rilis. |
+| **Iterasi 1: Inisiasi & Desain** | Analisis kebutuhan, perancangan BPMN, Use Case, ERD, dan struktur UI. | Dokumen SRS dan Desain Basis Data. |
+| **Iterasi 2: Fondasi & Auth (MVP)**| Setup project TypeScript, migrasi Prisma, modul login/register JWT. | Autentikasi & Profil Pengguna Berjalan. |
+| **Iterasi 3: Marketplace & Proyek (MVP)**| Katalog proyek, form brief proyek baru, dan alur pendaftaran proyek. | Marketplace & Pendaftaran Proyek Aktif. |
+| **Iterasi 4: Workspace & Task (MVP/Core)**| Inisiasi workspace otomatis, checklist tugas, dan kalkulasi progres. | Ruang Kerja Kolaboratif Berfungsi. |
+| **Iterasi 5: AI Engine & Rekomendasi (Core)**| Integrasi Google Gemini API untuk analisis kecocokan pelamar. | Rekomendasi AI Matchmaking Aktif. |
+| **Iterasi 6: Deliverables & Review (Core)**| Form submit luaran akhir, ulasan dua arah, dan skor portofolio. | Siklus Proyek Tuntas & Ulasan Berjalan. |
+| **Iterasi 7: Admin Center & Notif (Core)**| Dasbor metrik platform, moderasi kategori/proyek, dan audit log. | Modul Admin & Notifikasi Lengkap. |
+| **Iterasi 8: QA, Deployment & Release** | Eksekusi kasus uji, perbaikan bug, penyiapan deployment target. | Platform Teruji & Siap Rilis. |
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                 VISUALISASI STRUKTUR TAHAPAN (GANTT CHART)                  │
+├────────────────────────┬──┬──┬──┬──┬──┬──┬──┬──┤                            │
+│ Tahap Iterasi          │I1│I2│I3│I4│I5│I6│I7│I8│                            │
+├────────────────────────┼──┼──┼──┼──┼──┼──┼──┼──┤                            │
+│ 1. Inisiasi & Desain   │██│  │  │  │  │  │  │  │                            │
+│ 2. Fondasi & Auth (MVP)│  │██│  │  │  │  │  │  │                            │
+│ 3. Marketplace (MVP)   │  │  │██│  │  │  │  │  │                            │
+│ 4. Workspace & Task    │  │  │  │██│  │  │  │  │                            │
+│ 5. AI Recommendation   │  │  │  │  │██│  │  │  │                            │
+│ 6. Review & Portofolio │  │  │  │  │  │██│  │  │                            │
+│ 7. Admin & Notifikasi  │  │  │  │  │  │  │██│  │                            │
+│ 8. QA & Deployment     │  │  │  │  │  │  │  │██│                            │
+└────────────────────────┴──┴──┴──┴──┴──┴──┴──┴──┘                            │
+```
+#### Gambar 3.2 Visualisasi Tahapan Pengembangan Iteratif (Gantt Chart)
 
 ---
 
@@ -428,10 +449,10 @@ Berikut adalah struktur rincian kerja (*Work Breakdown Structure*) proyek SkillB
 | Kode | Nama Milestone | Kriteria Keberhasilan (*Acceptance Criteria*) |
 | :---: | :--- | :--- |
 | **M1** | **Spesifikasi & Desain Terverifikasi** | Dokumen kebutuhan, use case, dan perancangan skema basis data telah selesai dan konsisten. |
-| **M2** | **Pondasi Database & Auth Siap** | Skema Prisma berhasil dimigrasi, skrip seeding berjalan sukses, dan endpoint login/register berfungsi. |
-| **M3** | **Marketplace & Rekomendasi AI Selesai** | UMKM dapat menerbitkan proyek dan Google Gemini AI berhasil menghitung estimasi skor kecocokan pelamar. |
+| **M2** | **Pondasi Database & Auth Siap (MVP)** | Skema Prisma berhasil dimigrasi, skrip seeding berjalan sukses, dan endpoint login/register berfungsi. |
+| **M3** | **Marketplace & Lamaran Selesai (MVP)**| UMKM dapat menerbitkan brief proyek dan mahasiswa dapat mengajukan lamaran. |
 | **M4** | **Workspace Kolaboratif Berfungsi** | Persetujuan pelamar menginisiasi ruang kerja bersama, tugas dapat dibuat dan progres terkalkulasi otomatis. |
-| **M5** | **Siklus Proyek Tuntas & Review Aktif** | Penyerahan luaran berhasil divalidasi dan fitur ulasan dua arah berhasil memperbarui skor portofolio mahasiswa. |
+| **M5** | **Rekomendasi AI & Review Berjalan** | Google Gemini AI menghasilkan skor rekomendasi dan ulasan dua arah berhasil memperbarui skor portofolio. |
 | **M6** | **Pengujian Fungsional Selesai** | Seluruh kasus uji fungsional terencana (TC-01 s/d TC-16) telah dieksekusi tanpa adanya bug berstatus Blocker. |
 | **M7** | **Dokumentasi & Siap Rilis** | Dokumen perencanaan pengembangan perangkat lunak lengkap dan kode sumber siap dideploy ke lingkungan target. |
 
@@ -455,14 +476,14 @@ Berikut adalah struktur rincian kerja (*Work Breakdown Structure*) proyek SkillB
 Untuk mencegah perubahan ruang lingkup berlebih (*scope creep*) selama fase pengembangan mandiri, diterapkan prosedur manajemen perubahan sederhana:
 1. **Pencatatan Usulan**: Setiap ide fitur tambahan dicatat terlebih dahulu dalam daftar *Future Enhancements Backlog*.
 2. **Evaluasi Dampak**: Mengevaluasi apakah penambahan fitur berisiko mengganggu jadwal penyelesaian fitur utama yang disyaratkan.
-3. **Keputusan Prioritas**: Fitur di luar lingkup inti ditunda hingga seluruh kebutuhan fungsional primer (FR-01 s/d FR-16) selesai diuji dengan baik.
+3. **Keputusan Prioritas**: Fitur di luar lingkup inti ditunda hingga seluruh kebutuhan fungsional primer selesai diuji dengan baik.
 
 ---
 
 # BAB 4 — HIGH-LEVEL ARCHITECTURE AND DESIGN PLANNING
 
-## 4.1 Perencanaan Arsitektur Sistem (System Architecture Plan)
-Arsitektur sistem SkillBridge Hub direncanakan menggunakan pendekatan **Three-Tier Layered Architecture** untuk memastikan pemisahan tanggung jawab yang rapi antara lapisan antarmuka, logika bisnis, dan lapisan basis data:
+## 4.1 Perencanaan Arsitektur Sistem (High-Level 3-Tier Architecture)
+Arsitektur sistem SkillBridge Hub direncanakan menggunakan pendekatan **Three-Tier Layered Architecture** untuk memastikan pemisahan tanggung jawab yang jelas antara lapisan antarmuka pengguna, logika aplikasi, dan penyimpanan data:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
@@ -500,7 +521,7 @@ Arsitektur sistem SkillBridge Hub direncanakan menggunakan pendekatan **Three-Ti
 │           Tabel: User, Profiles, Project, Workspace, Task, Review           │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
-#### Gambar 4.1 Diagram Konsep Arsitektur Tiga Lapis (3-Tier Architecture)
+#### Gambar 4.1 Diagram Konsep Arsitektur Tiga Lapis (High-Level 3-Tier Architecture)
 
 ---
 
@@ -669,7 +690,7 @@ Alur proses bisnis utama kolaborasi proyek direncanakan berjalan melalui tahapan
 
 ---
 
-## 4.4 Perancangan Basis Data (Database Design Plan)
+## 4.4 Perancangan Basis Data Tingkat Tinggi (Database Design Plan)
 
 ### 4.4.1 Entity Relationship Diagram (ERD)
 
@@ -768,30 +789,27 @@ Alur proses bisnis utama kolaborasi proyek direncanakan berjalan melalui tahapan
 
 ---
 
-## 4.5 Perancangan Arsitektur Frontend (Frontend Architecture Plan)
+## 4.5 Perancangan Modul Frontend (Frontend Modular Plan)
 Frontend direncanakan menggunakan struktur komponen berbasis domain fitur:
-1. **Struktur Modul**:
-   - `modules/auth/`: Halaman Login, Registrasi, dan Lupa Password.
-   - `modules/projects/`: Halaman Katalog Proyek, Detail Proyek, dan Form Publikasi Proyek.
-   - `modules/workspace/`: Dasbor Ruang Kerja Bersama, Checklist Tugas, dan Penyerahan Luaran.
-   - `modules/user/`: Halaman Profil Mahasiswa, Profil UMKM, dan Pengaturan Akun.
-   - `modules/admin/`: Dasbor Analitik Ringkasan, Manajemen Kategori, dan Audit Log.
-2. **State & Caching Data**: Menggunakan **TanStack Query** untuk mengambil data dari server, melakukan caching otomatis, dan memperbarui tampilan saat terjadi perubahan data tanpa perlu memuat ulang seluruh halaman.
-3. **Routing**: Menggunakan **React Router v7** dengan pembungkus rute terproteksi (*ProtectedRoute*) untuk membatasi akses berdasarkan peran pengguna.
+1. **Modul Autentikasi**: Halaman Login, Registrasi dengan pemilihan peran, dan Lupa Password.
+2. **Modul Proyek & Marketplace**: Katalog Proyek interaktif, Modal Detail Proyek, dan Form Brief Proyek Baru.
+3. **Modul Ruang Kerja Kolaboratif**: Dasbor Workspace, Checklist Tugas, Form Penyerahan Luaran, dan Komponen Chat.
+4. **Modul Profil Pengguna**: Tampilan portofolio mahasiswa dengan badge keahlian terverifikasi dan profil bisnis UMKM.
+5. **Modul Tata Kelola Administrator**: Dasbor analitik ringkasan sistem, manajemen kategori, dan audit log.
 
 ---
 
-## 4.6 Perancangan Arsitektur Backend (Backend Architecture Plan)
+## 4.6 Perancangan Modul Backend (Backend Service Plan)
 Backend direncanakan menerapkan pola arsitektur **Controller-Service-Repository**:
-1. **Lapisan Controller**: Bertanggung jawab menerima request HTTP, memanggil skema validasi Zod, memanggil fungsi service yang sesuai, dan mengembalikan format JSON standar:
+1. **Controller Layer**: Menerima request HTTP, memanggil skema validasi Zod, dan mengembalikan format JSON standar:
    ```json
    {
      "success": true,
      "data": { ... }
    }
    ```
-2. **Lapisan Service**: Mengisolasi seluruh aturan bisnis murni (seperti kalkulasi persentase progres, validasi kepemilikan workspace, dan pemanggilan API Gemini).
-3. **Lapisan Repository**: Mengisolasi operasi query basis data menggunakan Prisma Client bertipe data aman.
+2. **Service Layer**: Mengisolasi aturan bisnis (kalkulasi persentase progres tugas, validasi status lamaran, dan pemanggilan API Gemini).
+3. **Repository Layer**: Mengisolasi operasi query basis data menggunakan Prisma Client bertipe data aman.
 
 ---
 
@@ -817,49 +835,50 @@ Backend direncanakan menerapkan pola arsitektur **Controller-Service-Repository*
 
 ---
 
-## 5.2 Rencana Implementasi Frontend (Frontend Implementation Plan)
+## 5.2 Rencana Implementasi Antarmuka (Frontend Plan)
 Pengembangan antarmuka dibagi menjadi tahapan pembuatan komponen:
-1. **Komponen Bersama (*Shared Components*)**: Navbar, Footer, Sidebar, Modal Dialog, Status Badge, dan Notification Drawer.
-2. **Halaman Autentikasi**: Formulir login dengan penyimpanan token di local storage dan form registrasi dengan pemilihan peran.
-3. **Halaman Marketplace**: Grid kartu proyek dengan bilah pencarian, filter dropdown kategori, dan modal detail proyek.
-4. **Halaman Workspace Kolaboratif**: Komponen checklist tugas interaktif dengan checkbox penyelesaian yang langsung memperbarui progress bar secara visual.
-5. **Halaman Profil & Ulasan**: Halaman penampilan portofolio mahasiswa dengan badge keahlian terverifikasi dan daftar ulasan bintang.
+1. **Komponen Bersama**: Navbar navigasi dinamis, Footer, Status Badge, Modal Dialog, dan Laci Notifikasi.
+2. **Antarmuka Pengguna Utama**:
+   - Formulir Login & Registrasi dengan penanganan error visual.
+   - Grid Katalog Marketplace dengan bilah pencarian dan filter dropdown kategori.
+   - Dasbor Workspace Kolaboratif dengan checklist tugas interaktif yang otomatis memperbarui bilah progres.
+   - Halaman Portofolio Mahasiswa dan Profil Bisnis UMKM.
 
 ---
 
-## 5.3 Rencana Implementasi Backend dan API (Backend Implementation Plan)
+## 5.3 Rencana Implementasi Layanan Backend & Kontrak API
 
 ##### Tabel 5.2 Rencana Endpoint RESTful API Backend
-| Metode | Endpoint URL | Akses (*Role*) | Fungsi Utama |
-| :---: | :--- | :---: | :--- |
-| `POST` | `/api/auth/register` | Publik | Mendaftarkan akun baru dan membuat data profil. |
-| `POST` | `/api/auth/login` | Publik | Memvalidasi kredensial dan menerbitkan token JWT. |
-| `GET` | `/api/users/me` | Terotentikasi | Mengambil profil pengguna yang sedang login. |
-| `PATCH`| `/api/users/profile` | Terotentikasi | Memperbarui data profil (keahlian, bio, profil UMKM). |
-| `GET` | `/api/projects` | Publik | Mengambil katalog proyek dengan filter pencarian. |
-| `POST` | `/api/projects` | `UMKM` | Menerbitkan brief proyek baru. |
-| `GET` | `/api/projects/:id` | Publik | Mengambil detail lengkap suatu proyek. |
-| `POST` | `/api/projects/:id/apply` | `STUDENT` | Mengajukan lamaran dan memicu kalkulasi skor AI. |
-| `GET` | `/api/projects/:id/applications`| `UMKM` | Mengambil daftar pelamar terurut skor rekomendasi AI. |
-| `PATCH`| `/api/applications/:id/status` | `UMKM` | Menerima/menolak pelamar (penerimaan membuat Workspace). |
-| `GET` | `/api/workspaces/:id` | Anggota Workspace | Mengambil data workspace, daftar tugas, dan progres. |
-| `POST` | `/api/workspaces/:id/tasks` | Anggota Workspace | Menambahkan item tugas milestone baru. |
-| `PATCH`| `/api/workspaces/:id/tasks/:taskId`| Anggota Workspace| Mengubah status tugas dan menghitung ulang progres. |
-| `POST` | `/api/workspaces/:id/complete`| `UMKM` | Menandai proyek selesai setelah luaran disetujui. |
-| `POST` | `/api/reviews` | Terotentikasi | Menyimpan ulasan dua arah dan menambah skor portofolio. |
-| `GET` | `/api/notifications` | Terotentikasi | Mengambil daftar notifikasi pengguna. |
-| `GET` | `/api/admin/metrics` | `ADMIN` | Mengambil data ringkasan analitik platform. |
+| Metode | Endpoint URL | Akses (*Role*) | Fungsi Utama | Kategori |
+| :---: | :--- | :---: | :--- | :---: |
+| `POST` | `/api/auth/register` | Publik | Mendaftarkan akun baru dan membuat data profil. | **MVP** |
+| `POST` | `/api/auth/login` | Publik | Memvalidasi kredensial dan menerbitkan token JWT. | **MVP** |
+| `GET` | `/api/users/me` | Terotentikasi | Mengambil profil pengguna yang sedang login. | **MVP** |
+| `PATCH`| `/api/users/profile` | Terotentikasi | Memperbarui data profil (keahlian, bio, profil UMKM). | **MVP** |
+| `GET` | `/api/projects` | Publik | Mengambil katalog proyek dengan filter pencarian. | **MVP** |
+| `POST` | `/api/projects` | `UMKM` | Menerbitkan brief proyek baru. | **MVP** |
+| `GET` | `/api/projects/:id` | Publik | Mengambil detail lengkap suatu proyek. | **MVP** |
+| `POST` | `/api/projects/:id/apply` | `STUDENT` | Mengajukan lamaran dan memicu kalkulasi skor AI. | **MVP** |
+| `GET` | `/api/projects/:id/applications`| `UMKM` | Mengambil daftar pelamar terurut skor rekomendasi AI. | **Core** |
+| `PATCH`| `/api/applications/:id/status` | `UMKM` | Menerima/menolak pelamar (penerimaan membuat Workspace). | **MVP** |
+| `GET` | `/api/workspaces/:id` | Anggota Workspace | Mengambil data workspace, daftar tugas, dan progres. | **MVP** |
+| `POST` | `/api/workspaces/:id/tasks` | Anggota Workspace | Menambahkan item tugas milestone baru. | **Core** |
+| `PATCH`| `/api/workspaces/:id/tasks/:taskId`| Anggota Workspace| Mengubah status tugas dan menghitung ulang progres. | **Core** |
+| `POST` | `/api/workspaces/:id/complete`| `UMKM` | Menandai proyek selesai setelah luaran disetujui. | **Core** |
+| `POST` | `/api/reviews` | Terotentikasi | Menyimpan ulasan dua arah dan menambah skor portofolio. | **Core** |
+| `GET` | `/api/notifications` | Terotentikasi | Mengambil daftar notifikasi pengguna. | **Core** |
+| `GET` | `/api/admin/metrics` | `ADMIN` | Mengambil data ringkasan analitik platform. | **Core** |
 
 ---
 
-## 5.4 Rencana Implementasi Basis Data (Database Implementation Plan)
+## 5.4 Rencana Implementasi Basis Data (Database Plan)
 1. **Penyusunan Skema**: Mendefinisikan seluruh model entitas pada berkas `backend/prisma/schema.prisma`.
 2. **Eksekusi Migrasi SQL**: Menjalankan perintah `npx prisma migrate dev` untuk menghasilkan tabel pada basis data MySQL lokal.
 3. **Penyemaian Data Awal (*Seeding*)**: Menyusun skrip `backend/prisma/seed.ts` untuk mengisi data kategori standar (Web Development, Mobile App, UI/UX Design, Branding, Digital Marketing) serta akun contoh untuk pengujian.
 
 ---
 
-## 5.5 Rencana Integrasi Mesin AI (AI Integration Plan)
+## 5.5 Rencana Integrasi Mesin Rekomendasi AI (AI Integration Plan)
 1. **Inisialisasi SDK**: Memanfaatkan library resmi `@google/genai` dengan konfigurasi API Key tersimpan di variabel lingkungan.
 2. **Format Prompt Terstruktur**: Merancang instruksi prompt yang meminta keluaran strictly dalam format JSON:
    ```json
@@ -976,26 +995,26 @@ Strategi pengujian direncanakan menggunakan pendekatan bertingkat:
 ## 6.6 Matriks Penelusuran Kebutuhan (Requirement Traceability Matrix)
 
 ##### Tabel 6.4 Matriks Penelusuran Kebutuhan (Requirement Traceability Matrix / RTM)
-| Kode Kebutuhan (FR) | Deskripsi Kebutuhan | Modul Terkait | Rencana Kasus Uji |
-| :---: | :--- | :--- | :---: |
-| **FR-AUTH-01** | Registrasi Akun Multi-Peran | Modul Autentikasi | **TC-01, TC-02** |
-| **FR-AUTH-02** | Login Berbasis JWT & Token Version | Modul Autentikasi | **TC-03, TC-04** |
-| **FR-PROF-01** | Pengelolaan Profil & Keahlian Mahasiswa | Modul Profil Pengguna | **TC-01, TC-15** |
-| **FR-PROF-02** | Pengelolaan Profil Usaha UMKM | Modul Profil Pengguna | **TC-05** |
-| **FR-PROJ-01** | Penerbitan Brief Proyek Baru | Modul Proyek & Marketplace | **TC-05, TC-06** |
-| **FR-PROJ-02** | Katalog Pencarian dan Filter Proyek | Modul Proyek & Marketplace | **TC-07** |
-| **FR-AI-01** | Analisis Rekomendasi AI Matchmaking | Modul AI Engine | **TC-10** |
-| **FR-APP-01** | Pengajuan Lamaran Proyek Mahasiswa | Modul Lamaran Proyek | **TC-08, TC-09** |
-| **FR-APP-02** | Seleksi dan Peninjauan Pelamar | Modul Lamaran Proyek | **TC-11** |
-| **FR-WORK-01** | Inisiasi Otomatis Ruang Kerja Workspace | Modul Workspace | **TC-11, IT-02** |
-| **FR-WORK-02** | Manajemen Checklist Tugas Milestone | Modul Workspace | **TC-12, IT-03** |
-| **FR-WORK-03** | Pelacakan Persentase Progres Dinamis | Modul Workspace | **TC-12, IT-03** |
-| **FR-WORK-04** | Penyerahan dan Validasi Luaran Kerja | Modul Workspace | **TC-13, TC-14** |
-| **FR-REV-01** | Sistem Evaluasi Ulasan Dua Arah | Modul Review & Rating | **TC-15** |
-| **FR-REV-02** | Akumulasi Skor Portofolio Mahasiswa | Modul Review & Rating | **TC-15, IT-04** |
-| **FR-ADM-01** | Dasbor Statistik Ringkasan Platform | Modul Administrator | **TC-16, IT-01** |
-| **FR-ADM-02** | Manajemen Kategori & Moderasi Proyek | Modul Administrator | **TC-16** |
-| **FR-ADM-03** | Pencatatan Log Audit Keamanan | Modul Administrator | **TC-16** |
+| Kode Kebutuhan (FR) | Deskripsi Kebutuhan | Modul Terkait | Kategori | Rencana Kasus Uji |
+| :---: | :--- | :--- | :---: | :---: |
+| **FR-AUTH-01** | Registrasi Akun Multi-Peran | Modul Autentikasi | **MVP** | **TC-01, TC-02** |
+| **FR-AUTH-02** | Login Berbasis JWT & Token Version | Modul Autentikasi | **MVP** | **TC-03, TC-04** |
+| **FR-PROF-01** | Pengelolaan Profil & Keahlian Mahasiswa | Modul Profil Pengguna | **MVP** | **TC-01, TC-15** |
+| **FR-PROF-02** | Pengelolaan Profil Usaha UMKM | Modul Profil Pengguna | **MVP** | **TC-05** |
+| **FR-PROJ-01** | Penerbitan Brief Proyek Baru | Modul Proyek & Marketplace | **MVP** | **TC-05, TC-06** |
+| **FR-PROJ-02** | Katalog Pencarian dan Filter Proyek | Modul Proyek & Marketplace | **MVP** | **TC-07** |
+| **FR-AI-01** | Analisis Rekomendasi AI Matchmaking | Modul AI Engine | **Core** | **TC-10** |
+| **FR-APP-01** | Pengajuan Lamaran Proyek Mahasiswa | Modul Lamaran Proyek | **MVP** | **TC-08, TC-09** |
+| **FR-APP-02** | Seleksi dan Peninjauan Pelamar | Modul Lamaran Proyek | **MVP** | **TC-11** |
+| **FR-WORK-01** | Inisiasi Otomatis Ruang Kerja Workspace | Modul Workspace | **MVP** | **TC-11, IT-02** |
+| **FR-WORK-02** | Manajemen Checklist Tugas Milestone | Modul Workspace | **Core** | **TC-12, IT-03** |
+| **FR-WORK-03** | Pelacakan Persentase Progres Dinamis | Modul Workspace | **Core** | **TC-12, IT-03** |
+| **FR-WORK-04** | Penyerahan dan Validasi Luaran Kerja | Modul Workspace | **Core** | **TC-13, TC-14** |
+| **FR-REV-01** | Sistem Evaluasi Ulasan Dua Arah | Modul Review & Rating | **Core** | **TC-15** |
+| **FR-REV-02** | Akumulasi Skor Portofolio Mahasiswa | Modul Review & Rating | **Core** | **TC-15, IT-04** |
+| **FR-ADM-01** | Dasbor Statistik Ringkasan Platform | Modul Administrator | **Core** | **TC-16, IT-01** |
+| **FR-ADM-02** | Manajemen Kategori & Moderasi Proyek | Modul Administrator | **Core** | **TC-16** |
+| **FR-ADM-03** | Pencatatan Log Audit Keamanan | Modul Administrator | **Core** | **TC-16** |
 
 ---
 
@@ -1070,7 +1089,7 @@ Beberapa rencana fitur lanjutan yang dapat diimplementasikan pada pengembangan m
 | **TR-02** | Format Output AI Tidak Sesuai Skema JSON | Sedang | Sedang | **Sedang** | Ahmad Dhafin Al Farisy *(Project Developer)* | Merancang prompt terstruktur dengan instruksi JSON murni dan memvalidasi output menggunakan *parser / try-catch* sebelum disimpan ke basis data. |
 | **TR-03** | Penurunan Performa Query Basis Data | Rendah | Sedang | **Sedang** | Ahmad Dhafin Al Farisy *(Project Developer)* | Membuat indeks pada kolom pencarian dan foreign key (`email`, `status`, `projectId`, `studentId`) serta menggunakan fitur `select` spesifik Prisma untuk menghindari *over-fetching*. |
 | **TR-04** | Berkas Unggahan Tidak Sesuai / Terlalu Besar | Rendah | Sedang | **Rendah** | Ahmad Dhafin Al Farisy *(Project Developer)* | Membatasi ukuran maksimal berkas unggahan ($\le 5\text{ MB}$) dan membatasi jenis ekstensi yang diizinkan (JPG, PNG, PDF) melalui middleware Multer. |
-| **PR-01** | Keterbatasan Waktu Pengembangan Mandiri | Sedang | Tinggi | **Tinggi** | Ahmad Dhafin Al Farisy *(Project Developer)* | Memprioritaskan penyelesaian Kebutuhan Fungsional berprioritas Tinggi (FR-01 s/d FR-16) dan menunda fitur sekunder ke rilis lanjutan. |
+| **PR-01** | Keterbatasan Waktu Pengembangan Mandiri | Sedang | Tinggi | **Tinggi** | Ahmad Dhafin Al Farisy *(Project Developer)* | Memprioritaskan penyelesaian fitur MVP (Fase 1) dan Core (Fase 2) serta menunda fitur lanjutan (Future) ke rilis berikutnya. |
 | **PR-02** | Perubahan Ruang Lingkup (*Scope Creep*) | Sedang | Sedang | **Sedang** | Ahmad Dhafin Al Farisy *(Project Developer)* | Menerapkan kontrol perubahan rencana kerja formal; fitur baru di luar spesifikasi awal dicatat pada daftar *future enhancements*. |
 | **PR-03** | Keterbatasan Partisipan UAT | Sedang | Sedang | **Sedang** | Ahmad Dhafin Al Farisy *(Project Developer)* | Menyiapkan data awal percontohan (*seed data*) yang lengkap dan realistis untuk mempermudah simulasi alur kerja oleh partisipan uji. |
 
