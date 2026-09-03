@@ -1,0 +1,46 @@
+name: SkillBridge CI Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test-nlp-service:
+    name: Test FastAPI NLP Matcher
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install Python Dependencies
+        run: |
+          cd fastapi-service
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run NLP Matcher Unit Tests
+        run: |
+          cd fastapi-service
+          python test_matcher.py
+
+  test-laravel-app:
+    name: Test Laravel Application
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo, pdo_sqlite, pdo_pgsql, zip
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: Install Composer Dependencies
+        run: composer install --prefer-dist --no-interaction
+      - name: Generate App Key
+        run: php artisan key:generate
+      - name: Run Migrations & Seeder
+        run: php artisan migrate --seed --force

@@ -1,0 +1,28 @@
+services:
+  # 1. Layanan NLP SkillMatch Engine
+  nlp-service:
+    build:
+      context: ./fastapi-service
+      dockerfile: Dockerfile
+    container_name: skillbridge-nlp
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+
+  # 2. Aplikasi Web Utama Laravel 11
+  web-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: skillbridge-web
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      - nlp-service
+    env_file:
+      - .env
+    environment:
+      - FASTAPI_MATCH_URL=http://nlp-service:8000
