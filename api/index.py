@@ -1,14 +1,13 @@
 import sys
 import os
 
-# Tambahkan direktori root fastapi-service ke sys.path
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Tambahkan direktori fastapi-service ke sys.path
+BASE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "fastapi-service")
 if BASE_DIR not in sys.path:
     sys.path.insert(0, BASE_DIR)
 
 from main import app
 
-# ASGI Middleware untuk membersihkan prefix /api/index atau /api yang diteruskan oleh Vercel
 class VercelPathNormalizerMiddleware:
     def __init__(self, asgi_app):
         self.asgi_app = asgi_app
