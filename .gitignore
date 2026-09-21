@@ -23,4 +23,5 @@ __pycache__/
 *.py[cod]
 legacy-react-prototype/node_modules/
 legacy-react-prototype/backend/node_modules/
+/prototype/
 

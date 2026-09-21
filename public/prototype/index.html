@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SkillBridge Hub — Prototipe Antarmuka Pitching Stakeholder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+</head>
+<body>
+
+<!-- Advisory Rotasi Ponsel jika dibuka di layar smartphone portrait -->
+<div class="rotate" aria-live="polite">
+  <span class="lk"><img src="assets/logo.svg" alt="SkillBridge Hub"></span>
+  <div class="ph"></div>
+  <h2>Putar ponsel ke posisi mendatar</h2>
+  <p>Prototipe SkillBridge Hub dirancang untuk presentasi layar lebar. Tampilan lengkap akan otomatis muncul begitu ponsel Anda diputar.</p>
+</div>
+
+<!-- Chrome Bar Atas -->
+<div class="chrome">
+  <div class="mark">
+    <img src="assets/logo.svg" alt="SkillBridge Logo">
+    <span>SkillBridge<span style="opacity:.6">.hub</span></span>
+    <span class="tag">Prototipe Pitching</span>
+  </div>
+
+  <div class="seg">
+    <button id="sf-m" class="on" onclick="surface('m')">
+      <svg class="i i-sm" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18.5h2"/></svg>
+      Aplikasi Mobile
+    </button>
+    <button id="sf-w" onclick="surface('w')">
+      <svg class="i i-sm" viewBox="0 0 24 24"><rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8 20.5h8M12 17.5v3"/></svg>
+      Dashboard Kampus &amp; Industri
+    </button>
+  </div>
+
+  <div class="right">
+    <span>FST Universitas Airlangga × UMKM Jawa Timur · <b id="chrome-note">konsep antarmuka mobile</b></span>
+    <span class="pitch-badge">
+      <svg class="i i-xs" viewBox="0 0 24 24" style="stroke-width:2.4"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Stakeholder Pitch
+    </span>
+  </div>
+</div>
+
+<!-- Container Panggung Utama -->
+<div class="stage" id="stage">
+
+  <!-- ══════════════ PANGGUNG APLIKASI MOBILE ══════════════ -->
+  <div class="mstage" id="surface-m">
+    <div class="roles">
+      <h4>Pilih Peran Stakeholder</h4>
+
+      <button class="role on" id="role-student" onclick="pickRole('student')">
+        <span class="ri">
+          <svg class="i i-sm" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </span>
+        <span>
+          <b>Mahasiswa (Talenta)</b>
+          <small>Cari proyek AI Match, logbook, &amp; portofolio</small>
+        </span>
+      </button>
+
+      <button class="role" id="role-umkm" onclick="pickRole('umkm')">
+        <span class="ri">
+          <svg class="i i-sm" viewBox="0 0 24 24"><path d="M4 21V5.5L12 3l8 2.5V21"/><path d="M2.5 21h19M9 9h.01M15 9h.01M9 13h.01M15 13h.01M10 21v-4h4v4"/></svg>
+        </span>
+        <span>
+          <b>Mitra UMKM / Industri</b>
+          <small>Pasang brief, kurasi pelamar, ulas hasil</small>
+        </span>
+      </button>
+
+      <button class="role" id="role-faculty" onclick="pickRole('faculty')">
+        <span class="ri">
+          <svg class="i i-sm" viewBox="0 0 24 24"><path d="M12 3l7.5 3.5v5c0 4.3-3.1 8.2-7.5 9.5-4.4-1.3-7.5-5.2-7.5-9.5v-5z"/><path d="M9.3 12l1.9 1.9 3.6-3.8"/></svg>
+        </span>
+        <span>
+          <b>Dosen Pembimbing</b>
+          <small>Validasi logbook &amp; ekuivalensi SKS</small>
+        </span>
+      </button>
+
+      <div class="screens" id="screenlist"></div>
+
+      <!-- Wallpaper Hero Switcher -->
+      <div class="wpsw">
+        <h4>Tema Visual Hero</h4>
+        <div class="hint">Eksplorasi tema visual antarmuka saat presentasi ke stakeholder:</div>
+        <div class="row">
+          <button id="wp-vibrant" class="on" onclick="setWp('vibrant')">
+            <span class="sw" style="background:linear-gradient(135deg,#1E3A8A,#2563EB)"></span>
+            1 · Vibrant Blue
+          </button>
+          <button id="wp-unair" onclick="setWp('unair')">
+            <span class="sw" style="background:linear-gradient(135deg,#0F172A,#B45309)"></span>
+            2 · UNAIR Gold
+          </button>
+          <button id="wp-emerald" onclick="setWp('emerald')">
+            <span class="sw" style="background:linear-gradient(135deg,#064E3B,#10B981)"></span>
+            3 · Emerald Tech
+          </button>
+          <button id="wp-slate" onclick="setWp('slate')">
+            <span class="sw" style="background:linear-gradient(135deg,#0B132B,#1F2937)"></span>
+            4 · Cyber Slate
+          </button>
+          <button id="wp-white" onclick="setWp('white')">
+            <span class="sw" style="background:linear-gradient(135deg,#FFFFFF,#CBD5E1);border-color:#CBD5E1"></span>
+            5 · Clean White
+          </button>
+          <button id="wp-violet" onclick="setWp('violet')">
+            <span class="sw" style="background:linear-gradient(135deg,#2E1065,#8B5CF6)"></span>
+            6 · AI Violet
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Simulasi Smartphone Frame -->
+    <div class="phone">
+      <div class="screen">
+        <div class="status">
+          <span id="clock">09.41</span>
+          <div class="island"></div>
+          <span class="sig">
+            <svg class="i i-xs" viewBox="0 0 24 24" style="stroke-width:2.4"><path d="M3 15v3M9 11v7M15 7v11M21 3v15"/></svg>
+            <svg class="i i-xs" viewBox="0 0 24 24" style="stroke-width:2.4"><path d="M5 12.55a11 11 0 0114.08 0M1.42 9a16 16 0 0121.16 0M8.53 16.11a6 6 0 016.95 0M12 20h.01"/></svg>
+            <svg class="i i-xs" viewBox="0 0 24 24" style="stroke-width:2.4"><rect x="2" y="7" width="17" height="10" rx="2.5"/><path d="M21.5 11v2"/></svg>
+          </span>
+        </div>
+        <div class="scroll" id="mscroll"></div>
+        <div class="tabbar" id="mtabs"></div>
+      </div>
+    </div>
+
+    <!-- Catatan Pitching Rationale di Sebelah Kanan -->
+    <div class="note">
+      <div class="card" id="mnote"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════ PANGGUNG DASHBOARD KAMPUS & INDUSTRI (DESKTOP) ══════════════ -->
+  <div class="wstage hide" id="surface-w">
+    <div class="browser">
+      <div class="bbar">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <div class="url">
+          <svg class="i i-xs" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8.5 10V7a3.5 3.5 0 017 0v3"/></svg>
+          <span>skillbridge.unair.ac.id/hub/dashboard</span>
+          <span class="badge">PROD SECURE</span>
+        </div>
+      </div>
+      <div class="wapp">
+        <div class="rail">
+          <div class="logo">SB</div>
+          <nav id="wrail"></nav>
+          <div class="me">
+            <span class="av" title="Dr. Ir. Bambang Hermanto, M.Kom">BH</span>
+          </div>
+        </div>
+        <div class="modnav">
+          <div class="mh" id="wmh"></div>
+          <nav id="wnav"></nav>
+        </div>
+        <div class="main" id="wmain"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Scripts -->
+<script src="screens.js"></script>
+<script src="dashboard.js"></script>
+<script>
+/* Orientasi ponsel: jika portrait muncul instruksi rotasi, jika landscape tampil lebar */
+(function() {
+  var meta = document.querySelector('meta[name="viewport"]');
+  function isPhone() {
+    return window.matchMedia('(pointer: coarse)').matches && Math.min(screen.width, screen.height) < 700;
+  }
+  function portrait() {
+    if (screen.orientation && screen.orientation.type) return screen.orientation.type.indexOf('portrait') === 0;
+    return window.matchMedia('(orientation: portrait)').matches;
+  }
+  function apply() {
+    if (!isPhone()) return;
+    var p = portrait();
+    document.documentElement.classList.toggle('rotate-ask', p);
+    var want = p ? 'width=device-width, initial-scale=1' : 'width=1280';
+    if (meta.getAttribute('content') !== want) meta.setAttribute('content', want);
+  }
+  apply();
+  window.addEventListener('orientationchange', function() { setTimeout(apply, 150); });
+  if (screen.orientation) screen.orientation.addEventListener('change', apply);
+  window.addEventListener('resize', apply);
+})();
+</script>
+
+</body>
+</html>

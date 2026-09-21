@@ -81,3 +81,8 @@ Route::middleware('auth')->group(function () {
 // Katalog Proyek Terbuka (Publik)
 Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
 Route::get('/projects/{id}', [ProjectController::class, 'show'])->name('projects.show');
+
+// Prototipe Pitching Stakeholder
+Route::get('/prototype', function () {
+    return response()->file(public_path('prototype/index.html'));
+})->name('prototype');
